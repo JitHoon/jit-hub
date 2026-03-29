@@ -1,0 +1,104 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun run *)",
+      "Bash(bunx *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git status)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(grep *)",
+      "Bash(wc *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Read",
+      "Write",
+      "Edit",
+      "Grep",
+      "Glob"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(git push --force *)",
+      "Bash(git reset --hard *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$(git branch --show-current)\" != \"main\" ] || { echo '{\"block\": true, \"message\": \"main 브랜치에서 직접 편집 금지. 피처 브랜치를 만드세요.\"}' >&2; exit 2; }",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude가 응답을 기다리고 있습니다.\" with title \"Claude Code\" sound name \"Ping\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx)$'; then bunx tsc --noEmit --pretty 2>&1 | head -20 || true; fi",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx|js|jsx)$' && [ -f node_modules/.bin/eslint ]; then bunx eslint --no-error-on-unmatched-pattern --max-warnings 0 \"$FILE\" 2>&1 | head -20 || true; fi",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "BRANCH=$(git branch --show-current 2>/dev/null || echo N/A) && NODES=$(ls content/nodes/*.md 2>/dev/null | wc -l | tr -d ' ') && printf '{\"feedback\": \"[context] branch: %s | nodes: %s\"}' \"$BRANCH\" \"${NODES:-0}\" >&2",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f package.json ] && printf '{\"feedback\": \"[reminder] bun run build로 빌드 검증을 권장합니다.\"}' >&2 || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude가 응답을 완료했습니다.\" with title \"Claude Code\" sound name \"Glass\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
