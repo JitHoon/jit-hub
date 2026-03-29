@@ -13,9 +13,12 @@ allowed-tools: Read, Grep, Glob
 | Tailwind CSS | v4 | ✅ 설치됨 | **이 Skill** → `references/tailwind-v4.md` |
 | TypeScript | 5.9 (strict) | ✅ 설치됨 | **이 Skill** → `references/typescript-strict.md` |
 | react-force-graph-2d | — | ⏳ 예정 | graph-visualization |
-| gray-matter | — | ⏳ 예정 | content-pipeline |
-| Zod | — | ⏳ 예정 | content-pipeline |
-| next-mdx-remote | — | ⏳ 예정 | content-pipeline |
+| gray-matter | 4.0.3 | ✅ 등록됨 | **이 Skill** → `references/gray-matter.md` |
+| Zod | v3 | ✅ 등록됨 | **이 Skill** → `references/zod-v3.md` |
+| next-mdx-remote | 6.0.0 | ✅ 등록됨 | **이 Skill** → `references/next-mdx-remote.md` |
+| rehype-pretty-code | 0.14.x | ✅ 등록됨 | **이 Skill** → `references/rehype-pretty-code.md` |
+| remark-gfm | 4.0.1 | ✅ 등록됨 | **이 Skill** → `references/remark-gfm.md` |
+| Playwright | 1.x | ⏳ 예정 | playwright-testing |
 
 > 각 라이브러리의 도메인 맥락(라우팅, 그래프 시각화, 콘텐츠 파이프라인)은 해당 Skill이 담당한다.
 > 이 Skill은 **라이브러리 자체의 API/패턴/함정**만 다룬다.
@@ -37,13 +40,23 @@ allowed-tools: Read, Grep, Glob
 - `satisfies` 연산자로 타입 안전한 객체 리터럴
 - Zod 스키마에서 `z.infer<>` 로 타입 추출 (수동 중복 금지)
 
+### 콘텐츠 파이프라인 라이브러리
+- **gray-matter**: 프론트매터 파싱 후 반드시 Zod 검증 (data 필드가 untyped)
+- **Zod v3**: `z.infer<>` 단일 소스 원칙. 빌드 타임 = `.parse()`, 런타임 = `.safeParse()`
+- **next-mdx-remote**: `next-mdx-remote/rsc` import 필수 (Pages Router 방식 금지)
+- **rehype-pretty-code**: Shiki 기반 코드 하이라이팅. CSS 미포함 — 직접 스타일 필요
+- **remark-gfm**: ESM-only. remarkPlugins 배열 첫 번째로 등록
+
 ## 크로스 라이브러리 Gotchas
 
 - `next/dynamic`으로 SSR 비활성화할 때 `{ ssr: false }` 필수 — canvas 기반 라이브러리(react-force-graph-2d)
 - Tailwind v4 + Next.js: `@tailwindcss/postcss` 플러그인 사용 (v3 PostCSS 플러그인 아님)
 - React 19 Server Components에서 `useEffect`, `useState` 등 훅 사용 불가 — `'use client'` 누락 시 빌드 에러
-- Turbopack: 대부분의 라이브러리 호환되나, next-mdx-remote는 호환성 검증 필요
+- **Turbopack + next-mdx-remote**: `transpilePackages: ['next-mdx-remote']` 필수 (없으면 빌드 에러)
 - `React.cache()`는 서버 컴포넌트에서만 작동 — 클라이언트에서 중복 요청 제거는 SWR/React Query
+- next-mdx-remote/rsc에서 MDXProvider 컨텍스트 사용 불가 → components prop 직접 전달
+- rehype-pretty-code는 CSS 미포함 — `globals.css`에 `[data-rehype-pretty-code-figure]` 스타일 정의 필요
+- remark-gfm 등 remark/rehype 플러그인은 ESM-only — `require()` 사용 불가
 
 ## 상세 레퍼런스
 
@@ -51,6 +64,11 @@ allowed-tools: Read, Grep, Glob
 - React 19 API/패턴 → `references/react-19.md`
 - Tailwind v4 설정/아키텍처 → `references/tailwind-v4.md`
 - TypeScript strict 패턴 → `references/typescript-strict.md`
+- gray-matter 파싱/타이핑 → `references/gray-matter.md`
+- Zod v3 스키마/검증 → `references/zod-v3.md`
+- next-mdx-remote RSC → `references/next-mdx-remote.md`
+- rehype-pretty-code 하이라이팅 → `references/rehype-pretty-code.md`
+- remark-gfm GFM 확장 → `references/remark-gfm.md`
 
 ## 소스 출처
 

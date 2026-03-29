@@ -84,6 +84,11 @@ difficulty: beginner | intermediate | advanced | expert
 ## Gotchas
 
 - relatedConcepts의 slug 오타 → 빌드 에러 (의도된 동작)
-- gray-matter는 YAML 파싱. `---` 구분자 정확히 사용
-- next-mdx-remote는 서버 컴포넌트에서 serialize, 클라이언트에서 hydrate
-- rehype-shiki 등 플러그인은 remark/rehype 체인에 추가
+- gray-matter는 YAML 파싱. `---` 구분자 정확히 사용. 프론트매터는 반드시 파일 첫 줄에서 시작
+- next-mdx-remote: `next-mdx-remote/rsc` import 사용 (RSC 전용, serialize 불필요)
+- next-mdx-remote: MDXProvider 컨텍스트 사용 불가 → components prop 직접 전달
+- next-mdx-remote: `<MDXRemote>`는 async Server Component → 클라이언트 컴포넌트에서 사용 불가
+- **Turbopack 필수**: next.config에 `transpilePackages: ['next-mdx-remote']` 추가
+- rehype-pretty-code: CSS 미포함 — `globals.css`에 스타일 정의 필요
+- remark-gfm: ESM-only (`require()` 불가)
+- Zod v3 사용 (`import { z } from 'zod'`). v4 아님

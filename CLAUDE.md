@@ -13,7 +13,7 @@
 - `bun run dev` — 개발 서버
 - `bun run build` — 프로덕션 빌드 (graph-data.json 자동 생성 포함)
 - `bun run lint` — ESLint + TypeScript 검사
-- `bun run test` — 테스트 실행
+- `bun run test:e2e` — Playwright E2E 테스트 실행
 
 ## 아키텍처 핵심
 
@@ -53,6 +53,10 @@
 @.claude/skills/library-practices/SKILL.md 를 읽어라
 </important>
 
+<important if="E2E 테스트 작성, Playwright 사용 시">
+@.claude/skills/playwright-testing/SKILL.md 를 읽어라
+</important>
+
 <important if="기술 스택 변경, 아키텍처 재설계, 또는 과거 의사결정 맥락이 필요할 때">
 @.claude/docs/project-blueprint-v2.md 를 읽어라 (v1→v2 변경 이력, 결정 근거 포함)
 </important>
@@ -66,3 +70,4 @@
 - `src/lib/schema.ts` — Zod 스키마 (클러스터, difficulty enum 포함)
 - `src/lib/pipeline.ts` — 빌드 타임 콘텐츠 처리
 - `public/` — 정적 파일
+- `e2e/` — Playwright E2E 테스트

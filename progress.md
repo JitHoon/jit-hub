@@ -67,7 +67,7 @@ Phase 0~3 완료 → **Phase 4 대기 중**
 | 4-2 | 파이프라인 핵심 함수 (getAllNodes, getNodeBySlug, validateReferences) → `src/lib/pipeline.ts` | M | [ ] |
 | 4-3 | graph-data.json 생성 스크립트 → `scripts/generate-graph-data.ts` | M | [ ] |
 | 4-4 | 빌드 스크립트 통합: `prebuild`로 graph-data.json 자동 생성 | S | [ ] |
-| 4-5 | MDX 렌더링 설정 (next-mdx-remote + rehype-shiki + remark-gfm) → `src/lib/mdx.ts` | M | [ ] |
+| 4-5 | MDX 렌더링 설정 (next-mdx-remote + rehype-pretty-code + remark-gfm) → `src/lib/mdx.ts` | M | [ ] |
 
 - **검증**: `bun run build` 성공 + graph-data.json 생성 + slug 무결성 검증
 
@@ -75,6 +75,7 @@ Phase 0~3 완료 → **Phase 4 대기 중**
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
+| 5-0 | Playwright E2E 테스트 인프라 구축 | S | [x] |
 | 5-1 | 루트 레이아웃 (메타데이터, 폰트) → `src/app/layout.tsx` | S | [ ] |
 | 5-2 | 그래프 컴포넌트 (react-force-graph-2d, dynamic import + ssr: false) → `src/components/graph/` | L | [ ] |
 | 5-3 | 분할 뷰 레이아웃 (좌: 그래프, 우: 본문) → `src/components/layout/SplitView.tsx` | M | [ ] |
