@@ -43,7 +43,7 @@ export async function generateStaticParams() {
 ## Turbopack 주의사항
 
 - Next.js 16에서 Turbopack이 기본
-- next-mdx-remote는 Turbopack 호환 확인 필요
+- next-mdx-remote: `transpilePackages: ['next-mdx-remote']` 필수 (없으면 Turbopack 빌드 에러)
 - dynamic import는 정상 동작
 
 ## Gotchas

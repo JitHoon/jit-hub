@@ -196,7 +196,7 @@ content/nodes/*.md (프론트매터 + MDX 본문)
 본문 안에서 사용할 수 있는 인터랙티브 요소:
 - Cesium.js / Three.js 3D 데모 뷰어
 - 다이어그램 / 차트 시각화 컴포넌트
-- 코드 블록 하이라이팅 (rehype-shiki 등)
+- 코드 블록 하이라이팅 (rehype-pretty-code)
 
 ---
 
