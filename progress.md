@@ -42,10 +42,10 @@ Phase 0 완료 → **Phase 1 진행 중** (1-1, 1-2, 1-3 완료)
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 2-1 | git init + 초기 커밋 | S | [ ] |
-| 2-2 | GitHub **public** 레포 생성 + push | S | [ ] |
-| 2-3 | 브랜치 전략 설정 (main 보호, feat/ 브랜치) | S | [ ] |
-| 2-4 | lint-staged + husky pre-commit 훅 설정 (커밋 시 ESLint + Prettier 자동 실행) | S | [ ] |
+| 2-1 | git init + 초기 커밋 | S | [x] |
+| 2-2 | GitHub **public** 레포 생성 + push | S | [x] |
+| 2-3 | 브랜치 전략 설정 (main 보호, feat/ 브랜치) | S | [x] |
+| 2-4 | lint-staged + husky pre-commit 훅 설정 (커밋 시 ESLint + Prettier 자동 실행) | S | [x] |
 
 - **검증**: git push 성공
 
