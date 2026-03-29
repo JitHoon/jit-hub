@@ -67,7 +67,7 @@ Phase 0~3 완료 → **Phase 4 대기 중**
 | 4-2 | 파이프라인 핵심 함수 (getAllNodes, getNodeBySlug, validateReferences) → `src/lib/pipeline.ts` | M | [ ] |
 | 4-3 | graph-data.json 생성 스크립트 → `scripts/generate-graph-data.ts` | M | [ ] |
 | 4-4 | 빌드 스크립트 통합: `prebuild`로 graph-data.json 자동 생성 | S | [ ] |
-| 4-5 | MDX 렌더링 설정 (next-mdx-remote + rehype-shiki + remark-gfm) → `src/lib/mdx.ts` | M | [ ] |
+| 4-5 | MDX 렌더링 설정 (next-mdx-remote + rehype-pretty-code + remark-gfm) → `src/lib/mdx.ts` | M | [ ] |
 
 - **검증**: `bun run build` 성공 + graph-data.json 생성 + slug 무결성 검증
 
