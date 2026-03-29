@@ -3,15 +3,8 @@
     "allow": [
       "Bash(bun run *)",
       "Bash(bunx *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git branch *)",
-      "Bash(git checkout *)",
-      "Bash(git push *)",
-      "Bash(git push -u *)",
-      "Bash(git status)",
+      "Bash(git:*)",
+      "Bash(gh:*)",
       "Bash(ls *)",
       "Bash(cat *)",
       "Bash(grep *)",
@@ -59,12 +52,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx)$'; then bunx tsc --noEmit --pretty 2>&1 | head -20 || true; fi",
+            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx)$' && echo \"$FILE\" | grep -qE '(src/|e2e/)'; then bunx tsc --noEmit --pretty 2>&1 | head -20 || true; fi",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx|js|jsx)$' && [ -f node_modules/.bin/eslint ]; then bunx eslint --no-error-on-unmatched-pattern --max-warnings 0 \"$FILE\" 2>&1 | head -20 || true; fi",
+            "command": "FILE=\"$CLAUDE_FILE_PATH\"; if echo \"$FILE\" | grep -qE '\\.(ts|tsx|js|jsx)$' && echo \"$FILE\" | grep -qE '(src/|e2e/)' && [ -f node_modules/.bin/eslint ]; then bunx eslint --no-error-on-unmatched-pattern --max-warnings 0 \"$FILE\" 2>&1 | head -20 || true; fi",
             "timeout": 30
           }
         ]
@@ -86,11 +79,6 @@
       {
         "matcher": "",
         "hooks": [
-          {
-            "type": "command",
-            "command": "[ -f package.json ] && printf '{\"feedback\": \"[reminder] bun run build로 빌드 검증을 권장합니다.\"}' >&2 || true",
-            "timeout": 5
-          },
           {
             "type": "command",
             "command": "osascript -e 'display notification \"Claude가 응답을 완료했습니다.\" with title \"Claude Code\" sound name \"Glass\"'",
