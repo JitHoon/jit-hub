@@ -1,1 +1,76 @@
 @import "tailwindcss";
+
+/* ──────────────────────────────────────────
+   1. 디자인 토큰 (@theme)
+   - 클러스터 색상: Tailwind 유틸리티로 직접 사용 가능
+     → bg-cluster-geodesy, text-cluster-graphics 등
+   ────────────────────────────────────────── */
+@theme {
+  --color-cluster-geodesy: oklch(0.65 0.18 145);
+  --color-cluster-graphics: oklch(0.65 0.18 265);
+  --color-cluster-implementation: oklch(0.65 0.15 30);
+  --color-cluster-problem: oklch(0.65 0.18 0);
+  --color-cluster-optimization: oklch(0.65 0.18 60);
+  --color-cluster-infrastructure: oklch(0.6 0.12 220);
+  --color-cluster-frontend: oklch(0.65 0.18 310);
+  --color-cluster-format: oklch(0.6 0.12 180);
+  --color-cluster-decision: oklch(0.65 0.15 90);
+}
+
+/* ──────────────────────────────────────────
+   2. 시맨틱 CSS 변수 (라이트/다크)
+   ────────────────────────────────────────── */
+:root {
+  --background: oklch(0.98 0 0);
+  --foreground: oklch(0.15 0 0);
+  --surface: oklch(0.95 0 0);
+  --muted: oklch(0.55 0 0);
+  --border: oklch(0.88 0 0);
+}
+
+.dark {
+  --background: oklch(0.13 0.01 260);
+  --foreground: oklch(0.93 0 0);
+  --surface: oklch(0.18 0.01 260);
+  --muted: oklch(0.55 0 0);
+  --border: oklch(0.28 0.01 260);
+}
+
+/* ──────────────────────────────────────────
+   3. 시맨틱 변수 → Tailwind 유틸리티 매핑
+   - @theme inline: CSS 변수를 Tailwind 클래스로 노출
+     → bg-background, text-foreground 등
+   ────────────────────────────────────────── */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+}
+
+/* ──────────────────────────────────────────
+   4. 글로벌 베이스 스타일
+   ────────────────────────────────────────── */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+*,
+*::before,
+*::after {
+  border-color: var(--border);
+}

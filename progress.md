@@ -2,7 +2,7 @@
 
 ## 현재 단계
 
-Phase 0 완료 → **Phase 1 진행 중** (1-1, 1-2, 1-3 완료)
+Phase 0~3 완료 → **Phase 4 대기 중**
 
 ## 완료된 작업
 
@@ -53,9 +53,9 @@ Phase 0 완료 → **Phase 1 진행 중** (1-1, 1-2, 1-3 완료)
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 3-1 | Tailwind 커스텀: 클러스터 색상 토큰 + `darkMode: 'class'` → `tailwind.config.ts` | S | [ ] |
-| 3-2 | 글로벌 스타일 + 한국어 폰트 + 다크 모드 CSS 변수 → `globals.css`, `layout.tsx` | S | [ ] |
-| 3-3 | 클러스터 색상 상수 + 다크 모드 토글 → `src/lib/clusters.ts` | S | [ ] |
+| 3-1 | Tailwind 커스텀: 클러스터 색상 토큰 + `darkMode: 'class'` → `tailwind.config.ts` | S | [x] |
+| 3-2 | 글로벌 스타일 + 한국어 폰트 + 다크 모드 CSS 변수 → `globals.css`, `layout.tsx` | S | [x] |
+| 3-3 | 클러스터 색상 상수 + 다크 모드 토글 → `src/lib/clusters.ts` | S | [x] |
 
 - **검증**: `bun run dev`에서 폰트/색상/다크 모드 확인
 
