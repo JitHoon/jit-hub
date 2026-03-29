@@ -75,6 +75,7 @@ Phase 0~3 완료 → **Phase 4 대기 중**
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
+| 5-0 | Playwright E2E 테스트 인프라 구축 | S | [x] |
 | 5-1 | 루트 레이아웃 (메타데이터, 폰트) → `src/app/layout.tsx` | S | [ ] |
 | 5-2 | 그래프 컴포넌트 (react-force-graph-2d, dynamic import + ssr: false) → `src/components/graph/` | L | [ ] |
 | 5-3 | 분할 뷰 레이아웃 (좌: 그래프, 우: 본문) → `src/components/layout/SplitView.tsx` | M | [ ] |

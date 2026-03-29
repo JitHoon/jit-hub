@@ -40,6 +40,11 @@ next-env.d.ts
 # IDE
 .idea
 
+# playwright
+e2e/.results/
+playwright-report/
+blob-report/
+
 # local
 progress.md
 settings.local.json

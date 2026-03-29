@@ -18,6 +18,7 @@ allowed-tools: Read, Grep, Glob
 | next-mdx-remote | 6.0.0 | ✅ 등록됨 | **이 Skill** → `references/next-mdx-remote.md` |
 | rehype-pretty-code | 0.14.x | ✅ 등록됨 | **이 Skill** → `references/rehype-pretty-code.md` |
 | remark-gfm | 4.0.1 | ✅ 등록됨 | **이 Skill** → `references/remark-gfm.md` |
+| Playwright | 1.x | ⏳ 예정 | playwright-testing |
 
 > 각 라이브러리의 도메인 맥락(라우팅, 그래프 시각화, 콘텐츠 파이프라인)은 해당 Skill이 담당한다.
 > 이 Skill은 **라이브러리 자체의 API/패턴/함정**만 다룬다.
