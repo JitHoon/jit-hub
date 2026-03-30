@@ -83,4 +83,6 @@ const getUser = React.cache(async (id: string) => {
 
 - 함수형 컴포넌트 only (class 컴포넌트 금지)
 - Props는 `interface`로 정의 (`type`은 유니온/인터섹션에만)
+- 커스텀 훅은 `src/hooks/`에 배치 (`use-` 접두사)
+- 컴포넌트는 프레젠테이션만 — 로직은 훅(`src/hooks/`) 또는 유틸(`src/lib/`)로 분리
 - 컴포넌트 파일명 = PascalCase

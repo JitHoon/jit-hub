@@ -49,6 +49,16 @@ allowed-tools: Read, Grep, Glob
 - **Body**: Noto Sans KR (`var(--font-noto-kr)`) — 한국어 본문
 - **Mono**: `ui-monospace, 'SF Mono', 'Fira Code', monospace` — 코드 블록만
 
+## 아이콘
+
+- 외부 아이콘 라이브러리 미사용 — 커스텀 SVG 컴포넌트로 관리
+- 위치: `src/components/icons/`
+- 파일명: `{Name}Icon.tsx` (PascalCase + Icon 접미사)
+- Props: `size` (number, 기본 20), `className` (string, 선택)
+- SVG 기본 속성: `stroke="currentColor"`, `fill="none"`, `viewBox="0 0 24 24"`
+- 색상은 `currentColor`를 통해 부모의 `color`를 상속
+- `index.ts`에서 named export로 re-export
+
 ## 그래프 인터랙션 패턴
 
 - **컬러 리빌**: 기본 모노크롬 → 호버 시 클러스터 킥 컬러 (transition 0.25s)
