@@ -24,7 +24,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 |---|------|------|------|
 | 3B-1 | `src/lib/tokens.ts` 생성 — KICK, Palette(LIGHT/DARK), FONT, GRAPH_GRAY 추출 | M | [x] |
 | 3B-2 | `src/lib/clusters.ts` 업데이트 — oklch→HEX, base 필드 추가 | S | [x] |
-| 3B-3 | `src/app/globals.css` 업데이트 — 팔레트 교체, 신규 CSS 변수, float keyframes | M | [ ] |
+| 3B-3 | `src/app/globals.css` 업데이트 — 팔레트 교체, 신규 CSS 변수, float keyframes | M | [x] |
 | 3B-4 | `src/app/layout.tsx` 업데이트 — Lexend 폰트 추가, CSS 변수 등록 | S | [ ] |
 
 - **검증**: `bun run dev` 정상 + `bun run build` 성공 + `/design` 프로토타입 정상
