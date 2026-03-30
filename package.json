@@ -4,8 +4,11 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "predev": "bun run generate:graph",
     "dev": "next dev --turbopack",
+    "prebuild": "bun run generate:graph",
     "build": "next build",
+    "generate:graph": "bun run src/lib/generate-graph-data.ts",
     "start": "next start",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
@@ -19,8 +22,12 @@
   "dependencies": {
     "gray-matter": "^4.0.3",
     "next": "^16.2.1",
+    "next-mdx-remote": "^6.0.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "rehype-pretty-code": "^0.14.3",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^4.0.2",
     "zod": "3"
   },
   "lint-staged": {
