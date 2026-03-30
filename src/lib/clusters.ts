@@ -20,21 +20,24 @@ export const CLUSTER_IDS = [
 
 export type ClusterId = (typeof CLUSTER_IDS)[number];
 
+export type KickBase = "red" | "blue" | "green" | "yellow";
+
 interface ClusterMeta {
   label: string;
   color: string;
+  base: KickBase;
 }
 
 export const CLUSTERS: Record<ClusterId, ClusterMeta> = {
-  geodesy: { label: "측지·좌표계", color: "oklch(0.65 0.18 145)" },
-  graphics: { label: "3D 그래픽스", color: "oklch(0.65 0.18 265)" },
-  implementation: { label: "구현 사례", color: "oklch(0.65 0.15 30)" },
-  problem: { label: "문제 해결", color: "oklch(0.65 0.18 0)" },
-  optimization: { label: "최적화", color: "oklch(0.65 0.18 60)" },
-  infrastructure: { label: "인프라·배포", color: "oklch(0.6 0.12 220)" },
-  frontend: { label: "프론트엔드", color: "oklch(0.65 0.18 310)" },
-  format: { label: "데이터 포맷", color: "oklch(0.6 0.12 180)" },
-  decision: { label: "의사결정", color: "oklch(0.65 0.15 90)" },
+  geodesy: { label: "측지·좌표계", color: "#00A651", base: "green" },
+  graphics: { label: "3D 그래픽스", color: "#0058A6", base: "blue" },
+  implementation: { label: "구현 사례", color: "#E60012", base: "red" },
+  problem: { label: "문제 해결", color: "#B80030", base: "red" },
+  optimization: { label: "최적화", color: "#FFC800", base: "yellow" },
+  infrastructure: { label: "인프라·배포", color: "#2B7CB6", base: "blue" },
+  frontend: { label: "프론트엔드", color: "#D45800", base: "red" },
+  format: { label: "데이터 포맷", color: "#007A4D", base: "green" },
+  decision: { label: "의사결정", color: "#E0A500", base: "yellow" },
 } as const satisfies Record<ClusterId, ClusterMeta>;
 
 export function getClusterColor(cluster: ClusterId): string {

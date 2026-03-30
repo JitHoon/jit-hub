@@ -54,6 +54,49 @@ const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
 - 그래프 리사이즈 시 width/height props 동적 업데이트 필요
 - 노드 데이터는 graph-data.json에서 가져옴 (빌드 타임 생성)
 
+## 색상 참조
+
+그래프 캔버스는 CSS가 아닌 JS HEX 값을 직접 사용한다. 아래 두 파일에서 가져온다:
+
+- `src/lib/clusters.ts` — 클러스터별 HEX 색상 (`CLUSTERS[id].color`) + base 킥 컬러 매핑
+- `src/lib/tokens.ts` — 킥 컬러(`KICK`), 팔레트(`LIGHT`/`DARK`), 그래프 전용 그레이(`GRAPH_GRAY`)
+
+### 클러스터 색상 (HEX)
+
+| 클러스터 | color | base |
+|----------|-------|------|
+| geodesy (측지·좌표계) | `#00A651` | green |
+| graphics (3D 그래픽스) | `#0058A6` | blue |
+| implementation (구현 사례) | `#E60012` | red |
+| problem (문제 해결) | `#B80030` | red |
+| optimization (최적화) | `#FFC800` | yellow |
+| infrastructure (인프라·배포) | `#2B7CB6` | blue |
+| frontend (프론트엔드) | `#D45800` | red |
+| format (데이터 포맷) | `#007A4D` | green |
+| decision (의사결정) | `#E0A500` | yellow |
+
+### 그래프 캔버스 그레이
+
+| 용도 | Light | Dark |
+|------|-------|------|
+| bg | `#F0F0F0` | `#0E0E0E` |
+| node | `#C0C0C0` | `#444444` |
+| nodeFaded | `#D4D4D4` | `#333333` |
+| edge | `#D0D0D0` | `#2A2A2A` |
+| leafEdge | `#C8C8C8` | `#333333` |
+| label | `#A0A0A0` | `#555555` |
+| labelActive | `#444444` | `#CCCCCC` |
+
+### 사용 패턴
+
+```tsx
+import { getClusterColor } from "@/lib/clusters";
+import { getGraphGray } from "@/lib/tokens";
+
+const color = getClusterColor("geodesy"); // "#00A651"
+const gray = getGraphGray(isDark);        // GraphGray 객체
+```
+
 ## 상세 레퍼런스
 
 필요 시 아래 파일을 읽어라:

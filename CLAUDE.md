@@ -49,8 +49,16 @@
 @.claude/skills/harness-engineering/SKILL.md 를 읽어라
 </important>
 
+<important if="UI 컴포넌트 구현, 색상/타이포/간격 적용, 테마 전환 작업 시">
+@.claude/skills/design-system/SKILL.md 를 읽어라
+</important>
+
 <important if="코드 작성, 컴포넌트 구현, 라이브러리 사용 시">
 @.claude/skills/library-practices/SKILL.md 를 읽어라
+</important>
+
+<important if="컴포넌트 작성, 훅 추출, 리팩토링, 관심사 분리 작업 시">
+@.claude/skills/clean-code/SKILL.md 를 읽어라
 </important>
 
 <important if="E2E 테스트 작성, Playwright 사용 시">
@@ -65,8 +73,9 @@
 
 - `contents/nodes/` — 지식 노드 마크다운 파일 (.md)
 - `src/app/` — Next.js App Router 페이지
-- `src/components/` — React 컴포넌트
-- `src/lib/` — 유틸리티, 파이프라인, 타입 정의
+- `src/components/` — React 컴포넌트 (프레젠테이션)
+- `src/hooks/` — 커스텀 훅 (React 상태/구독 로직)
+- `src/lib/` — 유틸리티, 파이프라인, 타입 정의 (순수 함수)
 - `src/lib/schema.ts` — Zod 스키마 (클러스터, difficulty enum 포함)
 - `src/lib/pipeline.ts` — 빌드 타임 콘텐츠 처리
 - `public/` — 정적 파일

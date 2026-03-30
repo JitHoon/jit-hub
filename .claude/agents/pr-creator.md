@@ -75,7 +75,7 @@ skills:
 
 #### Phase 완료 모드
 
-- **title**: `feat: Phase {N} 완료 — {Phase 제목}`
+- **title**: Phase 변경 내용을 요약한 짧은 제목 (conventional commit prefix 포함, "Phase N 완료" 같은 Phase 번호 표기 금지)
 - **base**: `main`
 - **label**: 아래 Phase-라벨 매핑표 참조
 
@@ -112,8 +112,9 @@ skills:
 - {검증 기준}: {통과/실패 결과}
 
 ## Checklist
-- [ ] 커밋 단위 코드 리뷰
-- [ ] merge
+{실제 변경 내용을 분석하여 리뷰어가 확인해야 할 항목을 동적으로 생성}
+{예시: 새 컴포넌트 추가 시 → "ThemeToggle 컴포넌트 동작 확인", 토큰 변경 시 → "다크/라이트 모드 색상 적용 확인"}
+{각 항목은 `- [ ]` 체크박스 형식}
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 ```
@@ -132,3 +133,4 @@ skills:
 - `bunx` 관련 에러 시 → `export PATH="$HOME/.bun/bin:$PATH"` 실행
 - 세분화 커밋에서 파일이 1-2개뿐이면 하나로 합쳐도 됨 (과도한 분리 금지)
 - 큰 커밋 하나로 모든 변경을 묶지 마라
+- `progress.md` 업데이트는 별도 커밋으로 분리하지 마라 — 관련 작업 커밋에 포함시켜라
