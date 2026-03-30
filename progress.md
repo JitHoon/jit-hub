@@ -25,7 +25,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 | 3B-1 | `src/lib/tokens.ts` 생성 — KICK, Palette(LIGHT/DARK), FONT, GRAPH_GRAY 추출 | M | [x] |
 | 3B-2 | `src/lib/clusters.ts` 업데이트 — oklch→HEX, base 필드 추가 | S | [x] |
 | 3B-3 | `src/app/globals.css` 업데이트 — 팔레트 교체, 신규 CSS 변수, float keyframes | M | [x] |
-| 3B-4 | `src/app/layout.tsx` 업데이트 — Lexend 폰트 추가, CSS 변수 등록 | S | [ ] |
+| 3B-4 | `src/app/layout.tsx` 업데이트 — Lexend 폰트 추가, CSS 변수 등록 | S | [x] |
 
 - **검증**: `bun run dev` 정상 + `bun run build` 성공 + `/design` 프로토타입 정상
 
@@ -33,7 +33,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 3B-5 | `.claude/skills/design-system/SKILL.md` 생성 — 디자인 철학, 토큰 규칙, 패턴 | M | [ ] |
+| 3B-5 | `.claude/skills/design-system/SKILL.md` 생성 — 디자인 철학, 토큰 규칙, 패턴 | M | [x] |
 | 3B-6 | `references/token-catalog.md` — 전체 토큰 값 + 사용처 | S | [ ] |
 | 3B-7 | `references/component-patterns.md` — 뱃지, 태그, 분할뷰 등 패턴 | S | [ ] |
 
