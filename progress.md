@@ -41,7 +41,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 3B-8 | `CLAUDE.md` — design-system 스킬 조건부 컨텍스트 추가 | S | [ ] |
+| 3B-8 | `CLAUDE.md` — design-system 스킬 조건부 컨텍스트 추가 | S | [x] |
 | 3B-9 | `graph-visualization/SKILL.md` — HEX 색상 참조 추가 | S | [ ] |
 
 ### Step 4: Playwright E2E 테스트
