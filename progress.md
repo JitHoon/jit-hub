@@ -35,7 +35,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 |---|------|------|------|
 | 3B-5 | `.claude/skills/design-system/SKILL.md` 생성 — 디자인 철학, 토큰 규칙, 패턴 | M | [x] |
 | 3B-6 | `references/token-catalog.md` — 전체 토큰 값 + 사용처 | S | [x] |
-| 3B-7 | `references/component-patterns.md` — 뱃지, 태그, 분할뷰 등 패턴 | S | [ ] |
+| 3B-7 | `references/component-patterns.md` — 뱃지, 태그, 분할뷰 등 패턴 | S | [x] |
 
 ### Step 3: 하네스 연동
 
