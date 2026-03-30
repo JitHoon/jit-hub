@@ -12,7 +12,7 @@
 - 함수형 컴포넌트 only
 - Props는 interface로 정의
 - 컴포넌트 파일명 = PascalCase
-- 훅 파일명 = use- 접두사
+- 훅 파일명 = camelCase (예: useTheme.ts)
 
 ## 관심사 분리
 
@@ -32,7 +32,7 @@
 - 한 파일에 한 컴포넌트
 - index.ts로 re-export
 - 아이콘 컴포넌트는 src/components/icons/에 배치, {Name}Icon.tsx 네이밍
-- 커스텀 훅은 src/hooks/에 배치, use- 접두사 (예: use-theme.ts)
+- 커스텀 훅은 src/hooks/에 배치, camelCase (예: useTheme.ts)
 - 유틸리티 함수는 src/lib/에 배치
 
 ## 커밋 메시지

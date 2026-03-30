@@ -69,7 +69,7 @@ type State<T> =
 
 | 계층 | 디렉토리 | 예시 |
 |------|----------|------|
-| 훅 | `src/hooks/use-*.ts` | `use-theme.ts` |
+| 훅 | `src/hooks/use*.ts` | `useTheme.ts` |
 | 유틸 | `src/lib/*.ts` | `theme.ts`, `tokens.ts`, `clusters.ts` |
 | 컴포넌트 | `src/components/**/*.tsx` | `ThemeToggle.tsx` |
 | 아이콘 | `src/components/icons/*Icon.tsx` | `SunIcon.tsx`, `MoonIcon.tsx` |
