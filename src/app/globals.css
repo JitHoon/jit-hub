@@ -10,12 +10,6 @@
   --font-sans: var(--font-noto-kr), "Noto Sans KR", sans-serif;
   --font-display: var(--font-lexend), "Lexend", sans-serif;
 
-  /* Kick colors — Nintendo Retro 원색 */
-  --color-kick-red: #e60012;
-  --color-kick-blue: #0058a6;
-  --color-kick-green: #00a651;
-  --color-kick-yellow: #ffc800;
-
   /* Cluster colors — 4색 × 명도/채도 변형 (HEX 확정) */
   --color-cluster-geodesy: #00a651;
   --color-cluster-graphics: #0058a6;
@@ -32,6 +26,12 @@
    2. 시맨틱 CSS 변수 (라이트/다크)
    ────────────────────────────────────────── */
 :root {
+  /* Kick colors — Nintendo Retro 원색 */
+  --color-kick-red: #e60012;
+  --color-kick-blue: #0058a6;
+  --color-kick-green: #00a651;
+  --color-kick-yellow: #ffc800;
+
   --background: #f7f7f7;
   --foreground: #1a1a1a;
   --surface: #eeeeee;
