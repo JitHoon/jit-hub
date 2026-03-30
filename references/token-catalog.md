@@ -13,17 +13,17 @@
 
 ## Cluster Colors — 9색
 
-| 클러스터    | HEX       | 베이스     | CSS 변수                         | Tailwind                    | JS (`clusters.ts`)              |
-| ----------- | --------- | ---------- | -------------------------------- | --------------------------- | ------------------------------- |
-| 측지·좌표계 | `#00A651` | green      | `--color-cluster-geodesy`        | `bg-cluster-geodesy`        | `CLUSTERS.geodesy.color`        |
-| 3D 그래픽스 | `#0058A6` | blue       | `--color-cluster-graphics`       | `bg-cluster-graphics`       | `CLUSTERS.graphics.color`       |
-| 구현 사례   | `#E60012` | red        | `--color-cluster-implementation` | `bg-cluster-implementation` | `CLUSTERS.implementation.color` |
-| 문제 해결   | `#B80030` | red        | `--color-cluster-problem`        | `bg-cluster-problem`        | `CLUSTERS.problem.color`        |
-| 최적화      | `#FFC800` | yellow     | `--color-cluster-optimization`   | `bg-cluster-optimization`   | `CLUSTERS.optimization.color`   |
-| 인프라·배포 | `#2B7CB6` | blue       | `--color-cluster-infrastructure` | `bg-cluster-infrastructure` | `CLUSTERS.infrastructure.color` |
-| 프론트엔드  | `#D45800` | red→yellow | `--color-cluster-frontend`       | `bg-cluster-frontend`       | `CLUSTERS.frontend.color`       |
-| 데이터 포맷 | `#007A4D` | green      | `--color-cluster-format`         | `bg-cluster-format`         | `CLUSTERS.format.color`         |
-| 의사결정    | `#E0A500` | yellow     | `--color-cluster-decision`       | `bg-cluster-decision`       | `CLUSTERS.decision.color`       |
+| 클러스터    | HEX       | 베이스 | CSS 변수                         | Tailwind                    | JS (`clusters.ts`)              |
+| ----------- | --------- | ------ | -------------------------------- | --------------------------- | ------------------------------- |
+| 측지·좌표계 | `#00A651` | green  | `--color-cluster-geodesy`        | `bg-cluster-geodesy`        | `CLUSTERS.geodesy.color`        |
+| 3D 그래픽스 | `#0058A6` | blue   | `--color-cluster-graphics`       | `bg-cluster-graphics`       | `CLUSTERS.graphics.color`       |
+| 구현 사례   | `#E60012` | red    | `--color-cluster-implementation` | `bg-cluster-implementation` | `CLUSTERS.implementation.color` |
+| 문제 해결   | `#B80030` | red    | `--color-cluster-problem`        | `bg-cluster-problem`        | `CLUSTERS.problem.color`        |
+| 최적화      | `#FFC800` | yellow | `--color-cluster-optimization`   | `bg-cluster-optimization`   | `CLUSTERS.optimization.color`   |
+| 인프라·배포 | `#2B7CB6` | blue   | `--color-cluster-infrastructure` | `bg-cluster-infrastructure` | `CLUSTERS.infrastructure.color` |
+| 프론트엔드  | `#D45800` | red    | `--color-cluster-frontend`       | `bg-cluster-frontend`       | `CLUSTERS.frontend.color`       |
+| 데이터 포맷 | `#007A4D` | green  | `--color-cluster-format`         | `bg-cluster-format`         | `CLUSTERS.format.color`         |
+| 의사결정    | `#E0A500` | yellow | `--color-cluster-decision`       | `bg-cluster-decision`       | `CLUSTERS.decision.color`       |
 
 ## Base Palette — Light / Dark
 
