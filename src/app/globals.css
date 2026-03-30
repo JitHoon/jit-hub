@@ -6,6 +6,10 @@
      → bg-cluster-geodesy, text-cluster-graphics 등
    ────────────────────────────────────────── */
 @theme {
+  /* Font families — Lexend(display) + Noto Sans KR(body) */
+  --font-sans: var(--font-noto-kr), "Noto Sans KR", sans-serif;
+  --font-display: var(--font-lexend), "Lexend", sans-serif;
+
   /* Kick colors — Nintendo Retro 원색 */
   --color-kick-red: #e60012;
   --color-kick-blue: #0058a6;

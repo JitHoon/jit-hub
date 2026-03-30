@@ -1,13 +1,21 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Noto_Sans_KR } from "next/font/google";
+import { Lexend, Noto_Sans_KR } from "next/font/google";
 import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
+
+const lexend = Lexend({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-lexend",
+});
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   display: "swap",
+  variable: "--font-noto-kr",
 });
 
 export const metadata: Metadata = {
@@ -30,8 +38,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" suppressHydrationWarning>
-      <body className={`${notoSansKR.className} bg-background text-foreground`}>
+    <html
+      lang="ko"
+      className={`${lexend.variable} ${notoSansKR.variable}`}
+      suppressHydrationWarning
+    >
+      <body className={`font-sans bg-background text-foreground`}>
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
