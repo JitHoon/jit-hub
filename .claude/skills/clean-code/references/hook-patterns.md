@@ -79,15 +79,15 @@ export function useFeature(): UseFeatureReturn {
 
 ## 이 프로젝트 실제 예시
 
-### `src/hooks/use-theme.ts`
+### `src/hooks/useTheme.ts`
 
 ```
 src/lib/theme.ts          ← 순수 유틸: getEffectiveTheme, toggleTheme, applyTheme
-src/hooks/use-theme.ts    ← React 어댑터: useSyncExternalStore + subscribe
+src/hooks/useTheme.ts     ← React 어댑터: useSyncExternalStore + subscribe
 src/components/ThemeToggle.tsx  ← 프레젠테이션: 버튼 + 아이콘 렌더링
 ```
 
 3계층이 각자 하나의 관심사만 담당:
 - `theme.ts`: "테마 값을 읽고 쓴다" (DOM/localStorage)
-- `use-theme.ts`: "React가 테마 변경을 감지한다" (구독/스냅샷)
+- `useTheme.ts`: "React가 테마 변경을 감지한다" (구독/스냅샷)
 - `ThemeToggle.tsx`: "사용자에게 토글 UI를 보여준다" (JSX)

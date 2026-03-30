@@ -7,10 +7,11 @@ allowed-tools: Read, Grep, Glob
 ## 테스트 구조
 
 ```
-e2e/
-├── *.spec.ts          ← 테스트 파일 (기능 단위)
-└── fixtures/
-    └── test-helpers.ts ← 공통 헬퍼
+test/
+└── e2e/
+    ├── *.spec.ts          ← 테스트 파일 (기능 단위)
+    └── fixtures/
+        └── test-helpers.ts ← 공통 헬퍼
 ```
 
 - 테스트 파일명: `{기능}.spec.ts` (kebab-case)

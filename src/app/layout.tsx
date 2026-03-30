@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Lexend, Noto_Sans_KR } from "next/font/google";
 import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
@@ -43,10 +42,10 @@ export default function RootLayout({
       className={`${lexend.variable} ${notoSansKR.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`font-sans bg-background text-foreground`}>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeScript}
-        </Script>
         <ThemeToggle />
         {children}
       </body>

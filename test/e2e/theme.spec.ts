@@ -1,4 +1,18 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
+
+async function getBodyBgHex(page: Page): Promise<string> {
+  return page.evaluate(() => {
+    const bg = getComputedStyle(document.body).backgroundColor;
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, 1, 1);
+    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    const hex = (n: number) => n.toString(16).padStart(2, "0");
+    return `#${hex(r)}${hex(g)}${hex(b)}`;
+  });
+}
 
 test.describe("테마 전환", () => {
   test.beforeEach(async ({ page }) => {
@@ -41,10 +55,7 @@ test.describe("테마 전환", () => {
       await expect(html).toHaveClass(/dark/);
     }
 
-    await expect(page.locator("body")).toHaveCSS(
-      "background-color",
-      "rgb(17, 17, 17)",
-    );
+    await expect.poll(() => getBodyBgHex(page)).toBe("#111111");
   });
 
   test("라이트 모드 배경색이 #F7F7F7이다", async ({ page }) => {
@@ -57,10 +68,7 @@ test.describe("테마 전환", () => {
       await expect(html).not.toHaveClass(/dark/);
     }
 
-    await expect(page.locator("body")).toHaveCSS(
-      "background-color",
-      "rgb(247, 247, 247)",
-    );
+    await expect.poll(() => getBodyBgHex(page)).toBe("#f7f7f7");
   });
 
   test("테마 선택이 localStorage에 저장된다", async ({ page }) => {
@@ -101,9 +109,6 @@ test.describe("테마 전환", () => {
 
     await expect(html).toHaveClass(/dark/);
 
-    await expect(page.locator("body")).toHaveCSS(
-      "background-color",
-      "rgb(17, 17, 17)",
-    );
+    await expect.poll(() => getBodyBgHex(page)).toBe("#111111");
   });
 });

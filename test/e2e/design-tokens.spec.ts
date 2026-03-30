@@ -1,10 +1,17 @@
 import { test, expect } from "@playwright/test";
 
-function expandHex(hex: string): string {
-  const m = /^#([0-9a-f])([0-9a-f])([0-9a-f])$/i.exec(hex);
-  if (m) return `#${m[1]}${m[1]}${m[2]}${m[2]}${m[3]}${m[3]}`.toLowerCase();
-  return hex.toLowerCase();
-}
+const resolveColorScript = `(varName) => {
+  const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  if (!val) return '';
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = val;
+  ctx.fillRect(0, 0, 1, 1);
+  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+  const hex = (n) => n.toString(16).padStart(2, '0');
+  return '#' + hex(r) + hex(g) + hex(b);
+}`;
 
 test.describe("디자인 토큰", () => {
   test.beforeEach(async ({ page }) => {
@@ -45,24 +52,20 @@ test.describe("디자인 토큰", () => {
       await expect(html).not.toHaveClass(/dark/);
     }
 
-    const vars = await page.evaluate(() => {
-      const s = getComputedStyle(document.documentElement);
-      return {
-        background: s.getPropertyValue("--background").trim(),
-        foreground: s.getPropertyValue("--foreground").trim(),
-        surface: s.getPropertyValue("--surface").trim(),
-        muted: s.getPropertyValue("--muted").trim(),
-        text: s.getPropertyValue("--text").trim(),
-        border: s.getPropertyValue("--border").trim(),
-      };
-    });
+    const resolve = (varName: string) =>
+      page.evaluate(
+        new Function("varName", `return (${resolveColorScript})(varName)`) as (
+          varName: string,
+        ) => string,
+        varName,
+      );
 
-    expect(expandHex(vars.background)).toBe("#f7f7f7");
-    expect(expandHex(vars.foreground)).toBe("#1a1a1a");
-    expect(expandHex(vars.surface)).toBe("#eeeeee");
-    expect(expandHex(vars.muted)).toBe("#888888");
-    expect(expandHex(vars.text)).toBe("#666666");
-    expect(expandHex(vars.border)).toBe("#d0d0d0");
+    expect(await resolve("--background")).toBe("#f7f7f7");
+    expect(await resolve("--foreground")).toBe("#1a1a1a");
+    expect(await resolve("--surface")).toBe("#eeeeee");
+    expect(await resolve("--muted")).toBe("#888888");
+    expect(await resolve("--text")).toBe("#666666");
+    expect(await resolve("--border")).toBe("#d0d0d0");
   });
 
   test("다크 모드 시맨틱 CSS 변수가 올바르다", async ({ page }) => {
@@ -75,41 +78,35 @@ test.describe("디자인 토큰", () => {
       await expect(html).toHaveClass(/dark/);
     }
 
-    const vars = await page.evaluate(() => {
-      const s = getComputedStyle(document.documentElement);
-      return {
-        background: s.getPropertyValue("--background").trim(),
-        foreground: s.getPropertyValue("--foreground").trim(),
-        surface: s.getPropertyValue("--surface").trim(),
-        muted: s.getPropertyValue("--muted").trim(),
-        text: s.getPropertyValue("--text").trim(),
-        border: s.getPropertyValue("--border").trim(),
-      };
-    });
+    const resolve = (varName: string) =>
+      page.evaluate(
+        new Function("varName", `return (${resolveColorScript})(varName)`) as (
+          varName: string,
+        ) => string,
+        varName,
+      );
 
-    expect(expandHex(vars.background)).toBe("#111111");
-    expect(expandHex(vars.foreground)).toBe("#eeeeee");
-    expect(expandHex(vars.surface)).toBe("#1a1a1a");
-    expect(expandHex(vars.muted)).toBe("#707070");
-    expect(expandHex(vars.text)).toBe("#999999");
-    expect(expandHex(vars.border)).toBe("#2e2e2e");
+    expect(await resolve("--background")).toBe("#111111");
+    expect(await resolve("--foreground")).toBe("#eeeeee");
+    expect(await resolve("--surface")).toBe("#1a1a1a");
+    expect(await resolve("--muted")).toBe("#707070");
+    expect(await resolve("--text")).toBe("#999999");
+    expect(await resolve("--border")).toBe("#2e2e2e");
   });
 
   test("킥 컬러 CSS 변수가 존재한다", async ({ page }) => {
-    const vars = await page.evaluate(() => {
-      const s = getComputedStyle(document.documentElement);
-      return {
-        red: s.getPropertyValue("--color-kick-red").trim(),
-        blue: s.getPropertyValue("--color-kick-blue").trim(),
-        green: s.getPropertyValue("--color-kick-green").trim(),
-        yellow: s.getPropertyValue("--color-kick-yellow").trim(),
-      };
-    });
+    const resolve = (varName: string) =>
+      page.evaluate(
+        new Function("varName", `return (${resolveColorScript})(varName)`) as (
+          varName: string,
+        ) => string,
+        varName,
+      );
 
-    expect(vars.red).not.toBe("");
-    expect(vars.blue).not.toBe("");
-    expect(vars.green).not.toBe("");
-    expect(vars.yellow).not.toBe("");
+    expect(await resolve("--color-kick-red")).not.toBe("");
+    expect(await resolve("--color-kick-blue")).not.toBe("");
+    expect(await resolve("--color-kick-green")).not.toBe("");
+    expect(await resolve("--color-kick-yellow")).not.toBe("");
   });
 
   test("클러스터 색상 CSS 변수가 9개 모두 존재한다", async ({ page }) => {
