@@ -41,8 +41,8 @@ next-env.d.ts
 .idea
 
 # playwright
-e2e/.results/
-playwright-report/
+test/e2e/.results/
+test/playwright-report/
 blob-report/
 
 # storybook

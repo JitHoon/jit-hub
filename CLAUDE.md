@@ -30,6 +30,7 @@
 - react-force-graph-2d는 반드시 `dynamic(() => import(...), { ssr: false })`
 - 커밋 메시지는 conventional commits (feat:, fix:, refactor: 등)
 - **요청 범위만 수행**: 사용자가 요청한 작업 항목만 완료하고 멈출 것. 완료 후 다음 항목으로 자의적으로 넘어가지 않는다.
+- **디렉토리 생성 제한**: 프로젝트 루트에 새 디렉토리 생성 금지 — 이 섹션의 디렉토리 구조에 명시된 경로만 사용. 레퍼런스/문서는 `.claude/docs/`에 배치.
 
 ## 조건부 컨텍스트
 
@@ -79,4 +80,4 @@
 - `src/lib/schema.ts` — Zod 스키마 (클러스터, difficulty enum 포함)
 - `src/lib/pipeline.ts` — 빌드 타임 콘텐츠 처리
 - `public/` — 정적 파일
-- `e2e/` — Playwright E2E 테스트
+- `test/e2e/` — Playwright E2E 테스트
