@@ -1,8 +1,20 @@
 # 프로젝트 진행 상황
 
+## 다음 작업
+
+| # | 작업 | Phase | 크기 |
+|---|------|-------|------|
+| 4-1 | Zod 스키마 정의 → `src/lib/schema.ts` | 4 콘텐츠 파이프라인 | M |
+| 4-2 | 파이프라인 핵심 함수 → `src/lib/pipeline.ts` | 4 콘텐츠 파이프라인 | M |
+| 4-3 | graph-data.json 생성 스크립트 | 4 콘텐츠 파이프라인 | M |
+| 4-4 | 빌드 스크립트 통합 (prebuild) | 4 콘텐츠 파이프라인 | S |
+| 4-5 | MDX 렌더링 설정 | 4 콘텐츠 파이프라인 | M |
+
+---
+
 ## 현재 단계
 
-Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
+Phase 4 진행 예정 → **콘텐츠 파이프라인**
 
 ## 완료된 Phase 요약
 
@@ -11,51 +23,11 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 - **Phase 2** (Git & GitHub): public 레포 + 브랜치 보호 + husky pre-commit
 - **Phase 3-A** (디자인 프로토타입): 디자인 방향 확정 + 프로토타입 구축 완료
 - **Phase 5-0** (E2E 인프라): Playwright 설정 완료
+- **Phase 3-B** (디자인 시스템): 토큰 모듈 + 스킬 생성 + 하네스 연동 + E2E 테스트 (3B-1 ~ 3B-11)
 
 ---
 
-## Phase 3-B: 디자인 시스템 프로덕션 전환 · 브랜치: `feat/design-prototype`
-
-프로토타입(`src/app/design/page.tsx`)의 인라인 토큰을 구조적으로 분리하여 재사용 가능한 프로덕션 시스템으로 전환한다.
-
-### Step 1: 디자인 토큰 모듈
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 3B-1 | `src/lib/tokens.ts` 생성 — KICK, Palette(LIGHT/DARK), FONT, GRAPH_GRAY 추출 | M | [x] |
-| 3B-2 | `src/lib/clusters.ts` 업데이트 — oklch→HEX, base 필드 추가 | S | [x] |
-| 3B-3 | `src/app/globals.css` 업데이트 — 팔레트 교체, 신규 CSS 변수, float keyframes | M | [x] |
-| 3B-4 | `src/app/layout.tsx` 업데이트 — Lexend 폰트 추가, CSS 변수 등록 | S | [x] |
-
-- **검증**: `bun run dev` 정상 + `bun run build` 성공 + `/design` 프로토타입 정상
-
-### Step 2: design-system 스킬 생성
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 3B-5 | `.claude/skills/design-system/SKILL.md` 생성 — 디자인 철학, 토큰 규칙, 패턴 | M | [x] |
-| 3B-6 | `references/token-catalog.md` — 전체 토큰 값 + 사용처 | S | [x] |
-| 3B-7 | `references/component-patterns.md` — 뱃지, 태그, 분할뷰 등 패턴 | S | [x] |
-
-### Step 3: 하네스 연동
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 3B-8 | `CLAUDE.md` — design-system 스킬 조건부 컨텍스트 추가 | S | [x] |
-| 3B-9 | `graph-visualization/SKILL.md` — HEX 색상 참조 추가 | S | [x] |
-
-### Step 4: Playwright E2E 테스트
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 3B-10 | `e2e/theme.spec.ts` — 테마 전환, 배경색, localStorage 유지 | M | [x] |
-| 3B-11 | `e2e/design-tokens.spec.ts` — 폰트 적용, CSS 변수 값 검증 | M | [x] |
-
-- **검증**: `bun run test:e2e` 전체 통과
-
----
-
-## 이후 Phase (변경 없음)
+## 이후 Phase
 
 ### Phase 4: 콘텐츠 파이프라인 · 브랜치: `feat/content-pipeline`
 
@@ -107,5 +79,5 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 ## 메모
 
 - 복잡도: `S` 소규모, `M` 중규모, `L` 대규모
-- 프로토타입 페이지(`/design`)는 레퍼런스로 유지
+- 프로토타입 페이지(`/design`)는 Phase 3-B 완료 후 삭제됨 (토큰은 globals.css/Tailwind에 코드화)
 - 디자인 시스템 상세 스펙: `.claude/projects/.../memory/design_system_spec.md`
