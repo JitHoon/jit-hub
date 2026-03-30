@@ -45,6 +45,10 @@ e2e/.results/
 playwright-report/
 blob-report/
 
+# storybook
+storybook-static/
+*storybook.log
+
 # local
 progress.md
 settings.local.json
