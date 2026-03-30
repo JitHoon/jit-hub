@@ -49,6 +49,10 @@
 @.claude/skills/harness-engineering/SKILL.md 를 읽어라
 </important>
 
+<important if="UI 컴포넌트 구현, 색상/타이포/간격 적용, 테마 전환 작업 시">
+@.claude/skills/design-system/SKILL.md 를 읽어라
+</important>
+
 <important if="코드 작성, 컴포넌트 구현, 라이브러리 사용 시">
 @.claude/skills/library-practices/SKILL.md 를 읽어라
 </important>
