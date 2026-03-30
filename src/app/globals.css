@@ -217,7 +217,43 @@ body {
 }
 
 /* ──────────────────────────────────────────
-   6. 얇은 스크롤바
+   6. rehype-pretty-code 스타일
+   ────────────────────────────────────────── */
+[data-rehype-pretty-code-figure] pre {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+[data-rehype-pretty-code-figure] code {
+  font-family: ui-monospace, "SF Mono", "Fira Code", monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  background: none;
+  padding: 0;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  padding: 0 1rem;
+}
+
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  background-color: var(--surface-alt);
+}
+
+html:not(.dark) [data-rehype-pretty-code-figure] code [data-theme="dark"] {
+  display: none;
+}
+
+html.dark [data-rehype-pretty-code-figure] code [data-theme="light"] {
+  display: none;
+}
+
+/* ──────────────────────────────────────────
+   7. 얇은 스크롤바
    ────────────────────────────────────────── */
 .scrollbar-thin {
   scrollbar-width: thin;
@@ -242,7 +278,7 @@ body {
 }
 
 /* ──────────────────────────────────────────
-   7. Float keyframes (노드 플로팅 애니메이션)
+   8. Float keyframes (노드 플로팅 애니메이션)
    ────────────────────────────────────────── */
 @keyframes float-a {
   0%,
