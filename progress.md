@@ -49,7 +49,7 @@ Phase 3 진행 중 → **Phase 3-B (디자인 시스템 프로덕션 전환)**
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
 | 3B-10 | `e2e/theme.spec.ts` — 테마 전환, 배경색, localStorage 유지 | M | [x] |
-| 3B-11 | `e2e/design-tokens.spec.ts` — 폰트 적용, CSS 변수 값 검증 | M | [ ] |
+| 3B-11 | `e2e/design-tokens.spec.ts` — 폰트 적용, CSS 변수 값 검증 | M | [x] |
 
 - **검증**: `bun run test:e2e` 전체 통과
 
