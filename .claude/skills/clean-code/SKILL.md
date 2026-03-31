@@ -197,6 +197,60 @@ type State<T> =
 - 컴포넌트 파일 안에 `subscribe`, `getSnapshot` 같은 함수 선언은 관심사 혼재의 신호
 - 피처 간 코드 공유가 필요하면 해당 코드를 `src/` 최상위로 승격 — 크로스 임포트 하지 않는다
 
+## 컴포넌트 복원력 (Resilience)
+
+### 언제 FeatureBoundary를 써야 하는가
+
+| 상황 | 적용 |
+|------|------|
+| `async` Server Component (`await` 포함) | 필수 |
+| `dynamic(() => import(...), { ssr: false })` | 필수 |
+| 같은 페이지의 두 기능이 서로 독립 동작해야 할 때 | 필수 |
+| Client Component에서 외부 API 호출 | 권장 |
+| 단순 동기 렌더링 | 불필요 |
+
+### 재사용 컴포넌트
+
+```
+src/components/error/
+├── ErrorBoundary.tsx    ← 클래스 기반 에러 경계 (유일한 클래스 컴포넌트 예외)
+├── ErrorCard.tsx        ← 에러 표시 UI (variant: "panel" | "fatal")
+├── Skeleton.tsx         ← 로딩 스켈레톤 (variant: "text" | "block" | "circle")
+└── FeatureBoundary.tsx  ← ErrorBoundary + Suspense 조합 래퍼 ← 주로 이것만 사용
+```
+
+### 사용 패턴
+
+```tsx
+// 기본 사용 (어떤 기능에든 적용 가능)
+<FeatureBoundary
+  skeleton={<Skeleton variant="block" className="h-full" />}
+  errorTitle="그래프를 불러올 수 없습니다"
+>
+  <AsyncOrDynamicComponent />
+</FeatureBoundary>
+
+// 여러 기능 독립 격리: 하나 에러 시 나머지 정상 동작
+<FeatureBoundary skeleton={<Skeleton variant="block" />} errorTitle="A 오류">
+  <FeatureA />
+</FeatureBoundary>
+<FeatureBoundary skeleton={<Skeleton variant="text" lines={5} />} errorTitle="B 오류">
+  <FeatureB />
+</FeatureBoundary>
+```
+
+### 핵심 원칙
+
+- **중첩 순서 고정**: `ErrorBoundary > Suspense > Component` — `FeatureBoundary`가 이 순서를 보장함
+- **이벤트 핸들러 에러** → ErrorBoundary 미포착 → try-catch 직접 처리
+- `FeatureBoundary`는 `"use client"` — async RSC는 children으로 전달하면 동작함
+  ```tsx
+  // Server Component에서: children으로 async RSC 전달
+  <FeatureBoundary skeleton={<Skeleton variant="text" />}>
+    <AsyncServerComponent />   {/* Server에서 children으로 전달됨 */}
+  </FeatureBoundary>
+  ```
+
 ## 소스 출처
 
 - Bulletproof React (alan2207) — 피처 코로케이션, 의존 방향, kebab-case 강제

@@ -77,6 +77,10 @@
 /plan-product 커맨드를 사용하라. 산출물은 `.claude/docs/planning/[feature-slug]/`에 저장된다.
 </important>
 
+<important if="애니메이션, 인터랙션, 3D 파라미터, 레이아웃 비율 등 시각적 디자인을 구현할 때">
+@.claude/skills/visual-spec/SKILL.md 를 읽어라
+</important>
+
 ## 디렉토리 구조
 
 - `contents/nodes/` — 지식 노드 마크다운 파일 (.md)
