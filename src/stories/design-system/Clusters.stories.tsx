@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CLUSTERS, CLUSTER_IDS } from "@/lib/clusters";
+import { CLUSTERS, CLUSTER_IDS } from "@/constants/cluster";
 
 const meta = {
   title: "Design System/Clusters",

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CLUSTER_IDS } from "./clusters";
+import { CLUSTER_IDS } from "@/constants/cluster";
 
 const clusterEnum = z.enum(CLUSTER_IDS);
 
@@ -27,8 +27,3 @@ export const nodeFrontmatterSchema = z.object({
   childConcepts: z.array(z.string()).default([]),
   tags: z.array(z.string()).min(1),
 });
-
-export type NodeFrontmatter = z.infer<typeof nodeFrontmatterSchema>;
-export type Cluster = z.infer<typeof clusterEnum>;
-export type Difficulty = z.infer<typeof difficultyEnum>;
-export type RelatedConcept = z.infer<typeof relatedConceptSchema>;

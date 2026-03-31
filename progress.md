@@ -14,7 +14,7 @@
 
 ## 현재 단계
 
-Phase 4 완료 → **콘텐츠 파이프라인** (4-1 ~ 4-5 전체 완료)
+Phase 5 진행 중 → **핵심 UI 컴포넌트** (5-1 ~ 5-5)
 
 ## 완료된 Phase 요약
 
@@ -24,20 +24,11 @@ Phase 4 완료 → **콘텐츠 파이프라인** (4-1 ~ 4-5 전체 완료)
 - **Phase 3-A** (디자인 프로토타입): 디자인 방향 확정 + 프로토타입 구축 완료
 - **Phase 5-0** (E2E 인프라): Playwright 설정 완료
 - **Phase 3-B** (디자인 시스템): 토큰 모듈 + 스킬 생성 + 하네스 연동 + E2E 테스트 (3B-1 ~ 3B-11)
+- **Phase 4** (콘텐츠 파이프라인): Zod 스키마 + pipeline.ts + graph-data.json 생성 스크립트 + prebuild 통합 + MDX 렌더링 설정 (4-1 ~ 4-5)
 
 ---
 
 ## 이후 Phase
-
-### Phase 4: 콘텐츠 파이프라인 · 브랜치: `feat/content-pipeline`
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 4-1 | Zod 스키마 정의 → `src/lib/schema.ts` | M | [x] |
-| 4-2 | 파이프라인 핵심 함수 → `src/lib/pipeline.ts` | M | [x] |
-| 4-3 | graph-data.json 생성 스크립트 | M | [x] |
-| 4-4 | 빌드 스크립트 통합 (prebuild) | S | [x] |
-| 4-5 | MDX 렌더링 설정 | M | [x] |
 
 ### Phase 5: 핵심 UI 컴포넌트 · 브랜치: `feat/graph-ui`
 

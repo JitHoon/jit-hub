@@ -16,8 +16,8 @@ allowed-tools: Read, Grep, Glob
 
 | 파일 | 역할 |
 |------|------|
-| `src/lib/tokens.ts` | KICK, Palette(LIGHT/DARK), FONT, GRAPH_GRAY — JS에서 직접 참조 |
-| `src/lib/clusters.ts` | 9개 클러스터 HEX 색상 + base(킥 계열) — 그래프 캔버스용 |
+| `src/lib/common/tokens.ts` | KICK, Palette(LIGHT/DARK), FONT, GRAPH_GRAY — JS에서 직접 참조 |
+| `src/lib/common/cluster.ts` | 9개 클러스터 HEX 색상 + base(킥 계열) — 그래프 캔버스용 |
 | `src/app/globals.css` | CSS 변수 — Tailwind/컴포넌트에서 참조 |
 
 ## 킥 컬러 4색
