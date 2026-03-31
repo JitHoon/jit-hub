@@ -73,6 +73,10 @@
 @.claude/docs/project-blueprint-v2.md 를 읽어라 (v1→v2 변경 이력, 결정 근거 포함)
 </important>
 
+<important if="새 기능 아이디어를 기획하거나 PRD/요구사항 문서가 필요할 때">
+/plan-product 커맨드를 사용하라. 산출물은 `.claude/docs/planning/[feature-slug]/`에 저장된다.
+</important>
+
 ## 디렉토리 구조
 
 - `contents/nodes/` — 지식 노드 마크다운 파일 (.md)
