@@ -21,7 +21,7 @@ content/nodes/*.md (프론트매터 + MDX 본문)
   gray-matter: 프론트매터/본문 분리
         │
         ▼
-  Zod 스키마: 프론트매터 검증 (src/lib/schema.ts)
+  Zod 스키마: 프론트매터 검증 (src/lib/content/schema.ts)
         │
         ├──▶ 프론트매터 → graph-data.json 자동 생성
         │      (nodes[], edges[], clusters[])
@@ -53,9 +53,11 @@ tags: ["tag1", "tag2"]
 
 ## Zod 스키마 위치
 
-`src/lib/schema.ts`에서 관리. 클러스터 목록:
-geodesy, coordinate-systems, spatial-data, gis-platforms,
-graphics, web-gl, frontend, devops, harness-engineering
+`src/lib/content/schema.ts`에서 관리. 클러스터 정의는 `src/lib/common/cluster.ts`.
+
+클러스터 목록:
+geodesy, graphics, implementation, problem, optimization,
+infrastructure, frontend, format, decision
 
 difficulty: beginner | intermediate | advanced | expert
 

@@ -58,8 +58,8 @@ const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
 
 그래프 캔버스는 CSS가 아닌 JS HEX 값을 직접 사용한다. 아래 두 파일에서 가져온다:
 
-- `src/lib/clusters.ts` — 클러스터별 HEX 색상 (`CLUSTERS[id].color`) + base 킥 컬러 매핑
-- `src/lib/tokens.ts` — 킥 컬러(`KICK`), 팔레트(`LIGHT`/`DARK`), 그래프 전용 그레이(`GRAPH_GRAY`)
+- `src/lib/common/cluster.ts` — 클러스터별 HEX 색상 (`CLUSTERS[id].color`) + base 킥 컬러 매핑
+- `src/lib/common/tokens.ts` — 킥 컬러(`KICK`), 팔레트(`LIGHT`/`DARK`), 그래프 전용 그레이(`GRAPH_GRAY`)
 
 ### 클러스터 색상 (HEX)
 
@@ -90,8 +90,8 @@ const ForceGraph = dynamic(() => import("react-force-graph-2d"), {
 ### 사용 패턴
 
 ```tsx
-import { getClusterColor } from "@/lib/clusters";
-import { getGraphGray } from "@/lib/tokens";
+import { getClusterColor } from "@/lib/common";
+import { getGraphGray } from "@/lib/common";
 
 const color = getClusterColor("geodesy"); // "#00A651"
 const gray = getGraphGray(isDark);        // GraphGray 객체

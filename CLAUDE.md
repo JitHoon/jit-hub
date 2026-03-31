@@ -13,6 +13,7 @@
 - `bun run dev` — 개발 서버
 - `bun run build` — 프로덕션 빌드 (graph-data.json 자동 생성 포함)
 - `bun run lint` — ESLint + TypeScript 검사
+- `bun run test` — Vitest 유닛 테스트 실행
 - `bun run test:e2e` — Playwright E2E 테스트 실행
 
 ## 아키텍처 핵심
@@ -29,6 +30,8 @@
 - 존재하지 않는 slug 참조 → 빌드 에러
 - react-force-graph-2d는 반드시 `dynamic(() => import(...), { ssr: false })`
 - 커밋 메시지는 conventional commits (feat:, fix:, refactor: 등)
+- **유닛 테스트** = 소스 파일 옆 `*.test.ts` co-location (예: `cluster.ts` → `cluster.test.ts`)
+- **E2E 테스트** = `test/e2e/*.spec.ts` (`.spec.ts` 확장자로 구분)
 - **요청 범위만 수행**: 사용자가 요청한 작업 항목만 완료하고 멈출 것. 완료 후 다음 항목으로 자의적으로 넘어가지 않는다.
 - **디렉토리 생성 제한**: 프로젝트 루트에 새 디렉토리 생성 금지 — 이 섹션의 디렉토리 구조에 명시된 경로만 사용. 레퍼런스/문서는 `.claude/docs/`에 배치.
 
@@ -74,10 +77,14 @@
 
 - `contents/nodes/` — 지식 노드 마크다운 파일 (.md)
 - `src/app/` — Next.js App Router 페이지
-- `src/components/` — React 컴포넌트 (프레젠테이션)
-- `src/hooks/` — 커스텀 훅 (React 상태/구독 로직)
-- `src/lib/` — 유틸리티, 파이프라인, 타입 정의 (순수 함수)
-- `src/lib/schema.ts` — Zod 스키마 (클러스터, difficulty enum 포함)
-- `src/lib/pipeline.ts` — 빌드 타임 콘텐츠 처리
+- `src/components/` — 공유 UI 컴포넌트 (ThemeToggle, icons)
+- `src/constants/` — 도메인 상수/설정값 (cluster, tokens)
+- `src/features/` — 피처별 코로케이션
+  - `src/features/content/` — 콘텐츠 파이프라인 (types, utils, components)
+  - `src/features/graph/` — 그래프 시각화 (types, utils)
+  - `src/features/theme/` — 테마 시스템 (hooks, utils)
+- `src/lib/` — 빌드 스크립트, 외부 라이브러리 래퍼
+- `src/types/` — 공유 타입 (여러 피처에서 참조)
 - `public/` — 정적 파일
-- `test/e2e/` — Playwright E2E 테스트
+- `test/e2e/` — Playwright E2E 테스트 (앱 전체 흐름, `.spec.ts`)
+- `src/**/*.test.ts` — Vitest 유닛 테스트 (소스 파일 옆 co-location, `.test.ts`)
