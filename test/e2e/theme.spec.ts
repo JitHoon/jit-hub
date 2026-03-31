@@ -8,9 +8,9 @@ async function getBodyBgHex(page: Page): Promise<string> {
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+    const data = ctx.getImageData(0, 0, 1, 1).data;
     const hex = (n: number) => n.toString(16).padStart(2, "0");
-    return `#${hex(r)}${hex(g)}${hex(b)}`;
+    return `#${hex(data[0] ?? 0)}${hex(data[1] ?? 0)}${hex(data[2] ?? 0)}`;
   });
 }
 

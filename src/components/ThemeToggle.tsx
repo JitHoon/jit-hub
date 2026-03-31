@@ -1,7 +1,8 @@
 "use client";
 
-import { useTheme } from "@/hooks/useTheme";
-import { SunIcon, MoonIcon } from "@/components/icons";
+import { useTheme } from "@/features/theme/hooks/useTheme";
+import SunIcon from "@/components/icons/SunIcon";
+import MoonIcon from "@/components/icons/MoonIcon";
 
 export default function ThemeToggle() {
   const { theme, toggle } = useTheme();

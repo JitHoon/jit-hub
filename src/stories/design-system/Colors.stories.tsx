@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { KICK, LIGHT, DARK, type Palette } from "@/lib/tokens";
+import { KICK, LIGHT, DARK, type Palette } from "@/constants/tokens";
 
 const meta = {
   title: "Design System/Colors",
