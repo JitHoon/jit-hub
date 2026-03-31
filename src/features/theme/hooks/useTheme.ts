@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
-import { type Theme, getEffectiveTheme, toggleTheme } from "@/lib/theme";
+import { type Theme, getEffectiveTheme, toggleTheme } from "../utils/store";
 
 function subscribe(callback: () => void): () => void {
   const mq = window.matchMedia("(prefers-color-scheme: dark)");
