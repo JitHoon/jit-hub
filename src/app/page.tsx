@@ -24,16 +24,22 @@ export default async function Home({
 
   const selectedNode = nodeSlug ? getNodeBySlug(nodeSlug) : undefined;
 
+  const hasNode = !!selectedNode;
+
   return (
-    <main className="h-screen w-screen">
-      <GraphCanvas3D graphData={graphData} />
-      {selectedNode && (
-        <ContentPanelWrapper
-          title={selectedNode.frontmatter.title}
-          cluster={selectedNode.frontmatter.cluster}
-          difficulty={selectedNode.frontmatter.difficulty}
-          source={selectedNode.content}
-        />
+    <main className="flex h-screen w-screen overflow-hidden">
+      <div className={hasNode ? "w-[38%]" : "w-full"}>
+        <GraphCanvas3D graphData={graphData} />
+      </div>
+      {hasNode && (
+        <div className="w-[62%] overflow-y-auto">
+          <ContentPanelWrapper
+            title={selectedNode.frontmatter.title}
+            cluster={selectedNode.frontmatter.cluster}
+            difficulty={selectedNode.frontmatter.difficulty}
+            source={selectedNode.content}
+          />
+        </div>
       )}
     </main>
   );
