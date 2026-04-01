@@ -17,8 +17,8 @@ function Swatch({ name, color }: SwatchProps) {
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="h-16 w-16 rounded-lg border border-border"
-        style={{ backgroundColor: color }}
+        className="h-16 w-16 rounded-lg border border-border bg-[var(--swatch-color)]"
+        style={{ "--swatch-color": color } as React.CSSProperties}
       />
       <span className="font-mono text-xs text-muted">{name}</span>
       <span className="font-mono text-[10px] text-muted">{color}</span>

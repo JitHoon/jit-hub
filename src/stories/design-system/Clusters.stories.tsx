@@ -19,8 +19,8 @@ export const AllClusters: StoryObj = {
             className="flex items-center gap-3 rounded-lg border border-border bg-surface p-3"
           >
             <div
-              className="h-8 w-8 shrink-0 rounded-full"
-              style={{ backgroundColor: color }}
+              className="h-8 w-8 shrink-0 rounded-full bg-[var(--cluster-color)]"
+              style={{ "--cluster-color": color } as React.CSSProperties}
             />
             <div className="min-w-0">
               <div className="truncate font-mono text-xs font-medium text-foreground">

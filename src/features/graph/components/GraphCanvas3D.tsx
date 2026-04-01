@@ -84,7 +84,7 @@ export function GraphCanvas3D({
   );
 
   return (
-    <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+    <div ref={containerRef} className="h-full w-full">
       <ForceGraph3D
         ref={graphRef}
         graphData={fg3dData}

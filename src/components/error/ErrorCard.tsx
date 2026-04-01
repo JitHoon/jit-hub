@@ -35,8 +35,7 @@ export default function ErrorCard({
             <button
               type="button"
               onClick={onRetry}
-              className="rounded px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "var(--color-kick-blue)" }}
+              className="rounded bg-[var(--color-kick-blue)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
               다시 시도
             </button>
@@ -63,8 +62,7 @@ export default function ErrorCard({
           <button
             type="button"
             onClick={onRetry}
-            className="mt-3 rounded px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
-            style={{ backgroundColor: "var(--color-kick-blue)" }}
+            className="mt-3 rounded bg-[var(--color-kick-blue)] px-3 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
           >
             다시 시도
           </button>
