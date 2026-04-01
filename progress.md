@@ -27,24 +27,6 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 ## 이후 Phase
 
-### Phase 5: 3D 그래프 기반 + GraphCanvas3D · 브랜치: `feat/home-page-redesign`
-
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 5-1 | 설치: three, @types/three, react-force-graph-3d 패키지 추가 | XS | [x] |
-| 5-2 | 정의: GraphMode, GraphLayoutState(mode만), CameraState 타입 + NodeObject<GraphNode>/LinkObject<GraphNode,GraphEdge> type alias (`src/features/graph/types/layout.ts`)<br>완료 기준: `layout.ts`에 `GraphMode`, `GraphLayoutState`, `CameraState`, `ForceGraph3DNode`(=`NodeObject<GraphNode>`), `ForceGraph3DLink`(=`LinkObject<GraphNode, GraphEdge>`) 5개 타입이 export되고 tsc 통과 | XS | [x] |
-| 5-3-1 | 구현: useGraph3DRenderer 훅 -- `nodeThreeObject` 콜백 반환 (허브/리프 SphereGeometry + MeshStandardMaterial, 클러스터 색상 기본 상태, 테마 분기) (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: `nodeThreeObject` 콜백이 `GraphNode`를 받아 허브/리프 분기된 Three.js Mesh를 반환하고, tsc 통과 | S | [x] |
-| 5-3-2 | 구현: useGraph3DRenderer에 `linkThreeObject`/`linkColor` 콜백 + 노드 라벨(SpriteText) 생성 로직 추가 (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: 엣지가 허브간/리프간 opacity 분기되고, 노드 라벨이 SpriteText로 표시되며 tsc 통과 | XS | [x] |
-| 5-3-3 | 구현: useGraph3DRenderer에 호버/선택 상태 시각 변화 콜백 추가 (`onNodeHover`에서 scale/emissive/color 전환) (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: `onNodeHover` 콜백이 VISUAL_SPEC D섹션의 default/hover/active 상태 전환을 처리하고 tsc 통과 | S | [x] |
-| 5-4-1 | 수정: CameraState 타입에 lookAt, autoRotate 필드 추가 (`src/features/graph/types/layout.ts`) | XS | [x] |
-| 5-4-2 | 구현: useCameraControl 훅 -- 초기 위치(0,150,300) 설정 + Y축 자동 회전(controls().autoRotate) on/off 제어 (`src/features/graph/hooks/useCameraControl.ts`) | S | [x] |
-| 5-4-3 | 추가: useCameraControl에 노드 포커스 이동(cameraPosition API, 800ms) + 인터랙션 종료 후 3s 딜레이 자동 회전 재개 로직 | S | [x] |
-| 5-5 | 구현: useNodeSelection 훅 -- 클릭된 노드 ID 상태 관리 + `useSearchParams`로 `?node=slug` 양방향 동기화 + 해제(null) 처리 (`src/features/graph/hooks/useNodeSelection.ts`) <!-- 완료 기준: selectNode(slug)로 URL이 ?node=slug로 변경되고, clearSelection()으로 ?node 파라미터가 제거되며, URL에 ?node=xxx가 있는 상태에서 마운트 시 해당 노드가 selectedNodeId로 복원되고 tsc 통과 --> | S | [x] |
-| 5-6 | 구현: useGraphLayout 훅 -- GraphMode 상태(fullscreen/split) 관리 + containerRef 기반 ResizeObserver로 width/height 계산 + 모드 전환 시 ForceGraph3D dimensions 반환 (`src/features/graph/hooks/useGraphLayout.ts`)<br>반환값: `{ mode, setMode, graphWidth, graphHeight, containerRef }` — CSS 전환 애니메이션(Phase 7-4/7-5)은 이 훅 범위 밖<br>완료 기준: mode 변경 시 graphWidth가 컨테이너 100% 또는 38% 에 연동되고 tsc 통과 | S | [x] |
-| 5-7-1 | 구현: useScene3D 훅 -- Three.js 씬 초기 설정(AmbientLight intensity 0.6, DirectionalLight intensity 0.8, FogExp2 density 0.002, scene.background) + 테마 연동 (`src/features/graph/hooks/useScene3D.ts`)<br>완료 기준: useScene3D가 ForceGraph3D ref를 받아 onEngineReady 콜백에서 조명/포그/배경을 설정하고, 테마 변경 시 배경/포그 색상이 업데이트되며 tsc 통과 | S | [x] |
-| 5-7-2 | 구현: GraphCanvas3D 컴포넌트 -- react-force-graph-3d dynamic import 래퍼 + 훅 통합(useGraph3DRenderer, useCameraControl, useNodeSelection, useGraphLayout, useScene3D) + 물리 파라미터(charge:-120, linkDistance:80, warmupTicks:100, numDimensions:3, cooldownTicks:0) + onNodeClick/onNodeHover 바인딩 (`src/features/graph/components/GraphCanvas3D.tsx`)<br>완료 기준: GraphCanvas3D가 graphData prop을 받아 3D 그래프를 렌더링하고, 노드 클릭 시 useNodeSelection.selectNode가 호출되며, 물리 파라미터가 적용되고 tsc 통과 | S | [x] |
-| 5-8 | 구현: CameraHint 컴포넌트 -- position fixed bottom-8 center-x z-10, aria-hidden="true", 텍스트 "드래그하여 회전 / 스크롤하여 줌", opacity 0.6 상태에서 5초 후 500ms easeIn(cubic-bezier(0.4,0,1,1)) 페이드아웃, `dismissed` prop(boolean)이 true이면 즉시 페이드아웃 실행 (`src/features/graph/components/CameraHint.tsx`)<br>완료 기준: CameraHint가 마운트 후 opacity 0.6으로 표시되고, 5초 후 또는 dismissed=true 시 500ms 페이드아웃 후 display:none이 되며 tsc 통과 | XS | [x] |
-
 ### Phase 6: 콘텐츠 패널 + 분할 뷰 · 브랜치: `feat/home-page-redesign`
 
 | # | 작업 | 크기 | 상태 |
