@@ -36,7 +36,7 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 | 6-3-2 | 구현: DifficultyLabel 컴포넌트 -- Difficulty 타입을 받아 한국어 텍스트 레이블 표시 (`src/features/content/components/DifficultyLabel.tsx`) | XS | - | [x] |
 | 6-3-3 | 구현: PanelHeader 컴포넌트 -- ClusterBadge + DifficultyLabel + CloseButton 조립, header 태그 안에 배치 (`src/features/content/components/PanelHeader.tsx`) | XS | 6-1, 6-3-1, 6-3-2 | [x] |
 | 6-4 | 구현: ContentPanel 컴포넌트 -- PanelHeader + MDX 본문 렌더링, bg-surface-elevated + shadow-lg 좌측 구분 (`src/features/content/components/ContentPanel.tsx`) | S | 6-3-3 | [x] |
-| 6-5 | 추가: content/components index.ts re-export 정리 (`src/features/content/components/index.ts`) | XS | 6-4 | [ ] |
+| 6-5 | 추가: content/components index.ts re-export 정리 (`src/features/content/components/index.ts`) | XS | 6-4 | [x] |
 
 ### Phase 7: 홈 페이지 조립 + 전환 애니메이션 · 브랜치: `feat/home-page-redesign`
 
