@@ -4,7 +4,6 @@
 
 | # | 작업 | Phase | 크기 |
 |---|------|-------|------|
-| 6-1 | 구현: CloseButton 컴포넌트 | Phase 6 | XS |
 
 ---
 
@@ -31,7 +30,7 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 6-1 | 구현: CloseButton 컴포넌트 -- hover시 bg-surface, focus-visible ring-2 ring-accent (`src/features/content/components/CloseButton.tsx`) | XS | - | [ ] |
+| 6-1 | 구현: CloseButton 컴포넌트 -- hover시 bg-surface, focus-visible ring-2 ring-accent (`src/features/content/components/CloseButton.tsx`) | XS | - | [x] |
 | 6-2 | 구현: LoadingIndicator 컴포넌트 -- CSS 스피너(animate-spin, 24px, text-muted), isLoading=false일 때 null 반환 (`src/components/LoadingIndicator.tsx`) | XS | - | [x] |
 | 6-3-1 | 구현: ClusterBadge 컴포넌트 -- cluster ID를 받아 CLUSTERS 상수에서 color/label 읽어 dot + 한국어 레이블 표시 (`src/features/content/components/ClusterBadge.tsx`) | XS | - | [x] |
 | 6-3-2 | 구현: DifficultyLabel 컴포넌트 -- Difficulty 타입을 받아 한국어 텍스트 레이블 표시 (`src/features/content/components/DifficultyLabel.tsx`) | XS | - | [x] |
