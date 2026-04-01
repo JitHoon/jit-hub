@@ -4,7 +4,7 @@
 
 | # | 작업 | Phase | 크기 |
 |---|------|-------|------|
-| 5-1 | three, @types/three, react-force-graph-3d 패키지 설치 | 5 3D 그래프 기반 | XS |
+| 5-2 | 정의: GraphMode, GraphLayoutState, ForceGraph3DNode, CameraState 타입 (`src/features/graph/types/layout.ts`) | 5 3D 그래프 기반 | XS |
 
 ---
 
@@ -30,7 +30,7 @@ Phase 5 진행 중 → **3D 그래프 기반 + GraphCanvas3D** (5-1 ~ 5-8)
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 5-1 | 설치: three, @types/three, react-force-graph-3d 패키지 추가 | XS | [ ] |
+| 5-1 | 설치: three, @types/three, react-force-graph-3d 패키지 추가 | XS | [x] |
 | 5-2 | 정의: GraphMode, GraphLayoutState, ForceGraph3DNode, CameraState 타입 (`src/features/graph/types/layout.ts`) | XS | [ ] |
 | 5-3 | 구현: useGraph3DRenderer 훅 -- 3D 노드/엣지 커스텀 렌더링 로직 (`src/features/graph/hooks/useGraph3DRenderer.ts`) | S | [ ] |
 | 5-4 | 구현: useCameraControl 훅 -- 초기 위치(0,150,300), 자동 회전(0.5rad/s), 노드 포커스 이동, 인터랙션 종료 후 3s 딜레이 재개 (`src/features/graph/hooks/useCameraControl.ts`) | S | [ ] |
