@@ -13,6 +13,14 @@ import { useNodePerturbation } from "../hooks/useNodePerturbation";
 import { useNodeSelection } from "../hooks/useNodeSelection";
 import { useScene3D } from "../hooks/useScene3D";
 
+// three-render-objects, 3d-force-graph 내부에서 사용하는 THREE.Clock이
+// three.js r183에서 deprecated되어 발생하는 경고를 억제
+const _warn = console.warn.bind(console);
+console.warn = (...args: unknown[]) => {
+  if (typeof args[0] === "string" && args[0].includes("THREE.Clock")) return;
+  _warn(...args);
+};
+
 type TypedForceGraph3DProps = ForceGraphProps<GraphNode, GraphEdge> & {
   ref?: React.MutableRefObject<ForceGraphMethods | undefined>;
 };
@@ -26,6 +34,7 @@ const LINK_DISTANCE = 80;
 const WARMUP_TICKS = 100;
 const COOLDOWN_TICKS = 0;
 const PANEL_CLOSE_CAMERA_DURATION_MS = 600;
+const LAYOUT_TRANSITION_MS = 400;
 
 interface GraphCanvas3DProps {
   graphData: GraphData;
@@ -60,7 +69,7 @@ export function GraphCanvas3D({
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
   const perturbationActive = engineReady && selectedNodeId === null;
-  useNodePerturbation(graphRef, perturbationActive);
+  useNodePerturbation(fg3dData.nodes as ForceGraph3DNode[], perturbationActive);
 
   const prevSelectedNodeIdRef = useRef<string | null>(undefined);
 
@@ -99,11 +108,16 @@ export function GraphCanvas3D({
       const graphNode = node as ForceGraph3DNode & { id?: string };
       const id = graphNode.id;
       if (!id) return;
+      const isFirstSelection = selectedNodeId === null;
       selectNode(id);
-      focusNode(node);
+      if (isFirstSelection) {
+        setTimeout(() => focusNode(node), LAYOUT_TRANSITION_MS);
+      } else {
+        focusNode(node);
+      }
       onInteractionEnd();
     },
-    [selectNode, focusNode, onInteractionEnd],
+    [selectNode, focusNode, onInteractionEnd, selectedNodeId],
   );
 
   return (
@@ -119,9 +133,11 @@ export function GraphCanvas3D({
         nodeThreeObject={nodeThreeObject}
         nodeThreeObjectExtend={false}
         linkColor={linkColor}
+        linkWidth={1}
         onNodeClick={handleNodeClick}
         onNodeHover={onNodeHover}
         onEngineStop={handleEngineStop}
+        showNavInfo={false}
       />
     </div>
   );

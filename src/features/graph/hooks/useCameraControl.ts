@@ -28,7 +28,7 @@ function resolveControls(raw: object): OrbitControlsLike | null {
 }
 
 interface UseCameraControlReturn {
-  initCamera: () => void;
+  initCamera: (duration?: number) => void;
   setAutoRotate: (enabled: boolean) => void;
   focusNode: (node: ForceGraph3DNode) => void;
   onInteractionEnd: () => void;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import type { ForceGraphMethods } from "react-force-graph-3d";
 
 import type { ForceGraph3DNode } from "../types/layout";
 
@@ -17,7 +16,7 @@ interface NodeBaseCoords {
 }
 
 export function useNodePerturbation(
-  graphRef: React.RefObject<ForceGraphMethods | undefined>,
+  nodes: ForceGraph3DNode[],
   active: boolean,
 ): void {
   const rafRef = useRef<number | null>(null);
@@ -33,11 +32,6 @@ export function useNodePerturbation(
     }
 
     function captureBaseCoords(): boolean {
-      const fg = graphRef.current;
-      if (!fg) return false;
-
-      const data = fg.graphData();
-      const nodes = data.nodes as ForceGraph3DNode[];
       if (nodes.length === 0) return false;
 
       const map = baseCoordsRef.current;
@@ -67,19 +61,11 @@ export function useNodePerturbation(
     }
 
     function tick(timestamp: number): void {
-      const fg = graphRef.current;
-      if (!fg) {
-        rafRef.current = requestAnimationFrame(tick);
-        return;
-      }
-
       if (!captureBaseCoords()) {
         rafRef.current = requestAnimationFrame(tick);
         return;
       }
 
-      const data = fg.graphData();
-      const nodes = data.nodes as ForceGraph3DNode[];
       const map = baseCoordsRef.current;
 
       for (const node of nodes) {
@@ -104,5 +90,5 @@ export function useNodePerturbation(
         rafRef.current = null;
       }
     };
-  }, [active, graphRef]);
+  }, [active, nodes]);
 }

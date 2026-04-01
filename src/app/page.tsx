@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { getNodeBySlug } from "@/features/content/utils/pipeline";
+import { MdxRenderer } from "@/features/content/components";
 import type { GraphData } from "@/features/graph/types/graph";
 import HomeLayout from "./HomeLayout";
 
@@ -32,9 +33,11 @@ export default async function Home({
               title: selectedNode.frontmatter.title,
               cluster: selectedNode.frontmatter.cluster,
               difficulty: selectedNode.frontmatter.difficulty,
-              source: selectedNode.content,
             }
           : null
+      }
+      mdxContent={
+        selectedNode ? <MdxRenderer source={selectedNode.content} /> : null
       }
     />
   );

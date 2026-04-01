@@ -16,7 +16,7 @@ export default function CloseButton({
       type="button"
       onClick={onClick}
       aria-label={ariaLabel}
-      className="flex items-center justify-center rounded p-1.5 text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+      className="flex cursor-pointer items-center justify-center rounded p-1.5 text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
     >
       <XIcon size={18} />
     </button>

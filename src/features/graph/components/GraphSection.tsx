@@ -5,7 +5,6 @@ import {
   useLoadingSequence,
   REVEALING_DURATION_MS,
 } from "../hooks/useLoadingSequence";
-import { CameraHint } from "./CameraHint";
 import { GraphCanvas3D } from "./GraphCanvas3D";
 import type { GraphData } from "../types/graph";
 
@@ -21,7 +20,6 @@ export function GraphSection({
   const { phase, onEngineReady } = useLoadingSequence();
 
   const isLoading = phase === "loading";
-  const isReady = phase === "ready";
 
   const canvasStyle: React.CSSProperties =
     phase === "revealing" || phase === "ready"
@@ -43,7 +41,6 @@ export function GraphSection({
         onEngineReady={onEngineReady}
         style={canvasStyle}
       />
-      <CameraHint dismissed={!isReady} />
     </div>
   );
 }

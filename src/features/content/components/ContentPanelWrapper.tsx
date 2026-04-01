@@ -10,7 +10,7 @@ interface ContentPanelWrapperProps {
   title: string;
   cluster: ClusterId;
   difficulty: Difficulty;
-  source: string;
+  children: React.ReactNode;
   onClosingStart?: () => void;
 }
 
@@ -18,14 +18,13 @@ export default function ContentPanelWrapper({
   title,
   cluster,
   difficulty,
-  source,
+  children,
   onClosingStart,
 }: ContentPanelWrapperProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [closing, setClosing] = useState(false);
   const [bodyVisible, setBodyVisible] = useState(false);
-  const prevSourceRef = useRef<string | null>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -39,9 +38,6 @@ export default function ContentPanelWrapper({
   }, []);
 
   useEffect(() => {
-    if (prevSourceRef.current === source) return;
-    prevSourceRef.current = source;
-
     let innerRaf: number;
     const outerRaf = requestAnimationFrame(() => {
       setBodyVisible(false);
@@ -51,7 +47,7 @@ export default function ContentPanelWrapper({
       cancelAnimationFrame(outerRaf);
       cancelAnimationFrame(innerRaf);
     };
-  }, [source]);
+  }, [title]);
 
   function handleClose() {
     if (closeTimerRef.current !== null) return;
@@ -68,11 +64,12 @@ export default function ContentPanelWrapper({
       title={title}
       cluster={cluster}
       difficulty={difficulty}
-      source={source}
       onClose={handleClose}
       mounted={mounted}
       closing={closing}
       bodyVisible={bodyVisible}
-    />
+    >
+      {children}
+    </ContentPanel>
   );
 }
