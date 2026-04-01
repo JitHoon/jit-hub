@@ -12,6 +12,8 @@ export interface CameraState {
   x: number;
   y: number;
   z: number;
+  lookAt: { x: number; y: number; z: number };
+  autoRotate: boolean;
 }
 
 export type ForceGraph3DNode = NodeObject<GraphNode>;

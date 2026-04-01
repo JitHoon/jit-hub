@@ -34,7 +34,7 @@ Phase 5 진행 중 → **3D 그래프 기반 + GraphCanvas3D** (5-1 ~ 5-8)
 | 5-3-1 | 구현: useGraph3DRenderer 훅 -- `nodeThreeObject` 콜백 반환 (허브/리프 SphereGeometry + MeshStandardMaterial, 클러스터 색상 기본 상태, 테마 분기) (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: `nodeThreeObject` 콜백이 `GraphNode`를 받아 허브/리프 분기된 Three.js Mesh를 반환하고, tsc 통과 | S | [x] |
 | 5-3-2 | 구현: useGraph3DRenderer에 `linkThreeObject`/`linkColor` 콜백 + 노드 라벨(SpriteText) 생성 로직 추가 (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: 엣지가 허브간/리프간 opacity 분기되고, 노드 라벨이 SpriteText로 표시되며 tsc 통과 | XS | [ ] |
 | 5-3-3 | 구현: useGraph3DRenderer에 호버/선택 상태 시각 변화 콜백 추가 (`onNodeHover`에서 scale/emissive/color 전환) (`src/features/graph/hooks/useGraph3DRenderer.ts`)<br>완료 기준: `onNodeHover` 콜백이 VISUAL_SPEC D섹션의 default/hover/active 상태 전환을 처리하고 tsc 통과 | S | [x] |
-| 5-4-1 | 수정: CameraState 타입에 lookAt, autoRotate 필드 추가 (`src/features/graph/types/layout.ts`) | XS | [ ] |
+| 5-4-1 | 수정: CameraState 타입에 lookAt, autoRotate 필드 추가 (`src/features/graph/types/layout.ts`) | XS | [x] |
 | 5-4-2 | 구현: useCameraControl 훅 -- 초기 위치(0,150,300) 설정 + Y축 자동 회전(controls().autoRotate) on/off 제어 (`src/features/graph/hooks/useCameraControl.ts`) | S | [ ] |
 | 5-4-3 | 추가: useCameraControl에 노드 포커스 이동(cameraPosition API, 800ms) + 인터랙션 종료 후 3s 딜레이 자동 회전 재개 로직 | S | [ ] |
 | 5-5 | 구현: useNodeSelection 훅 -- 클릭된 노드 ID 상태 관리 + `useSearchParams`로 `?node=slug` 양방향 동기화 + 해제(null) 처리 (`src/features/graph/hooks/useNodeSelection.ts`) <!-- 완료 기준: selectNode(slug)로 URL이 ?node=slug로 변경되고, clearSelection()으로 ?node 파라미터가 제거되며, URL에 ?node=xxx가 있는 상태에서 마운트 시 해당 노드가 selectedNodeId로 복원되고 tsc 통과 --> | S | [ ] |
