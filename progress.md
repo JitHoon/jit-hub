@@ -49,10 +49,10 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 | 7-3-1 | 구현: useLoadingSequence 훅 -- phase 상태 머신(loading → revealing → ready) 관리, onEngineReady 콜백으로 phase 전환 트리거 (`src/features/graph/hooks/useLoadingSequence.ts`) | S | - | [x] |
 | 7-3-2 | 연결: page.tsx에서 useLoadingSequence 소비 -- LoadingIndicator(loading phase), GraphCanvas3D opacity 전환(revealing phase, 500ms easeOut), CameraHint 표시(ready phase) 바인딩 (`src/app/page.tsx`) | S | 7-3-1 | [x] |
 | 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 영역에 transition-all 400ms cubic-bezier(0,0,0.2,1) 적용, ContentPanel에 translateX(100%)→0 + opacity 0→1 (400ms, delay 100ms) 적용 (`src/app/page.tsx`, `src/features/content/components/ContentPanel.tsx`) \| 완료 기준: 노드 클릭 시 그래프 width 축소(400ms)와 ContentPanel 슬라이드인(400ms, delay 100ms)이 시각적으로 연속 재생된다 | S | 7-1-3 | [x] |
-| 7-5 | 구현: 패널 닫기 애니메이션 -- CloseButton 클릭 시 패널 translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), useCameraControl.initCamera에 duration 파라미터 추가하여 카메라 초기 위치 복원(600ms), onInteractionEnd 재사용으로 자동 회전 3s 후 재개 (`src/app/page.tsx`, `src/features/content/components/ContentPanelWrapper.tsx`, `src/features/graph/hooks/useCameraControl.ts`) | S | 7-4 | [ ] |
+| 7-5 | 구현: 패널 닫기 애니메이션 -- CloseButton 클릭 시 패널 translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), useCameraControl.initCamera에 duration 파라미터 추가하여 카메라 초기 위치 복원(600ms), onInteractionEnd 재사용으로 자동 회전 3s 후 재개 (`src/app/page.tsx`, `src/features/content/components/ContentPanelWrapper.tsx`, `src/features/graph/hooks/useCameraControl.ts`) | S | 7-4 | [x] |
 | 7-6-1 | 구현: 노드 전환 시 Three.js scale 애니메이션 -- 이전 노드 scale 1.5→1 (200ms), 새 노드 scale 1→1.5 (200ms easeOutBack) (`src/features/graph/hooks/useGraph3DRenderer.ts`) | S | 7-4 | [x] |
 | 7-6-2 | 구현: ContentPanel 본문 opacity 크로스페이드 -- 노드 전환 시 본문 영역 opacity 0→1 (300ms) 전환 (`src/features/content/components/ContentPanel.tsx`) | XS | 7-4 | [x] |
-| 7-7-1 | 검증: cooldownTicks:0 상태에서 노드 플로팅 효과 시각적 확인 (결과를 progress.md 메모에 기록) | XS | 7-3-2 | [ ] |
+| 7-7-1 | 검증: cooldownTicks:0 상태에서 노드 플로팅 효과 시각적 확인 (결과를 progress.md 메모에 기록) | XS | 7-3-2 | [x] |
 | 7-7-2 | [조건부] 구현: useNodePerturbation 훅 — d3Force reheat 또는 rAF 기반 미세 위치 변동, GraphCanvas3D에 연결 | S | 7-7-1 | [ ] |
 
 ### Phase 8: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
@@ -101,3 +101,10 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 - 프로토타입 페이지(`/design`)는 Phase 3-B 완료 후 삭제됨 (토큰은 globals.css/Tailwind에 코드화)
 - 디자인 시스템 상세 스펙: `.claude/projects/.../memory/design_system_spec.md`
 - react-force-graph-2d는 유지 (기존 SEO 페이지에서 사용 가능). 홈에서만 3D로 전환.
+
+### 7-7-1 검증: cooldownTicks:0 플로팅 효과 분석 결과
+
+- 현재 설정: `GraphCanvas3D.tsx` — `WARMUP_TICKS = 100`, `COOLDOWN_TICKS = 0`
+- `warmupTicks:100`: 초기 렌더링 전 d3 시뮬레이션을 100틱 내부 실행하여 레이아웃 배치 완료
+- `cooldownTicks:0`: `onEngineStop` 발동 허용 틱을 0으로 제한 → 렌더링 시작 즉시 시뮬레이션 정지
+- **결론: 플로팅 효과 없음.** cooldownTicks:0은 시뮬레이션을 즉시 종료시키므로 노드 위치가 warmupTicks 완료 시점에 고정된다. 지속적으로 노드가 미세하게 움직이는 플로팅 효과를 원한다면 7-7-2(useNodePerturbation — rAF 기반 미세 위치 변동)가 필요하다.
