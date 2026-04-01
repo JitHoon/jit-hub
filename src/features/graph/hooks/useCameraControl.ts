@@ -22,7 +22,7 @@ interface OrbitControlsLike {
 function resolveControls(raw: object): OrbitControlsLike | null {
   const candidate = raw as Record<string, unknown>;
   if (typeof candidate["autoRotate"] === "boolean") {
-    return candidate as OrbitControlsLike;
+    return candidate as unknown as OrbitControlsLike;
   }
   return null;
 }
