@@ -14,6 +14,13 @@
 - 컴포넌트 파일명 = PascalCase
 - 훅 파일명 = camelCase (예: useTheme.ts)
 
+## 스타일링
+
+- 인라인 `style={{}}` 금지 — Tailwind 클래스 사용
+- CSS 변수 색상 참조: Tailwind arbitrary 값 (`text-[var(--color-text-muted)]`)
+- 동적 클래스 조합: `cn()` 유틸리티 사용
+- JS 변수 기반 `transition` duration 등 Tailwind로 표현 불가능한 경우에만 `style` 예외 허용
+
 ## 관심사 분리
 
 - 컴포넌트는 프레젠테이션 + 이벤트 바인딩만 담당
@@ -45,3 +52,5 @@ conventional commits 형식:
 - content: 콘텐츠 추가/수정
 - style: 스타일 변경
 - chore: 빌드, 설정 변경
+
+scope에 태스크/Phase 번호 금지: `feat(5-7-2):` ❌ → `feat:` ✅

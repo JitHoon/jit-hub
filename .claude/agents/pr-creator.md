@@ -63,6 +63,7 @@ skills:
    - `git diff --cached`로 변경 내용 확인
    - 변경 내용에 맞는 conventional commit 메시지로 커밋
 4. 한 번에 모든 파일을 `git add .`로 커밋하지 마라
+5. 커밋 메시지 scope에 태스크/Phase 번호를 붙이지 마라 (`feat(5-7-2):` 금지 → `feat:` 사용)
 
 #### Push
 
@@ -104,9 +105,6 @@ skills:
 ```
 ## Summary
 {변경 내용 1-3줄 요약}
-
-## Commits
-{git log {base}..HEAD --oneline 결과를 - 불릿 목록으로 나열}
 
 ## Verification
 - {검증 기준}: {통과/실패 결과}
