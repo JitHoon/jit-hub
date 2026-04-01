@@ -4,12 +4,13 @@
 
 | # | 작업 | Phase | 크기 |
 |---|------|-------|------|
+| 6-1 | 구현: CloseButton 컴포넌트 | Phase 6 | XS |
 
 ---
 
 ## 현재 단계
 
-Phase 5 진행 중 → **3D 그래프 기반 + GraphCanvas3D** (5-1 ~ 5-8)
+Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 ## 완료된 Phase 요약
 
@@ -20,6 +21,7 @@ Phase 5 진행 중 → **3D 그래프 기반 + GraphCanvas3D** (5-1 ~ 5-8)
 - **Phase 5-0** (E2E 인프라): Playwright 설정 완료
 - **Phase 3-B** (디자인 시스템): 토큰 모듈 + 스킬 생성 + 하네스 연동 + E2E 테스트 (3B-1 ~ 3B-11)
 - **Phase 4** (콘텐츠 파이프라인): Zod 스키마 + pipeline.ts + graph-data.json 생성 스크립트 + prebuild 통합 + MDX 렌더링 설정 (4-1 ~ 4-5)
+- **Phase 5** (3D 그래프): GraphCanvas3D + 3D 렌더링 훅 5종 + CameraHint (5-1 ~ 5-8)
 
 ---
 
@@ -63,8 +65,7 @@ Phase 5 진행 중 → **3D 그래프 기반 + GraphCanvas3D** (5-1 ~ 5-8)
 | 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 width 100%→38% (400ms easeOut), ContentPanel translateX(100%)→0 + opacity 0→1 (400ms easeOut, delay 100ms) | S | [ ] |
 | 7-5 | 구현: 패널 닫기 애니메이션 -- ContentPanel translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), 카메라 초기 위치 복원(600ms), 자동 회전 재개(3s 딜레이) | S | [ ] |
 | 7-6 | 구현: 다른 노드 클릭 시 콘텐츠 크로스페이드 -- 이전 노드 scale 1.5→1 (200ms), 카메라 이동(800ms), 새 노드 scale 1→1.5 (200ms easeOutBack), 본문 opacity 크로스페이드(300ms) | S | [ ] |
-| 7-7 | 구현: 노드 플로팅 애니메이션 -- cooldownTicks:0 기반 3D 공간 미세 움직임 | S | [ ] |
-| 7-8 | 구현: 테마 전환 시 3D 씬 업데이트 -- scene.background, fog.color, 노드 material.color + emissive 토글(다크on/라이트off), 200ms 전환 | S | [ ] |
+| 7-7 | [조건부] 구현: 노드 플로팅 애니메이션 -- 빌드 후 시각적 확인 후 결정 (cooldownTicks:0 잔여 움직임으로 충분하면 제거, 아니면 perturbation 로직 추가) | S | [ ] |
 
 ### Phase 8: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
 
