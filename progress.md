@@ -29,15 +29,15 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 ### Phase 6: 콘텐츠 패널 + 분할 뷰 · 브랜치: `feat/home-page-redesign`
 
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 6-1 | 구현: CloseButton 컴포넌트 -- hover시 bg-surface, focus-visible ring-2 ring-accent (`src/features/content/components/CloseButton.tsx`) | XS | [ ] |
-| 6-2 | 구현: LoadingIndicator 컴포넌트 -- CSS 스피너(rotate 1s linear infinite, 24px, text-muted), isLoading prop으로 표시/숨김 제어 (`src/components/LoadingIndicator.tsx`) | XS | [ ] |
-| 6-3-1 | 구현: ClusterBadge 컴포넌트 -- cluster ID를 받아 CLUSTERS 상수에서 color/label 읽어 dot + 한국어 레이블 표시 (`src/features/content/components/ClusterBadge.tsx`) | XS | [ ] |
-| 6-3-2 | 구현: DifficultyLabel 컴포넌트 -- Difficulty 타입을 받아 한국어 텍스트 레이블 표시 (`src/features/content/components/DifficultyLabel.tsx`) | XS | [ ] |
-| 6-3-3 | 구현: PanelHeader 컴포넌트 -- ClusterBadge + DifficultyLabel + CloseButton 조립, header 태그 안에 배치 (`src/features/content/components/PanelHeader.tsx`) | XS | [ ] |
-| 6-4 | 구현: ContentPanel 컴포넌트 -- PanelHeader + MDX 본문 렌더링, bg-surface-elevated + shadow-lg 좌측 구분 (`src/features/content/components/ContentPanel.tsx`) | S | [ ] |
-| 6-5 | 추가: graph/components, content/components index.ts re-export 정리 | XS | [ ] |
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 6-1 | 구현: CloseButton 컴포넌트 -- hover시 bg-surface, focus-visible ring-2 ring-accent (`src/features/content/components/CloseButton.tsx`) | XS | - | [ ] |
+| 6-2 | 구현: LoadingIndicator 컴포넌트 -- CSS 스피너(animate-spin, 24px, text-muted), isLoading=false일 때 null 반환 (`src/components/LoadingIndicator.tsx`) | XS | - | [x] |
+| 6-3-1 | 구현: ClusterBadge 컴포넌트 -- cluster ID를 받아 CLUSTERS 상수에서 color/label 읽어 dot + 한국어 레이블 표시 (`src/features/content/components/ClusterBadge.tsx`) | XS | - | [x] |
+| 6-3-2 | 구현: DifficultyLabel 컴포넌트 -- Difficulty 타입을 받아 한국어 텍스트 레이블 표시 (`src/features/content/components/DifficultyLabel.tsx`) | XS | - | [x] |
+| 6-3-3 | 구현: PanelHeader 컴포넌트 -- ClusterBadge + DifficultyLabel + CloseButton 조립, header 태그 안에 배치 (`src/features/content/components/PanelHeader.tsx`) | XS | 6-1, 6-3-1, 6-3-2 | [ ] |
+| 6-4 | 구현: ContentPanel 컴포넌트 -- PanelHeader + MDX 본문 렌더링, bg-surface-elevated + shadow-lg 좌측 구분 (`src/features/content/components/ContentPanel.tsx`) | S | 6-3-3 | [ ] |
+| 6-5 | 추가: content/components index.ts re-export 정리 (`src/features/content/components/index.ts`) | XS | 6-4 | [ ] |
 
 ### Phase 7: 홈 페이지 조립 + 전환 애니메이션 · 브랜치: `feat/home-page-redesign`
 
