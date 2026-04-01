@@ -11,6 +11,7 @@ interface ContentPanelWrapperProps {
   cluster: ClusterId;
   difficulty: Difficulty;
   source: string;
+  onClosingStart?: () => void;
 }
 
 export default function ContentPanelWrapper({
@@ -18,15 +19,23 @@ export default function ContentPanelWrapper({
   cluster,
   difficulty,
   source,
+  onClosingStart,
 }: ContentPanelWrapperProps) {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [bodyVisible, setBodyVisible] = useState(false);
   const prevSourceRef = useRef<string | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(id);
+    return () => {
+      cancelAnimationFrame(id);
+      if (closeTimerRef.current !== null) {
+        clearTimeout(closeTimerRef.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -45,7 +54,13 @@ export default function ContentPanelWrapper({
   }, [source]);
 
   function handleClose() {
-    router.push("/");
+    if (closeTimerRef.current !== null) return;
+    setClosing(true);
+    onClosingStart?.();
+    closeTimerRef.current = setTimeout(() => {
+      closeTimerRef.current = null;
+      router.push("/");
+    }, 300);
   }
 
   return (
@@ -56,7 +71,7 @@ export default function ContentPanelWrapper({
       source={source}
       onClose={handleClose}
       mounted={mounted}
-      closing={false}
+      closing={closing}
       bodyVisible={bodyVisible}
     />
   );

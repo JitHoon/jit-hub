@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
@@ -24,6 +24,7 @@ const CHARGE_STRENGTH = -120;
 const LINK_DISTANCE = 80;
 const WARMUP_TICKS = 100;
 const COOLDOWN_TICKS = 0;
+const PANEL_CLOSE_CAMERA_DURATION_MS = 600;
 
 interface GraphCanvas3DProps {
   graphData: GraphData;
@@ -56,6 +57,18 @@ export function GraphCanvas3D({
   const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
+
+  const prevSelectedNodeIdRef = useRef<string | null>(undefined);
+
+  useEffect(() => {
+    const prev = prevSelectedNodeIdRef.current;
+    prevSelectedNodeIdRef.current = selectedNodeId;
+
+    if (prev !== null && prev !== undefined && selectedNodeId === null) {
+      initCamera(PANEL_CLOSE_CAMERA_DURATION_MS);
+      onInteractionEnd();
+    }
+  }, [selectedNodeId, initCamera, onInteractionEnd]);
 
   const handleEngineStop = useCallback((): void => {
     if (hasInitPhysics.current) return;
