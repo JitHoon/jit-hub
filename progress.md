@@ -42,8 +42,10 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 | # | 작업 | 크기 | 상태 |
 |---|------|------|------|
-| 7-1 | 조립: page.tsx에 GraphCanvas3D + ContentPanel 분할 뷰 통합 (`src/app/page.tsx`) | M | [ ] |
-| 7-2 | 수정: layout.tsx에 ThemeToggle position fixed top-4 right-4 z-10 조정 (`src/app/layout.tsx`) | XS | [ ] |
+| 7-1-1 | 구현: page.tsx에서 graph-data.json 읽어 GraphCanvas3D에 props 전달 (`src/app/page.tsx`) | S | [ ] |
+| 7-1-2 | 구현: 선택된 노드의 MDX 콘텐츠를 서버에서 로딩하는 데이터 흐름 -- searchParams.node로 getNodeBySlug 호출, ContentPanel에 전달 (`src/app/page.tsx`) | S | [ ] |
+| 7-1-3 | 구현: 그래프(좌) + ContentPanel(우) 분할 뷰 CSS 레이아웃 -- 노드 미선택 시 그래프 100%, 선택 시 그래프 38% + 패널 62% (`src/app/page.tsx`) | XS | [ ] |
+| 7-2 | 수정: ThemeToggle z-index를 분할 뷰와 조화되는 값으로 조정 — ContentPanel/그래프 캔버스와 z-index 충돌 없이 항상 최상단 유지 확인 (`src/components/ThemeToggle.tsx`) | XS | [ ] |
 | 7-3 | 구현: 초기 로딩 시퀀스 -- LoadingIndicator 표시 → 그래프 opacity 0→1 (500ms easeOut) → CameraHint 등장 → 자동 회전 시작 | S | [ ] |
 | 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 width 100%→38% (400ms easeOut), ContentPanel translateX(100%)→0 + opacity 0→1 (400ms easeOut, delay 100ms) | S | [ ] |
 | 7-5 | 구현: 패널 닫기 애니메이션 -- ContentPanel translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), 카메라 초기 위치 복원(600ms), 자동 회전 재개(3s 딜레이) | S | [ ] |
