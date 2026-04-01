@@ -4,6 +4,7 @@ import { useCallback, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 import { CLUSTERS, type ClusterId } from "@/constants/cluster";
+import { getGraphGray } from "@/constants/tokens";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
@@ -14,6 +15,16 @@ const SEGMENTS = 32;
 const EMISSIVE_INTENSITY_DARK = 0.4;
 const EMISSIVE_INTENSITY_LIGHT = 0;
 const HUB_DEGREE_THRESHOLD = 3;
+
+const HOVER_SCALE = 1.3;
+const ACTIVE_SCALE = 1.5;
+const DEFAULT_SCALE = 1;
+const HOVER_EMISSIVE_INTENSITY_DARK = 0.5;
+const ACTIVE_EMISSIVE_INTENSITY_DARK = 0.8;
+const HOVER_OPACITY = 0.9;
+const DEFAULT_HUB_OPACITY = 1;
+const DEFAULT_LEAF_OPACITY = 0.6;
+const ACTIVE_LEAF_OPACITY = 0.8;
 
 function buildDegreeMap(data: GraphData): Map<string, number> {
   const map = new Map<string, number>();
@@ -68,9 +79,16 @@ function createNodeMesh(
 
 interface UseGraph3DRendererReturn {
   nodeThreeObject: (node: ForceGraph3DNode) => THREE.Mesh;
+  onNodeHover: (
+    node: ForceGraph3DNode | null,
+    prevNode: ForceGraph3DNode | null,
+  ) => void;
 }
 
-export function useGraph3DRenderer(data: GraphData): UseGraph3DRendererReturn {
+export function useGraph3DRenderer(
+  data: GraphData,
+  selectedNodeId?: string,
+): UseGraph3DRendererReturn {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -102,5 +120,68 @@ export function useGraph3DRenderer(data: GraphData): UseGraph3DRendererReturn {
     [degreeMap, isDark],
   );
 
-  return { nodeThreeObject };
+  const onNodeHover = useCallback(
+    (
+      node: ForceGraph3DNode | null,
+      prevNode: ForceGraph3DNode | null,
+    ): void => {
+      const cache = meshCacheRef.current;
+      const graphGray = getGraphGray(isDark);
+
+      if (prevNode) {
+        const prevGraphNode = prevNode as ForceGraph3DNode & GraphNode;
+        const prevId = prevGraphNode.id ?? "";
+        const prevMesh = cache.get(prevId);
+        if (prevMesh) {
+          const mat = prevMesh.material as THREE.MeshStandardMaterial;
+          const isActive = selectedNodeId === prevId;
+          const degree = degreeMap.get(prevId) ?? 0;
+          const isHub = degree >= HUB_DEGREE_THRESHOLD;
+
+          if (isActive) {
+            mat.color.set(resolveClusterColor(prevGraphNode.cluster));
+            mat.emissive.set(resolveClusterColor(prevGraphNode.cluster));
+            mat.emissiveIntensity = isDark
+              ? ACTIVE_EMISSIVE_INTENSITY_DARK
+              : EMISSIVE_INTENSITY_LIGHT;
+            mat.opacity = isHub ? DEFAULT_HUB_OPACITY : ACTIVE_LEAF_OPACITY;
+            prevMesh.scale.setScalar(ACTIVE_SCALE);
+          } else {
+            const defaultColor = isHub ? graphGray.node : graphGray.nodeFaded;
+            mat.color.set(defaultColor);
+            mat.emissive.set(resolveClusterColor(prevGraphNode.cluster));
+            mat.emissiveIntensity = isDark
+              ? EMISSIVE_INTENSITY_DARK
+              : EMISSIVE_INTENSITY_LIGHT;
+            mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
+            prevMesh.scale.setScalar(DEFAULT_SCALE);
+          }
+          mat.needsUpdate = true;
+        }
+      }
+
+      if (node) {
+        const graphNode = node as ForceGraph3DNode & GraphNode;
+        const id = graphNode.id ?? "";
+        const mesh = cache.get(id);
+        if (mesh) {
+          const mat = mesh.material as THREE.MeshStandardMaterial;
+          const degree = degreeMap.get(id) ?? 0;
+          const isHub = degree >= HUB_DEGREE_THRESHOLD;
+
+          mat.color.set(resolveClusterColor(graphNode.cluster));
+          mat.emissive.set(resolveClusterColor(graphNode.cluster));
+          mat.emissiveIntensity = isDark
+            ? HOVER_EMISSIVE_INTENSITY_DARK
+            : EMISSIVE_INTENSITY_LIGHT;
+          mat.opacity = HOVER_OPACITY;
+          mesh.scale.setScalar(isHub ? HOVER_SCALE : DEFAULT_SCALE);
+          mat.needsUpdate = true;
+        }
+      }
+    },
+    [degreeMap, isDark, selectedNodeId],
+  );
+
+  return { nodeThreeObject, onNodeHover };
 }
