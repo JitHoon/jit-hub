@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { ContentPanelWrapper } from "@/features/content/components";
 import { getNodeBySlug } from "@/features/content/utils/pipeline";
-import { GraphCanvas3D } from "@/features/graph/components/GraphCanvas3D";
+import { GraphSection } from "@/features/graph/components/GraphSection";
 import type { GraphData } from "@/features/graph/types/graph";
 
 function loadGraphData(): GraphData {
@@ -29,7 +29,7 @@ export default async function Home({
   return (
     <main className="flex h-screen w-screen overflow-hidden">
       <div className={hasNode ? "w-[38%]" : "w-full"}>
-        <GraphCanvas3D graphData={graphData} />
+        <GraphSection graphData={graphData} />
       </div>
       {hasNode && (
         <div className="w-[62%] overflow-y-auto">

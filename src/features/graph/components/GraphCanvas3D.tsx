@@ -27,10 +27,14 @@ const COOLDOWN_TICKS = 0;
 
 interface GraphCanvas3DProps {
   graphData: GraphData;
+  onEngineReady?: () => void;
+  style?: React.CSSProperties;
 }
 
 export function GraphCanvas3D({
   graphData,
+  onEngineReady: onEngineReadyProp,
+  style,
 }: GraphCanvas3DProps): React.ReactElement {
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const hasInitPhysics = useRef(false);
@@ -67,9 +71,10 @@ export function GraphCanvas3D({
     }
 
     onEngineReady();
+    onEngineReadyProp?.();
     initCamera();
     setAutoRotate(true);
-  }, [onEngineReady, initCamera, setAutoRotate]);
+  }, [onEngineReady, onEngineReadyProp, initCamera, setAutoRotate]);
 
   const handleNodeClick = useCallback(
     (node: ForceGraph3DNode): void => {
@@ -84,7 +89,7 @@ export function GraphCanvas3D({
   );
 
   return (
-    <div ref={containerRef} className="h-full w-full">
+    <div ref={containerRef} className="h-full w-full" style={style}>
       <ForceGraph3D
         ref={graphRef}
         graphData={fg3dData}
