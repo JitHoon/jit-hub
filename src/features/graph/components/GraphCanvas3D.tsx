@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
@@ -9,6 +9,7 @@ import type { ForceGraph3DNode } from "../types/layout";
 import { useCameraControl } from "../hooks/useCameraControl";
 import { useGraph3DRenderer } from "../hooks/useGraph3DRenderer";
 import { useGraphLayout } from "../hooks/useGraphLayout";
+import { useNodePerturbation } from "../hooks/useNodePerturbation";
 import { useNodeSelection } from "../hooks/useNodeSelection";
 import { useScene3D } from "../hooks/useScene3D";
 
@@ -39,6 +40,7 @@ export function GraphCanvas3D({
 }: GraphCanvas3DProps): React.ReactElement {
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const hasInitPhysics = useRef(false);
+  const [engineReady, setEngineReady] = useState(false);
 
   const fg3dData = useMemo(
     () => ({
@@ -57,6 +59,8 @@ export function GraphCanvas3D({
   const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
+  const perturbationActive = engineReady && selectedNodeId === null;
+  useNodePerturbation(graphRef, perturbationActive);
 
   const prevSelectedNodeIdRef = useRef<string | null>(undefined);
 
@@ -83,6 +87,7 @@ export function GraphCanvas3D({
       if (linkFn) linkFn.distance(LINK_DISTANCE);
     }
 
+    setEngineReady(true);
     onEngineReady();
     onEngineReadyProp?.();
     initCamera();

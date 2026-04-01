@@ -53,7 +53,7 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 | 7-6-1 | 구현: 노드 전환 시 Three.js scale 애니메이션 -- 이전 노드 scale 1.5→1 (200ms), 새 노드 scale 1→1.5 (200ms easeOutBack) (`src/features/graph/hooks/useGraph3DRenderer.ts`) | S | 7-4 | [x] |
 | 7-6-2 | 구현: ContentPanel 본문 opacity 크로스페이드 -- 노드 전환 시 본문 영역 opacity 0→1 (300ms) 전환 (`src/features/content/components/ContentPanel.tsx`) | XS | 7-4 | [x] |
 | 7-7-1 | 검증: cooldownTicks:0 상태에서 노드 플로팅 효과 시각적 확인 (결과를 progress.md 메모에 기록) | XS | 7-3-2 | [x] |
-| 7-7-2 | [조건부] 구현: useNodePerturbation 훅 — d3Force reheat 또는 rAF 기반 미세 위치 변동, GraphCanvas3D에 연결 | S | 7-7-1 | [ ] |
+| 7-7-2 | [조건부] 구현: useNodePerturbation 훅 — d3Force reheat 또는 rAF 기반 미세 위치 변동, GraphCanvas3D에 연결 | S | 7-7-1 | [x] |
 
 ### Phase 8: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
 
