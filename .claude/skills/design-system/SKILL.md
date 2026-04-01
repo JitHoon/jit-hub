@@ -43,6 +43,26 @@ allowed-tools: Read, Grep, Glob
 - JS(그래프 캔버스)에서는 `tokens.ts`의 `getPalette(dark)` 또는 `getGraphGray(dark)` 사용
 - 하드코딩된 색상값 금지 — 반드시 토큰 참조
 
+## 스타일링 규칙
+
+- **인라인 `style={{}}` 금지** — Tailwind 클래스로 대체
+- CSS 변수 참조 시 Tailwind arbitrary 값 사용: `text-[var(--color-text-muted)]`, `bg-[var(--color-surface)]`
+- 동적 스타일(조건부 클래스)은 `cn()` + Tailwind 조건부 조합:
+
+```tsx
+// ❌ 인라인 스타일
+<div style={{ opacity: phase === "visible" ? 0.6 : 0, position: "fixed" }} />
+
+// ✅ Tailwind + cn()
+<div className={cn(
+  "fixed bottom-8 left-1/2 -translate-x-1/2 text-sm text-[var(--color-text-muted)]",
+  phase === "visible" ? "opacity-60" : "opacity-0",
+)} />
+```
+
+- `transition`/`animation`이 JS 변수에 의존하는 경우(duration 등)만 예외적으로 `style` 허용 — 단, 위치·색상·크기는 여전히 Tailwind
+- `pointerEvents: "none"` → `pointer-events-none`, `whiteSpace: "nowrap"` → `whitespace-nowrap` 등 유틸리티 클래스로 변환
+
 ## 타이포그래피
 
 - **Display**: Lexend (`var(--font-lexend)`) — 영문 헤딩, 로고
