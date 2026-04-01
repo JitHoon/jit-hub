@@ -50,7 +50,7 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 | 7-3-2 | 연결: page.tsx에서 useLoadingSequence 소비 -- LoadingIndicator(loading phase), GraphCanvas3D opacity 전환(revealing phase, 500ms easeOut), CameraHint 표시(ready phase) 바인딩 (`src/app/page.tsx`) | S | 7-3-1 | [x] |
 | 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 영역에 transition-all 400ms cubic-bezier(0,0,0.2,1) 적용, ContentPanel에 translateX(100%)→0 + opacity 0→1 (400ms, delay 100ms) 적용 (`src/app/page.tsx`, `src/features/content/components/ContentPanel.tsx`) \| 완료 기준: 노드 클릭 시 그래프 width 축소(400ms)와 ContentPanel 슬라이드인(400ms, delay 100ms)이 시각적으로 연속 재생된다 | S | 7-1-3 | [x] |
 | 7-5 | 구현: 패널 닫기 애니메이션 -- CloseButton 클릭 시 패널 translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), useCameraControl.initCamera에 duration 파라미터 추가하여 카메라 초기 위치 복원(600ms), onInteractionEnd 재사용으로 자동 회전 3s 후 재개 (`src/app/page.tsx`, `src/features/content/components/ContentPanelWrapper.tsx`, `src/features/graph/hooks/useCameraControl.ts`) | S | 7-4 | [ ] |
-| 7-6-1 | 구현: 노드 전환 시 Three.js scale 애니메이션 -- 이전 노드 scale 1.5→1 (200ms), 새 노드 scale 1→1.5 (200ms easeOutBack) (`src/features/graph/hooks/useGraph3DRenderer.ts`) | S | 7-4 | [ ] |
+| 7-6-1 | 구현: 노드 전환 시 Three.js scale 애니메이션 -- 이전 노드 scale 1.5→1 (200ms), 새 노드 scale 1→1.5 (200ms easeOutBack) (`src/features/graph/hooks/useGraph3DRenderer.ts`) | S | 7-4 | [x] |
 | 7-6-2 | 구현: ContentPanel 본문 opacity 크로스페이드 -- 노드 전환 시 본문 영역 opacity 0→1 (300ms) 전환 (`src/features/content/components/ContentPanel.tsx`) | XS | 7-4 | [x] |
 | 7-7-1 | 검증: cooldownTicks:0 상태에서 노드 플로팅 효과 시각적 확인 (결과를 progress.md 메모에 기록) | XS | 7-3-2 | [ ] |
 | 7-7-2 | [조건부] 구현: useNodePerturbation 훅 — d3Force reheat 또는 rAF 기반 미세 위치 변동, GraphCanvas3D에 연결 | S | 7-7-1 | [ ] |
