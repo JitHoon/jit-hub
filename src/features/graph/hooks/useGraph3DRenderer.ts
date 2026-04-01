@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import SpriteText from "three-spritetext";
 
@@ -20,6 +20,7 @@ const HUB_DEGREE_THRESHOLD = 3;
 const HOVER_SCALE = 1.3;
 const ACTIVE_SCALE = 1.5;
 const DEFAULT_SCALE = 1;
+const SCALE_ANIM_DURATION_MS = 200;
 const HOVER_EMISSIVE_INTENSITY_DARK = 0.5;
 const ACTIVE_EMISSIVE_INTENSITY_DARK = 0.8;
 const HOVER_OPACITY = 0.9;
@@ -30,6 +31,16 @@ const ACTIVE_LEAF_OPACITY = 0.8;
 const LABEL_TEXT_HEIGHT = 3;
 const LABEL_OFFSET_Y_HUB = 12;
 const LABEL_OFFSET_Y_LEAF = 7;
+
+function easeIn(t: number): number {
+  return t * t * t;
+}
+
+function easeOutBack(t: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
 
 function buildDegreeMap(data: GraphData): Map<string, number> {
   const map = new Map<string, number>();
@@ -117,6 +128,66 @@ export function useGraph3DRenderer(
 
   const degreeMap = useMemo(() => buildDegreeMap(data), [data]);
   const groupCacheRef = useRef<Map<string, THREE.Group>>(new Map());
+  const prevSelectedNodeIdRef = useRef<string | undefined>(undefined);
+  const animationFrameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const prevId = prevSelectedNodeIdRef.current;
+    const nextId = selectedNodeId;
+    prevSelectedNodeIdRef.current = nextId;
+
+    if (prevId === nextId) return;
+
+    if (animationFrameRef.current !== null) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+
+    const startTime = performance.now();
+    const cache = groupCacheRef.current;
+
+    const prevGroup = prevId !== undefined ? cache.get(prevId) : undefined;
+    const nextGroup = nextId !== undefined ? cache.get(nextId) : undefined;
+
+    const prevStartScale = prevGroup ? prevGroup.scale.x : ACTIVE_SCALE;
+    const nextStartScale = nextGroup ? nextGroup.scale.x : DEFAULT_SCALE;
+
+    function tick(): void {
+      const elapsed = performance.now() - startTime;
+      const rawT = Math.min(elapsed / SCALE_ANIM_DURATION_MS, 1);
+
+      if (prevGroup) {
+        const t = easeIn(rawT);
+        prevGroup.scale.setScalar(
+          prevStartScale + (DEFAULT_SCALE - prevStartScale) * t,
+        );
+      }
+
+      if (nextGroup) {
+        const t = easeOutBack(rawT);
+        nextGroup.scale.setScalar(
+          nextStartScale + (ACTIVE_SCALE - nextStartScale) * t,
+        );
+      }
+
+      if (rawT < 1) {
+        animationFrameRef.current = requestAnimationFrame(tick);
+      } else {
+        animationFrameRef.current = null;
+        if (prevGroup) prevGroup.scale.setScalar(DEFAULT_SCALE);
+        if (nextGroup) nextGroup.scale.setScalar(ACTIVE_SCALE);
+      }
+    }
+
+    animationFrameRef.current = requestAnimationFrame(tick);
+
+    return () => {
+      if (animationFrameRef.current !== null) {
+        cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = null;
+      }
+    };
+  }, [selectedNodeId]);
 
   const nodeThreeObject = useCallback(
     (node: ForceGraph3DNode): THREE.Group => {
