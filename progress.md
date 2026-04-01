@@ -45,7 +45,7 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 | 7-1-1 | 구현: page.tsx에서 graph-data.json 읽어 GraphCanvas3D에 props 전달 (`src/app/page.tsx`) | S | - | [x] |
 | 7-1-2 | 구현: 선택된 노드의 MDX 콘텐츠를 서버에서 로딩하는 데이터 흐름 -- searchParams.node로 getNodeBySlug 호출, ContentPanel에 전달 (`src/app/page.tsx`) | S | 7-1-1 | [x] |
 | 7-1-3 | 구현: 그래프(좌) + ContentPanel(우) 분할 뷰 CSS 레이아웃 -- 노드 미선택 시 그래프 100%, 선택 시 그래프 38% + 패널 62% (`src/app/page.tsx`) | XS | 7-1-2 | [x] |
-| 7-2 | 수정: ThemeToggle z-index를 분할 뷰와 조화되는 값으로 조정 — ContentPanel/그래프 캔버스와 z-index 충돌 없이 항상 최상단 유지 확인 (`src/components/ThemeToggle.tsx`) | XS | 7-1-3 | [ ] |
+| 7-2 | 수정: ThemeToggle z-index를 분할 뷰와 조화되는 값으로 조정 — ContentPanel/그래프 캔버스와 z-index 충돌 없이 항상 최상단 유지 확인 (`src/components/ThemeToggle.tsx`) | XS | 7-1-3 | [x] |
 | 7-3-1 | 구현: useLoadingSequence 훅 -- phase 상태 머신(loading → revealing → ready) 관리, onEngineReady 콜백으로 phase 전환 트리거 (`src/features/graph/hooks/useLoadingSequence.ts`) | S | - | [x] |
 | 7-3-2 | 연결: page.tsx에서 useLoadingSequence 소비 -- LoadingIndicator(loading phase), GraphCanvas3D opacity 전환(revealing phase, 500ms easeOut), CameraHint 표시(ready phase) 바인딩 (`src/app/page.tsx`) | S | 7-3-1 | [x] |
 | 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 width 100%→38% (400ms easeOut), ContentPanel translateX(100%)→0 + opacity 0→1 (400ms easeOut, delay 100ms) | S | 7-1-3 | [ ] |
