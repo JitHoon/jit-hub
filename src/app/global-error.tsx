@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 interface GlobalErrorProps {
   error: Error & { digest?: string };
   reset: () => void;
