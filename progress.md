@@ -40,45 +40,46 @@ Phase 6 진행 중 → **콘텐츠 패널 + 분할 뷰** (6-1 ~ 6-5)
 
 ### Phase 7: 홈 페이지 조립 + 전환 애니메이션 · 브랜치: `feat/home-page-redesign`
 
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 7-1-1 | 구현: page.tsx에서 graph-data.json 읽어 GraphCanvas3D에 props 전달 (`src/app/page.tsx`) | S | [ ] |
-| 7-1-2 | 구현: 선택된 노드의 MDX 콘텐츠를 서버에서 로딩하는 데이터 흐름 -- searchParams.node로 getNodeBySlug 호출, ContentPanel에 전달 (`src/app/page.tsx`) | S | [ ] |
-| 7-1-3 | 구현: 그래프(좌) + ContentPanel(우) 분할 뷰 CSS 레이아웃 -- 노드 미선택 시 그래프 100%, 선택 시 그래프 38% + 패널 62% (`src/app/page.tsx`) | XS | [ ] |
-| 7-2 | 수정: ThemeToggle z-index를 분할 뷰와 조화되는 값으로 조정 — ContentPanel/그래프 캔버스와 z-index 충돌 없이 항상 최상단 유지 확인 (`src/components/ThemeToggle.tsx`) | XS | [ ] |
-| 7-3 | 구현: 초기 로딩 시퀀스 -- LoadingIndicator 표시 → 그래프 opacity 0→1 (500ms easeOut) → CameraHint 등장 → 자동 회전 시작 | S | [ ] |
-| 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 width 100%→38% (400ms easeOut), ContentPanel translateX(100%)→0 + opacity 0→1 (400ms easeOut, delay 100ms) | S | [ ] |
-| 7-5 | 구현: 패널 닫기 애니메이션 -- ContentPanel translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), 카메라 초기 위치 복원(600ms), 자동 회전 재개(3s 딜레이) | S | [ ] |
-| 7-6 | 구현: 다른 노드 클릭 시 콘텐츠 크로스페이드 -- 이전 노드 scale 1.5→1 (200ms), 카메라 이동(800ms), 새 노드 scale 1→1.5 (200ms easeOutBack), 본문 opacity 크로스페이드(300ms) | S | [ ] |
-| 7-7 | [조건부] 구현: 노드 플로팅 애니메이션 -- 빌드 후 시각적 확인 후 결정 (cooldownTicks:0 잔여 움직임으로 충분하면 제거, 아니면 perturbation 로직 추가) | S | [ ] |
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 7-1-1 | 구현: page.tsx에서 graph-data.json 읽어 GraphCanvas3D에 props 전달 (`src/app/page.tsx`) | S | - | [x] |
+| 7-1-2 | 구현: 선택된 노드의 MDX 콘텐츠를 서버에서 로딩하는 데이터 흐름 -- searchParams.node로 getNodeBySlug 호출, ContentPanel에 전달 (`src/app/page.tsx`) | S | 7-1-1 | [x] |
+| 7-1-3 | 구현: 그래프(좌) + ContentPanel(우) 분할 뷰 CSS 레이아웃 -- 노드 미선택 시 그래프 100%, 선택 시 그래프 38% + 패널 62% (`src/app/page.tsx`) | XS | 7-1-2 | [ ] |
+| 7-2 | 수정: ThemeToggle z-index를 분할 뷰와 조화되는 값으로 조정 — ContentPanel/그래프 캔버스와 z-index 충돌 없이 항상 최상단 유지 확인 (`src/components/ThemeToggle.tsx`) | XS | 7-1-3 | [ ] |
+| 7-3-1 | 구현: useLoadingSequence 훅 -- phase 상태 머신(loading → revealing → ready) 관리, onEngineReady 콜백으로 phase 전환 트리거 (`src/features/graph/hooks/useLoadingSequence.ts`) | S | - | [ ] |
+| 7-3-2 | 연결: page.tsx에서 useLoadingSequence 소비 -- LoadingIndicator(loading phase), GraphCanvas3D opacity 전환(revealing phase, 500ms easeOut), CameraHint 표시(ready phase) 바인딩 (`src/app/page.tsx`) | S | 7-3-1 | [ ] |
+| 7-4 | 구현: 노드 클릭 시 분할 뷰 전환 애니메이션 -- 그래프 width 100%→38% (400ms easeOut), ContentPanel translateX(100%)→0 + opacity 0→1 (400ms easeOut, delay 100ms) | S | 7-1-3 | [ ] |
+| 7-5 | 구현: 패널 닫기 애니메이션 -- ContentPanel translateX→100% + opacity→0 (300ms easeIn), 그래프 38%→100% (350ms easeOut), 카메라 초기 위치 복원(600ms), 자동 회전 재개(3s 딜레이) | S | 7-4 | [ ] |
+| 7-6 | 구현: 다른 노드 클릭 시 콘텐츠 크로스페이드 -- 이전 노드 scale 1.5→1 (200ms), 카메라 이동(800ms), 새 노드 scale 1→1.5 (200ms easeOutBack), 본문 opacity 크로스페이드(300ms) | S | 7-4 | [ ] |
+| 7-7 | [조건부] 구현: 노드 플로팅 애니메이션 -- 빌드 후 시각적 확인 후 결정 (cooldownTicks:0 잔여 움직임으로 충분하면 제거, 아니면 perturbation 로직 추가) | S | 7-3-2 | [ ] |
 
 ### Phase 8: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
 
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 8-1 | 구현: WebGL 지원 여부 사전 체크 + 폴백 UI 메시지 표시 | S | [ ] |
-| 8-2 | 구현: BackToGraphButton 컴포넌트 -- 모바일 전용, sticky top-0 z-10, 그래프로 복귀 (`src/features/graph/components/BackToGraphButton.tsx`) | XS | [ ] |
-| 8-3 | 구현: 반응형 레이아웃 -- md 미만에서 그래프 숨김 + ContentPanel w-full + BackToGraphButton 표시 | S | [ ] |
-| 8-4 | 추가: 접근성 -- 3D 캔버스 aria-label, 숨겨진 노드 목록, 키보드 탐색(Tab/Enter), Escape로 패널 닫기, 포커스 관리(패널 열림 시 h1, 닫기 시 이전 노드) | S | [ ] |
-| 8-5 | 추가: prefers-reduced-motion 대응 -- 자동 회전 비활성화, 전환 duration 0ms, 패널 등장 opacity만 유지(150ms), 노드 플로팅 비활성화 | S | [ ] |
-| 8-6 | 검증: 성능 프로파일링 -- 50개 노드 60fps 확인, 모바일 LOD(32seg→16seg), nodeThreeObject 캐싱 | S | [ ] |
-| 8-7 | 검증: E2E 테스트 -- 3D 그래프 렌더링 + 노드 클릭 + 분할 뷰 전환 (`test/e2e/home-3d.spec.ts`) | M | [ ] |
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 8-1 | 구현: WebGL 지원 여부 사전 체크 + 폴백 UI 메시지 표시 | S | - | [ ] |
+| 8-2 | 구현: BackToGraphButton 컴포넌트 -- 모바일 전용, sticky top-0 z-10, 그래프로 복귀 (`src/features/graph/components/BackToGraphButton.tsx`) | XS | - | [ ] |
+| 8-3 | 구현: 반응형 레이아웃 -- md 미만에서 그래프 숨김 + ContentPanel w-full + BackToGraphButton 표시 | S | 8-2 | [ ] |
+| 8-4 | 추가: 접근성 -- 3D 캔버스 aria-label, 숨겨진 노드 목록, 키보드 탐색(Tab/Enter), Escape로 패널 닫기, 포커스 관리(패널 열림 시 h1, 닫기 시 이전 노드) | S | - | [ ] |
+| 8-5 | 추가: prefers-reduced-motion 대응 -- 자동 회전 비활성화, 전환 duration 0ms, 패널 등장 opacity만 유지(150ms), 노드 플로팅 비활성화 | S | - | [ ] |
+| 8-6 | 검증: 성능 프로파일링 -- 50개 노드 60fps 확인, 모바일 LOD(32seg→16seg), nodeThreeObject 캐싱 | S | - | [ ] |
+| 8-7 | 검증: E2E 테스트 -- 3D 그래프 렌더링 + 노드 클릭 + 분할 뷰 전환 (`test/e2e/home-3d.spec.ts`) | M | 8-1, 8-3, 8-4 | [ ] |
 
 ### Phase 9: 라우팅 & SEO · 브랜치: `feat/seo`
 
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 9-1 | /nodes/[slug] 정적 페이지 | M | [ ] |
-| 9-2 | JSON-LD 구조화 데이터 | S | [ ] |
-| 9-3 | sitemap.xml + robots.txt | S | [ ] |
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 9-1 | /nodes/[slug] 정적 페이지 | M | - | [ ] |
+| 9-2 | JSON-LD 구조화 데이터 | S | 9-1 | [ ] |
+| 9-3 | sitemap.xml + robots.txt | S | 9-1 | [ ] |
 
 ### Phase 10: 배포 · 브랜치: `feat/deploy`
 
-| # | 작업 | 크기 | 상태 |
-|---|------|------|------|
-| 10-1 | Vercel 배포 설정 | S | [ ] |
-| 10-2 | GitHub Actions CI | S | [ ] |
-| 10-3 | 커스텀 도메인 | S | [ ] |
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 10-1 | Vercel 배포 설정 | S | - | [ ] |
+| 10-2 | GitHub Actions CI | S | 10-1 | [ ] |
+| 10-3 | 커스텀 도메인 | S | 10-1 | [ ] |
 
 ---
 
