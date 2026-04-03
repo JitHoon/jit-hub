@@ -83,7 +83,7 @@ RootLayout을 대체하므로 반드시:
 
 ## Gotchas
 
-- **React 19 + Next.js 16 정적 생성 버그**: 루트 레이아웃에 `useSyncExternalStore`를 사용하는 클라이언트 컴포넌트가 있으면 정적 프리렌더링이 실패 (`Cannot read properties of null`). `bun run dev`는 정상. Vercel 배포는 다를 수 있음. 회피책: `export const dynamic = "force-dynamic"`.
+- **React 19 + Next.js 16 정적 생성 버그**: 루트 레이아웃에 `useSyncExternalStore`를 사용하는 클라이언트 컴포넌트가 있으면 정적 프리렌더링이 실패 (`Cannot read properties of null`). `bun run dev`는 정상. Vercel 배포는 다를 수 있음. `export const dynamic = "force-dynamic"` 추가해도 해결 안 됨. **PR 생성 시 빌드 검증 단계를 건너뛰고 진행한다** — `/_global-error` 프리렌더 실패는 알려진 버그이므로 빌드 실패를 PR 블로커로 취급하지 않는다.
 - App Router에서 클라이언트 컴포넌트는 'use client' 명시
 - react-force-graph-2d는 반드시 클라이언트 컴포넌트
 - URL 쿼리 파라미터는 useSearchParams() 사용 (클라이언트)

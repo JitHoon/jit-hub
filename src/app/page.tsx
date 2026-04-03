@@ -1,7 +1,44 @@
-export default function Home() {
+import fs from "node:fs";
+import path from "node:path";
+
+import { getNodeBySlug } from "@/features/content/utils/pipeline";
+import { MdxRenderer } from "@/features/content/components";
+import type { GraphData } from "@/features/graph/types/graph";
+import HomeLayout from "./HomeLayout";
+
+function loadGraphData(): GraphData {
+  const filePath = path.join(process.cwd(), "graph-data.json");
+  const raw = fs.readFileSync(filePath, "utf-8");
+  return JSON.parse(raw) as GraphData;
+}
+
+interface HomePageProps {
+  searchParams: Promise<{ node?: string }>;
+}
+
+export default async function Home({
+  searchParams,
+}: HomePageProps): Promise<React.ReactElement> {
+  const graphData = loadGraphData();
+  const { node: nodeSlug } = await searchParams;
+
+  const selectedNode = nodeSlug ? getNodeBySlug(nodeSlug) : null;
+
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-4xl font-bold">JIT-Hub</h1>
-    </main>
+    <HomeLayout
+      graphData={graphData}
+      selectedNode={
+        selectedNode
+          ? {
+              title: selectedNode.frontmatter.title,
+              cluster: selectedNode.frontmatter.cluster,
+              difficulty: selectedNode.frontmatter.difficulty,
+            }
+          : null
+      }
+      mdxContent={
+        selectedNode ? <MdxRenderer source={selectedNode.content} /> : null
+      }
+    />
   );
 }

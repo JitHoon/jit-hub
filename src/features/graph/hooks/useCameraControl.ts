@@ -28,7 +28,7 @@ function resolveControls(raw: object): OrbitControlsLike | null {
 }
 
 interface UseCameraControlReturn {
-  initCamera: () => void;
+  initCamera: (duration?: number) => void;
   setAutoRotate: (enabled: boolean) => void;
   focusNode: (node: ForceGraph3DNode) => void;
   onInteractionEnd: () => void;
@@ -39,14 +39,18 @@ export function useCameraControl(
 ): UseCameraControlReturn {
   const autoRotateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const initCamera = useCallback((): void => {
-    const fg = graphRef.current;
-    if (!fg) return;
-    fg.cameraPosition(
-      { x: INITIAL_CAMERA.x, y: INITIAL_CAMERA.y, z: INITIAL_CAMERA.z },
-      { x: 0, y: 0, z: 0 },
-    );
-  }, [graphRef]);
+  const initCamera = useCallback(
+    (duration?: number): void => {
+      const fg = graphRef.current;
+      if (!fg) return;
+      fg.cameraPosition(
+        { x: INITIAL_CAMERA.x, y: INITIAL_CAMERA.y, z: INITIAL_CAMERA.z },
+        { x: 0, y: 0, z: 0 },
+        duration,
+      );
+    },
+    [graphRef],
+  );
 
   const setAutoRotate = useCallback(
     (enabled: boolean): void => {

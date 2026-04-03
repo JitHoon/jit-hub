@@ -6,3 +6,17 @@ argument-hint: "[태스크 번호 예: 5-2]"
 현재 브랜치: !`git branch --show-current`
 
 think-reviewer 서브에이전트를 사용하여 다음 태스크를 분석하라: $ARGUMENTS
+
+에이전트 지침:
+- 프로젝트 루트: /Users/jihoon/Documents/jit-hub
+- progress.md 경로: /Users/jihoon/Documents/jit-hub/progress.md
+- 분석이 끝나면 반드시 AskUserQuestion 툴로 단계 5(수정 여부 확인)까지 진행하라
+- 사용자가 A 또는 B를 선택하면 progress.md를 실제로 수정하고 완료 메시지를 출력하라
+- 사용자 응답 없이 분석 결과만 출력하고 종료하지 말 것
+- **progress.md 테이블 형식**: 태스크 행은 반드시 `| # | 작업 | 크기 | 의존 | 상태 |` 5컬럼으로 작성한다. 의존 항목이 없으면 `-`로 표기한다. 의존 컬럼을 생략하지 않는다.
+
+오케스트레이터(Claude) 지침:
+- 에이전트 실행이 끝나면 반드시 에이전트의 전체 분석 내용을 사용자에게 그대로 출력하라
+- 분석 내용 없이 "A/B/C 선택해 주세요"만 출력하는 것은 금지
+- 에이전트가 AskUserQuestion으로 수정 여부를 물었다면, 그 질문도 사용자에게 전달하라
+- 사용자의 A/B/C 답변을 받으면, 에이전트가 아직 살아 있으면 SendMessage로 전달하고, 에이전트가 종료된 경우에는 오케스트레이터가 직접 progress.md를 수정하라

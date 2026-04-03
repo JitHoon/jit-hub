@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
@@ -9,8 +9,17 @@ import type { ForceGraph3DNode } from "../types/layout";
 import { useCameraControl } from "../hooks/useCameraControl";
 import { useGraph3DRenderer } from "../hooks/useGraph3DRenderer";
 import { useGraphLayout } from "../hooks/useGraphLayout";
+import { useNodePerturbation } from "../hooks/useNodePerturbation";
 import { useNodeSelection } from "../hooks/useNodeSelection";
 import { useScene3D } from "../hooks/useScene3D";
+
+// three-render-objects, 3d-force-graph 내부에서 사용하는 THREE.Clock이
+// three.js r183에서 deprecated되어 발생하는 경고를 억제
+const _warn = console.warn.bind(console);
+console.warn = (...args: unknown[]) => {
+  if (typeof args[0] === "string" && args[0].includes("THREE.Clock")) return;
+  _warn(...args);
+};
 
 type TypedForceGraph3DProps = ForceGraphProps<GraphNode, GraphEdge> & {
   ref?: React.MutableRefObject<ForceGraphMethods | undefined>;
@@ -24,16 +33,23 @@ const CHARGE_STRENGTH = -120;
 const LINK_DISTANCE = 80;
 const WARMUP_TICKS = 100;
 const COOLDOWN_TICKS = 0;
+const PANEL_CLOSE_CAMERA_DURATION_MS = 600;
+const LAYOUT_TRANSITION_MS = 400;
 
 interface GraphCanvas3DProps {
   graphData: GraphData;
+  onEngineReady?: () => void;
+  style?: React.CSSProperties;
 }
 
 export function GraphCanvas3D({
   graphData,
+  onEngineReady: onEngineReadyProp,
+  style,
 }: GraphCanvas3DProps): React.ReactElement {
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const hasInitPhysics = useRef(false);
+  const [engineReady, setEngineReady] = useState(false);
 
   const fg3dData = useMemo(
     () => ({
@@ -52,6 +68,20 @@ export function GraphCanvas3D({
   const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
+  const perturbationActive = engineReady && selectedNodeId === null;
+  useNodePerturbation(fg3dData.nodes as ForceGraph3DNode[], perturbationActive);
+
+  const prevSelectedNodeIdRef = useRef<string | null>(undefined);
+
+  useEffect(() => {
+    const prev = prevSelectedNodeIdRef.current;
+    prevSelectedNodeIdRef.current = selectedNodeId;
+
+    if (prev !== null && prev !== undefined && selectedNodeId === null) {
+      initCamera(PANEL_CLOSE_CAMERA_DURATION_MS);
+      onInteractionEnd();
+    }
+  }, [selectedNodeId, initCamera, onInteractionEnd]);
 
   const handleEngineStop = useCallback((): void => {
     if (hasInitPhysics.current) return;
@@ -66,25 +96,32 @@ export function GraphCanvas3D({
       if (linkFn) linkFn.distance(LINK_DISTANCE);
     }
 
+    setEngineReady(true);
     onEngineReady();
+    onEngineReadyProp?.();
     initCamera();
     setAutoRotate(true);
-  }, [onEngineReady, initCamera, setAutoRotate]);
+  }, [onEngineReady, onEngineReadyProp, initCamera, setAutoRotate]);
 
   const handleNodeClick = useCallback(
     (node: ForceGraph3DNode): void => {
       const graphNode = node as ForceGraph3DNode & { id?: string };
       const id = graphNode.id;
       if (!id) return;
+      const isFirstSelection = selectedNodeId === null;
       selectNode(id);
-      focusNode(node);
+      if (isFirstSelection) {
+        setTimeout(() => focusNode(node), LAYOUT_TRANSITION_MS);
+      } else {
+        focusNode(node);
+      }
       onInteractionEnd();
     },
-    [selectNode, focusNode, onInteractionEnd],
+    [selectNode, focusNode, onInteractionEnd, selectedNodeId],
   );
 
   return (
-    <div ref={containerRef} className="h-full w-full">
+    <div ref={containerRef} className="h-full w-full" style={style}>
       <ForceGraph3D
         ref={graphRef}
         graphData={fg3dData}
@@ -96,9 +133,11 @@ export function GraphCanvas3D({
         nodeThreeObject={nodeThreeObject}
         nodeThreeObjectExtend={false}
         linkColor={linkColor}
+        linkWidth={1}
         onNodeClick={handleNodeClick}
         onNodeHover={onNodeHover}
         onEngineStop={handleEngineStop}
+        showNavInfo={false}
       />
     </div>
   );
