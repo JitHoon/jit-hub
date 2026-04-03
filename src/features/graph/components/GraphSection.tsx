@@ -1,12 +1,17 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import LoadingIndicator from "@/components/LoadingIndicator";
 import {
   useLoadingSequence,
   REVEALING_DURATION_MS,
 } from "../hooks/useLoadingSequence";
-import { GraphCanvas3D } from "./GraphCanvas3D";
 import type { GraphData } from "../types/graph";
+
+const GraphCanvas3D = dynamic(
+  () => import("./GraphCanvas3D").then((m) => m.GraphCanvas3D),
+  { ssr: false },
+);
 
 interface GraphSectionProps {
   graphData: GraphData;
