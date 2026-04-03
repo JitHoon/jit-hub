@@ -6,13 +6,12 @@
 |---|------|------|------|------|
 | 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치 | S | - | [x] |
 | 8-3 | 재작성: HomeLayout을 세로 스크롤 구조로 전환 (flex-col min-h-screen) + SiteHeader 배치 | S | 8-1, 8-2 | [x] |
-| 8-4 | 수정: HomeLayout 내 GraphSection 래퍼에 `h-[calc(100vh-56px)]` 적용하여 헤더 제외 뷰포트 채움 | XS | 8-3 | [ ] |
 
 ---
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-5-1, 8-5-2, 8-5-4, 8-7-1, 8-7-2 완료** → 다음: 8-4 GraphSection 높이 적용 또는 8-8-1 ContentSection 조건부 렌더링
+Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-4, 8-7-1, 8-7-2 완료** → 다음: 8-8-1 ContentSection 조건부 렌더링
 
 ## 완료된 Phase 요약
 
