@@ -4,14 +4,14 @@
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치 | S | - | [ ] |
+| 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치 | S | - | [x] |
 | 8-7-2 | 구현: ContentSection 컴포넌트 조립 (`src/features/content/components/ContentSection.tsx` — ContentHeader + MdxRenderer 본문 + section 래퍼) | S | 8-7-1 | [ ] |
 
 ---
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4, 8-7-1 완료** → 다음: 8-1 SiteHeader 구현 또는 8-7-2 ContentSection 구현
+Phase 8 진행 중 — **8-1, 8-2, 8-5-1, 8-5-2, 8-5-4, 8-7-1 완료** → 다음: 8-3 HomeLayout 세로 스크롤 전환 또는 8-7-2 ContentSection 구현
 
 ## 완료된 Phase 요약
 
