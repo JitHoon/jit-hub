@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import SiteHeader from "@/components/SiteHeader";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { GraphSection } from "@/features/graph/components/GraphSection";
 import type { GraphData } from "@/features/graph/types/graph";
 
@@ -41,6 +42,7 @@ export default function HomeLayout({
           <div className="overflow-hidden">{contentSection}</div>
         </div>
       </main>
+      <ScrollToTopButton targetRef={contentRef} />
     </div>
   );
 }
