@@ -122,6 +122,17 @@ function getLabelFromGroup(group: THREE.Group): SpriteText {
   return group.children[1] as SpriteText;
 }
 
+function getLabelOpacity(label: SpriteText): number {
+  return (label.material as THREE.SpriteMaterial).opacity;
+}
+
+function setLabelOpacity(label: SpriteText, value: number): void {
+  const mat = label.material as THREE.SpriteMaterial;
+  mat.transparent = true;
+  mat.opacity = value;
+  mat.needsUpdate = true;
+}
+
 function rebuildGroupChildren(
   group: THREE.Group,
   graphNode: GraphNode,
@@ -161,7 +172,7 @@ function createNodeGroup(
   const gray = getGraphGray(isDark);
   const label = new SpriteText(graphNode.title, LABEL_TEXT_HEIGHT, gray.label);
   label.position.y = isHub ? LABEL_OFFSET_Y_HUB : LABEL_OFFSET_Y_LEAF;
-  label.opacity = LABEL_OPACITY_DEFAULT;
+  setLabelOpacity(label, LABEL_OPACITY_DEFAULT);
   label.raycast = () => undefined;
 
   const group = new THREE.Group();
@@ -420,21 +431,23 @@ export function useGraph3DRenderer(
 
           // Fade out label
           const prevLabel = getLabelFromGroup(prevGroup);
-          const fromLabelOpacity = prevLabel.opacity;
+          const fromLabelOpacity = getLabelOpacity(prevLabel);
           const fadeOutStart = performance.now();
 
           function tickLabelFadeOut(): void {
             const elapsed = performance.now() - fadeOutStart;
             const rawT = Math.min(elapsed / LABEL_FADE_OUT_MS, 1);
             const t = easeInOut(rawT);
-            prevLabel.opacity =
-              fromLabelOpacity + (LABEL_OPACITY_DEFAULT - fromLabelOpacity) * t;
+            setLabelOpacity(
+              prevLabel,
+              fromLabelOpacity + (LABEL_OPACITY_DEFAULT - fromLabelOpacity) * t,
+            );
             if (rawT < 1) {
               labelFadeAnimFrameRef.current =
                 requestAnimationFrame(tickLabelFadeOut);
             } else {
               labelFadeAnimFrameRef.current = null;
-              prevLabel.opacity = LABEL_OPACITY_DEFAULT;
+              setLabelOpacity(prevLabel, LABEL_OPACITY_DEFAULT);
             }
           }
 
@@ -524,21 +537,23 @@ export function useGraph3DRenderer(
 
           // Fade in label
           const label = getLabelFromGroup(group);
-          const fromLabelOpacity = label.opacity;
+          const fromLabelOpacity = getLabelOpacity(label);
           const fadeInStart = performance.now();
 
           function tickLabelFadeIn(): void {
             const elapsed = performance.now() - fadeInStart;
             const rawT = Math.min(elapsed / LABEL_FADE_IN_MS, 1);
             const t = easeInOut(rawT);
-            label.opacity =
-              fromLabelOpacity + (LABEL_OPACITY_HOVER - fromLabelOpacity) * t;
+            setLabelOpacity(
+              label,
+              fromLabelOpacity + (LABEL_OPACITY_HOVER - fromLabelOpacity) * t,
+            );
             if (rawT < 1) {
               labelFadeAnimFrameRef.current =
                 requestAnimationFrame(tickLabelFadeIn);
             } else {
               labelFadeAnimFrameRef.current = null;
-              label.opacity = LABEL_OPACITY_HOVER;
+              setLabelOpacity(label, LABEL_OPACITY_HOVER);
             }
           }
 
