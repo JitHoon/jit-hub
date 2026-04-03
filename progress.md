@@ -10,7 +10,7 @@
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-2 완료** (ThemeToggle fixed 제거 + layout.tsx 직접 렌더링 제거) → 다음: 8-1 SiteHeader 구현
+Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4 완료** → 다음: 8-1 SiteHeader 구현
 
 ## 완료된 Phase 요약
 
@@ -34,43 +34,24 @@ Phase 8 진행 중 — **8-2 완료** (ThemeToggle fixed 제거 + layout.tsx 직
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
 | 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치. fixed 상태의 ThemeToggle과 충돌하므로 layout.tsx 배치는 8-3에서 수행 | S | - | [ ] |
-<!-- 완료 기준: SiteHeader 컴포넌트가 렌더링 시 sticky top-0 헤더에 로고/Projects/ThemeToggle이 표시됨 -->
 | 8-2 | 수정: ThemeToggle에서 fixed 포지셔닝 제거 + layout.tsx에서 직접 렌더링 제거 | XS | - | [x] |
-<!-- 완료 기준: ThemeToggle이 fixed 위치가 아닌 부모 flow에 따라 배치됨 -->
 | 8-3 | 재작성: HomeLayout을 세로 스크롤 구조로 전환 (flex-col min-h-screen) + SiteHeader 배치 | S | 8-1, 8-2 | [ ] |
-<!-- 완료 기준: 페이지가 세로 스크롤 가능하고 SiteHeader 아래에 그래프가 뷰포트를 채움 -->
 | 8-4 | 수정: HomeLayout 내 GraphSection 래퍼에 `h-[calc(100vh-56px)]` 적용하여 헤더 제외 뷰포트 채움 | XS | 8-3 | [ ] |
-<!-- 완료 기준: 그래프 영역이 헤더(56px) 제외 뷰포트 전체 높이를 차지함 -->
-| 8-5-1 | 수정: useGraph3DRenderer 호버 scale 값을 1.3 → 1.1로 조정 (리프 노드도 동일 적용) | XS | - | [ ] |
-<!-- 완료 기준: 모든 노드 호버 시 scale 1.1 적용, 허브/리프 구분 없이 동작 -->
-| 8-5-2 | 구현: 호버 시 플로팅 정지 — useNodePerturbation에 hoveredNodeId 전달하여 해당 노드만 스킵 | XS | - | [ ] |
-<!-- 완료 기준: 호버된 노드만 플로팅이 멈추고 나머지 노드는 계속 플로팅 -->
+| 8-5-1 | 수정: useGraph3DRenderer 호버 scale 값을 1.3 → 1.1로 조정 (리프 노드도 동일 적용) | XS | - | [x] |
+| 8-5-2 | 구현: 호버 시 플로팅 정지 — useNodePerturbation에 hoveredNodeId 전달하여 해당 노드만 스킵 | XS | - | [x] |
 | 8-5-3 | 구현: 호버 시 glow 효과 — MeshStandardMaterial(emissive) 또는 sprite overlay | S | 8-5-1 | [ ] |
-<!-- 완료 기준: 호버 노드 주변에 cluster.color 기반 발광 효과가 보임 -->
-| 8-5-4 | 수정: 호버 시 라벨 활성화 — 기본 라벨 숨김(opacity 0) + 호버 시 페이드 인 | XS | - | [ ] |
-<!-- 완료 기준: 비호버 노드 라벨 투명, 호버 노드 라벨 표시 -->
+| 8-5-4 | 수정: 호버 시 라벨 활성화 — 기본 라벨 숨김(opacity 0) + 호버 시 페이드 인 | XS | - | [x] |
 | 8-6 | 수정: 3D 그래프 노드 선택 상태 -- cluster.color 유지 + scale/glow 해제 + 나머지 노드 opacity 0.3 + 엣지 opacity 0.15 | S | 8-5-3 | [ ] |
-<!-- 완료 기준: 선택 노드는 킥 컬러 유지, 비선택 노드/엣지는 반투명 처리됨 -->
 | 8-7-1 | 구현: ContentHeader 컴포넌트 생성 (`src/features/content/components/ContentHeader.tsx` — ClusterBadge + DifficultyLabel + h1 타이틀) | S | - | [ ] |
-<!-- 완료 기준: ContentHeader가 cluster/difficulty/title props를 받아 헤더 영역을 정상 렌더링함 -->
 | 8-7-2 | 구현: ContentSection 컴포넌트 조립 (`src/features/content/components/ContentSection.tsx` — ContentHeader + MdxRenderer 본문 + section 래퍼) | S | 8-7-1 | [ ] |
-<!-- 완료 기준: ContentSection이 노드 데이터를 받아 제목/뱃지/MDX 본문을 정상 렌더링함 -->
 | 8-8-1 | 구현: HomeLayout에 ContentSection 조건부 렌더링 + grid-template-rows 0fr→1fr 슬라이드 다운 애니메이션 | S | 8-3, 8-7-2 | [ ] |
-<!-- 완료 기준: 노드 클릭 시 콘텐츠가 350ms ease-out으로 슬라이드 다운됨 -->
 | 8-8-2 | 구현: 콘텐츠 펼침 시 scrollIntoView 자동 스크롤 + ref 연결 | XS | 8-8-1 | [ ] |
-<!-- 완료 기준: 콘텐츠 펼침 완료 후 콘텐츠 영역으로 자동 스크롤됨 -->
 | 8-9 | 구현: 콘텐츠 전환 처리 -- 다른 노드 클릭 시 opacity 크로스페이드 + 본문 상단 스크롤 | S | 8-8-2 | [ ] |
-<!-- 완료 기준: 이미 펼쳐진 상태에서 다른 노드 클릭 시 깜빡임 없이 콘텐츠 교체됨 -->
 | 8-10 | 구현: `src/components/ScrollToTopButton.tsx` 생성 -- fixed bottom-8 right-8 FAB, 콘텐츠 영역이 뷰포트에 보일 때(IntersectionObserver) fade-in+scale 등장 (200ms), 클릭 시 window.scrollTo top:0 | S | 8-8-2 | [ ] |
-<!-- 완료 기준: 콘텐츠 영역이 뷰포트에 보일 때(IntersectionObserver) 버튼이 fade-in+scale로 등장하고 클릭 시 최상단으로 smooth 스크롤됨 -->
 | 8-11 | 정리: 기존 분할 뷰 파일 4개 삭제 (CloseButton, PanelHeader, ContentPanel, ContentPanelWrapper) + index.ts에서 re-export 제거 | XS | 8-8-2 | [ ] |
-<!-- 완료 기준: 4개 파일 삭제 + index.ts 정리 + 빌드 에러 없음 -->
 | 8-12-1 | 생성: `src/app/nodes/[slug]/page.tsx` — generateStaticParams + generateMetadata + 기본 렌더링 (title, cluster, difficulty, MDX 본문) | S | - | [ ] |
-<!-- 완료 기준: bun run build 성공 + /nodes/cesium-mouse-events 접속 시 노드 콘텐츠가 정적 페이지로 표시됨 -->
 | 8-12-2 | 처리: 존재하지 않는 slug 접근 시 notFound() 호출 + Phase 10-1 중복 태스크 삭제 반영 | XS | 8-12-1 | [ ] |
-<!-- 완료 기준: /nodes/nonexistent-slug 접근 시 404 페이지 표시 + Phase 10 테이블에서 10-1 제거 또는 완료 처리 -->
 | 8-13 | 검증: Phase 8 통합 빌드 확인 + 데스크톱 브라우저 스모크 테스트 (빌드 성공, 노드 클릭-콘텐츠 펼침-전환-스크롤 정상 동작) | XS | 8-8-2, 8-10 | [ ] |
-<!-- 완료 기준: bun run build 성공 + 데스크톱 Chrome에서 노드 클릭→콘텐츠 펼침→다른 노드 전환→ScrollToTop 동작 확인 -->
 
 ### Phase 9: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
 
