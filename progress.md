@@ -34,7 +34,7 @@ Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4, 8-7-1 완료** → 다음: 8-
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치. fixed 상태의 ThemeToggle과 충돌하므로 layout.tsx 배치는 8-3에서 수행 | S | - | [ ] |
+| 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치. fixed 상태의 ThemeToggle과 충돌하므로 layout.tsx 배치는 8-3에서 수행 | S | - | [x] |
 | 8-2 | 수정: ThemeToggle에서 fixed 포지셔닝 제거 + layout.tsx에서 직접 렌더링 제거 | XS | - | [x] |
 | 8-3 | 재작성: HomeLayout을 세로 스크롤 구조로 전환 (flex-col min-h-screen) + SiteHeader 배치 | S | 8-1, 8-2 | [ ] |
 | 8-4 | 수정: HomeLayout 내 GraphSection 래퍼에 `h-[calc(100vh-56px)]` 적용하여 헤더 제외 뷰포트 채움 | XS | 8-3 | [ ] |
