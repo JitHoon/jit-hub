@@ -36,6 +36,16 @@
         ]
       },
       {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "TOOL_INPUT=\"$CLAUDE_TOOL_INPUT\"; if echo \"$TOOL_INPUT\" | grep -qE 'git\\s+commit'; then STAGED=$(git diff --cached --name-only -- '*.ts' '*.tsx' '*.js' '*.jsx' 2>/dev/null); if [ -n \"$STAGED\" ]; then SECRETS=$(git diff --cached -U0 -- $STAGED 2>/dev/null | grep -iE '(password|secret|api_key|api.key|private.key)\\s*=' | head -5); if [ -n \"$SECRETS\" ]; then echo '{\"block\": true, \"message\": \"민감 정보가 staged 파일에 포함되어 있습니다. 확인 후 다시 커밋하세요.\"}' >&2; exit 2; fi; DEBUG=$(git diff --cached -U0 -- $STAGED 2>/dev/null | grep -E '^\\+.*(console\\.log|debugger)' | head -5); if [ -n \"$DEBUG\" ]; then printf '{\"feedback\": \"[commit-quality] staged 파일에 console.log 또는 debugger가 포함되어 있습니다. 제거를 권장합니다.\"}' >&2; fi; fi; fi",
+            "timeout": 10
+          }
+        ]
+      },
+      {
         "matcher": "AskUserQuestion",
         "hooks": [
           {
