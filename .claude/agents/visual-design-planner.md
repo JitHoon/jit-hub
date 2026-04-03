@@ -50,8 +50,8 @@ maxTurns: 30
 
 `visual-spec` Skill의 VSpec 형식으로 문서를 작성한다.
 
-출력 경로: `.claude/docs/designs/[slug]-vspec.md`
-- slug는 인자로 받은 컴포넌트명/슬러그를 kebab-case로 변환
-- 같은 파일이 존재하면 `[slug]-vspec-v2.md`로 저장
+출력 경로: `.claude/docs/planning/[slug]/VISUAL_SPEC.md`
+- slug는 인자로 받은 기획 슬러그를 그대로 사용 (예: `home-redesign-v2`)
+- 같은 파일이 존재하면 내용을 덮어쓰기 전에 사용자에게 확인
 
 생성 후 사용자에게 확인: "이 VSpec을 바탕으로 `/plan` 또는 `/next`로 구현을 시작하시겠습니까?"
