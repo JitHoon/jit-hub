@@ -11,7 +11,7 @@
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 8-7-2, 8-8-1, 8-8-2, 8-11, 8-12-1, 8-12-2 완료** → 다음: 8-6 선택 상태 또는 8-9 콘텐츠 전환
+Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 8-7-2, 8-8-1, 8-8-2, 8-12-1, 8-12-2 완료** → 다음: 8-6 선택 상태 또는 8-9 콘텐츠 전환
 
 ## 완료된 Phase 요약
 
@@ -49,7 +49,7 @@ Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 
 | 8-8-2 | 구현: 콘텐츠 펼침 시 scrollIntoView 자동 스크롤 + ref 연결 | XS | 8-8-1 | [x] |
 | 8-9 | 구현: 콘텐츠 전환 처리 -- 다른 노드 클릭 시 opacity 크로스페이드 + 본문 상단 스크롤 | S | 8-8-2 | [ ] |
 | 8-10 | 구현: `src/components/ScrollToTopButton.tsx` 생성 -- fixed bottom-8 right-8 FAB, 콘텐츠 영역이 뷰포트에 보일 때(IntersectionObserver) fade-in+scale 등장 (200ms), 클릭 시 window.scrollTo top:0 | S | 8-8-2 | [ ] |
-| 8-11 | 정리: 기존 분할 뷰 파일 4개 삭제 (CloseButton, PanelHeader, ContentPanel, ContentPanelWrapper) + index.ts에서 re-export 제거 | XS | 8-8-2 | [x] |
+| 8-11 | 정리: 기존 분할 뷰 파일 4개 삭제 (CloseButton, PanelHeader, ContentPanel, ContentPanelWrapper) + index.ts에서 re-export 제거 | XS | 8-8-2 | [ ] |
 | 8-12-1 | 생성: `src/app/nodes/[slug]/page.tsx` — generateStaticParams + generateMetadata + 기본 렌더링 (title, cluster, difficulty, MDX 본문) | S | - | [x] |
 | 8-12-2 | 처리: 존재하지 않는 slug 접근 시 notFound() 호출 + Phase 10-1 중복 태스크 삭제 반영 | XS | 8-12-1 | [x] |
 | 8-13 | 검증: Phase 8 통합 빌드 확인 + 데스크톱 브라우저 스모크 테스트 (빌드 성공, 노드 클릭-콘텐츠 펼침-전환-스크롤 정상 동작) | XS | 8-8-2, 8-10 | [ ] |
