@@ -1,8 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { getNodeBySlug } from "@/features/content/utils/pipeline";
-import { MdxRenderer } from "@/features/content/components";
 import type { GraphData } from "@/features/graph/types/graph";
 import HomeLayout from "./HomeLayout";
 
@@ -12,33 +10,8 @@ function loadGraphData(): GraphData {
   return JSON.parse(raw) as GraphData;
 }
 
-interface HomePageProps {
-  searchParams: Promise<{ node?: string }>;
-}
-
-export default async function Home({
-  searchParams,
-}: HomePageProps): Promise<React.ReactElement> {
+export default function Home(): React.ReactElement {
   const graphData = loadGraphData();
-  const { node: nodeSlug } = await searchParams;
 
-  const selectedNode = nodeSlug ? getNodeBySlug(nodeSlug) : null;
-
-  return (
-    <HomeLayout
-      graphData={graphData}
-      selectedNode={
-        selectedNode
-          ? {
-              title: selectedNode.frontmatter.title,
-              cluster: selectedNode.frontmatter.cluster,
-              difficulty: selectedNode.frontmatter.difficulty,
-            }
-          : null
-      }
-      mdxContent={
-        selectedNode ? <MdxRenderer source={selectedNode.content} /> : null
-      }
-    />
-  );
+  return <HomeLayout graphData={graphData} />;
 }
