@@ -11,7 +11,7 @@
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 8-7-2, 8-12-1, 8-12-2 완료** → 다음: 8-6 선택 상태 또는 8-8-1 ContentSection 조건부 렌더링
+Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 8-7-2, 8-8-1, 8-8-2, 8-12-1, 8-12-2 완료** → 다음: 8-6 선택 상태 또는 8-9 콘텐츠 전환
 
 ## 완료된 Phase 요약
 
@@ -37,7 +37,7 @@ Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 
 | 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치. fixed 상태의 ThemeToggle과 충돌하므로 layout.tsx 배치는 8-3에서 수행 | S | - | [x] |
 | 8-2 | 수정: ThemeToggle에서 fixed 포지셔닝 제거 + layout.tsx에서 직접 렌더링 제거 | XS | - | [x] |
 | 8-3 | 재작성: HomeLayout을 세로 스크롤 구조로 전환 (flex-col min-h-screen) + SiteHeader 배치 | S | 8-1, 8-2 | [x] |
-| 8-4 | 수정: HomeLayout 내 GraphSection 래퍼에 `h-[calc(100vh-56px)]` 적용하여 헤더 제외 뷰포트 채움 | XS | 8-3 | [ ] |
+| 8-4 | 수정: HomeLayout 내 GraphSection 래퍼에 `h-[calc(100vh-56px)]` 적용하여 헤더 제외 뷰포트 채움 | XS | 8-3 | [x] |
 | 8-5-1 | 수정: useGraph3DRenderer 호버 scale 값을 1.3 → 1.1로 조정 (리프 노드도 동일 적용) | XS | - | [x] |
 | 8-5-2 | 구현: 호버 시 플로팅 정지 — useNodePerturbation에 hoveredNodeId 전달하여 해당 노드만 스킵 | XS | - | [x] |
 | 8-5-3 | 구현: 호버 시 glow 효과 — MeshStandardMaterial(emissive) 또는 sprite overlay | S | 8-5-1 | [x] |
