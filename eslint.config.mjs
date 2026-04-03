@@ -4,6 +4,7 @@ import tsConfig from "eslint-config-next/typescript";
 import prettierConfig from "eslint-config-prettier";
 
 const eslintConfig = [
+  { ignores: ["storybook-static/**"] },
   ...nextConfig,
   ...coreWebVitals,
   ...tsConfig,
