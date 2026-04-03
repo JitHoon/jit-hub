@@ -22,14 +22,15 @@ const EDGE_COLOR_LIGHT = "#111111";
 const CONNECTED_LIGHTEN = 0.45;
 
 const HOVER_SCALE = 1.1;
-const ACTIVE_SCALE = 1.5;
 const DEFAULT_SCALE = 1;
 const SCALE_ANIM_DURATION_MS = 200;
 const HOVER_COLOR_IN_MS = 500;
 const HOVER_COLOR_OUT_MS = 400;
 const DEFAULT_HUB_OPACITY = 1;
 const DEFAULT_LEAF_OPACITY = 0.6;
-const ACTIVE_LEAF_OPACITY = 0.8;
+const FADED_OPACITY = 0.3;
+const SELECTED_LINK_OPACITY = 0.15;
+const DEFAULT_LINK_OPACITY = 1;
 
 const GLOW_EMISSIVE_INTENSITY = 0.6;
 const GLOW_IN_MS = 300;
@@ -41,10 +42,6 @@ const LABEL_OPACITY_DEFAULT = 0;
 const LABEL_OPACITY_HOVER = 1;
 const LABEL_FADE_IN_MS = 200;
 const LABEL_FADE_OUT_MS = 150;
-
-function easeIn(t: number): number {
-  return t * t * t;
-}
 
 function easeOutBack(t: number): number {
   const c1 = 1.70158;
@@ -195,6 +192,7 @@ function createNodeGroup(
 interface UseGraph3DRendererReturn {
   nodeThreeObject: (node: ForceGraph3DNode) => THREE.Group;
   linkColor: (link: ForceGraph3DLink) => string;
+  linkOpacity: number;
   onNodeHover: (
     node: ForceGraph3DNode | null,
     prevNode: ForceGraph3DNode | null,
@@ -249,7 +247,7 @@ export function useGraph3DRenderer(
     });
   }, [isDark]);
 
-  // Selected node scale animation
+  // Selected node: apply cluster color + fade out others
   useEffect(() => {
     const prevId = prevSelectedNodeIdRef.current;
     const nextId = selectedNodeId;
@@ -262,51 +260,54 @@ export function useGraph3DRenderer(
       animationFrameRef.current = null;
     }
 
-    const startTime = performance.now();
     const cache = groupCacheRef.current;
+    const currentIsDark = isDarkRef.current;
+    const defaultNodeColor = new THREE.Color(
+      currentIsDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT,
+    );
 
-    const prevGroup = prevId !== undefined ? cache.get(prevId) : undefined;
-    const nextGroup = nextId !== undefined ? cache.get(nextId) : undefined;
+    if (nextId !== undefined) {
+      const selectedNode = nodeMap.get(nextId);
+      const clusterColor = new THREE.Color(
+        selectedNode ? resolveClusterColor(selectedNode.cluster) : "#888888",
+      );
 
-    const prevStartScale = prevGroup ? prevGroup.scale.x : ACTIVE_SCALE;
-    const nextStartScale = nextGroup ? nextGroup.scale.x : DEFAULT_SCALE;
+      cache.forEach((group, id) => {
+        const mesh = getMeshFromGroup(group);
+        if (!mesh) return;
+        const mat = getStandardMat(mesh);
+        const degree = degreeMap.get(id) ?? 0;
+        const isHub = degree >= HUB_DEGREE_THRESHOLD;
 
-    function tick(): void {
-      const elapsed = performance.now() - startTime;
-      const rawT = Math.min(elapsed / SCALE_ANIM_DURATION_MS, 1);
+        if (id === nextId) {
+          mat.color.copy(clusterColor);
+          mat.emissiveIntensity = 0;
+          mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
+          group.scale.setScalar(DEFAULT_SCALE);
+        } else {
+          mat.color.copy(defaultNodeColor);
+          mat.emissiveIntensity = 0;
+          mat.opacity = FADED_OPACITY;
+          group.scale.setScalar(DEFAULT_SCALE);
+        }
+        mat.needsUpdate = true;
+      });
+    } else {
+      cache.forEach((group, id) => {
+        const mesh = getMeshFromGroup(group);
+        if (!mesh) return;
+        const mat = getStandardMat(mesh);
+        const degree = degreeMap.get(id) ?? 0;
+        const isHub = degree >= HUB_DEGREE_THRESHOLD;
 
-      if (prevGroup) {
-        const t = easeIn(rawT);
-        prevGroup.scale.setScalar(
-          prevStartScale + (DEFAULT_SCALE - prevStartScale) * t,
-        );
-      }
-
-      if (nextGroup) {
-        const t = easeOutBack(rawT);
-        nextGroup.scale.setScalar(
-          nextStartScale + (ACTIVE_SCALE - nextStartScale) * t,
-        );
-      }
-
-      if (rawT < 1) {
-        animationFrameRef.current = requestAnimationFrame(tick);
-      } else {
-        animationFrameRef.current = null;
-        if (prevGroup) prevGroup.scale.setScalar(DEFAULT_SCALE);
-        if (nextGroup) nextGroup.scale.setScalar(ACTIVE_SCALE);
-      }
+        mat.color.copy(defaultNodeColor);
+        mat.emissiveIntensity = 0;
+        mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
+        group.scale.setScalar(DEFAULT_SCALE);
+        mat.needsUpdate = true;
+      });
     }
-
-    animationFrameRef.current = requestAnimationFrame(tick);
-
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
-    };
-  }, [selectedNodeId]);
+  }, [selectedNodeId, nodeMap, degreeMap]);
 
   const nodeThreeObject = useCallback(
     (node: ForceGraph3DNode): THREE.Group => {
@@ -398,7 +399,19 @@ export function useGraph3DRenderer(
           const connGroup = cache.get(connId);
           if (!connGroup) return;
           const connMat = getStandardMat(getMeshFromGroup(connGroup));
-          connMat.color.copy(defaultNodeColor);
+          const targetColor =
+            selectedNodeId !== null && connId !== selectedNodeId
+              ? defaultNodeColor
+              : defaultNodeColor;
+          connMat.color.copy(targetColor);
+          const connDegree = degreeMap.get(connId) ?? 0;
+          const connIsHub = connDegree >= HUB_DEGREE_THRESHOLD;
+          connMat.opacity =
+            selectedNodeId !== null && connId !== selectedNodeId
+              ? FADED_OPACITY
+              : connIsHub
+                ? DEFAULT_HUB_OPACITY
+                : DEFAULT_LEAF_OPACITY;
           connMat.needsUpdate = true;
         });
 
@@ -411,14 +424,19 @@ export function useGraph3DRenderer(
               resolveClusterColor(prevGraphNode.cluster),
             );
             mat.color.copy(clusterColor);
-            mat.opacity = isHub ? DEFAULT_HUB_OPACITY : ACTIVE_LEAF_OPACITY;
+            mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
             mat.emissiveIntensity = 0;
-            prevGroup.scale.setScalar(ACTIVE_SCALE);
+            prevGroup.scale.setScalar(DEFAULT_SCALE);
             mat.needsUpdate = true;
           } else if (node !== null) {
             // Moving to another node: instant reset
             mat.color.copy(defaultNodeColor);
-            mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
+            mat.opacity =
+              selectedNodeId !== null
+                ? FADED_OPACITY
+                : isHub
+                  ? DEFAULT_HUB_OPACITY
+                  : DEFAULT_LEAF_OPACITY;
             mat.emissiveIntensity = 0;
             prevGroup.scale.setScalar(DEFAULT_SCALE);
             mat.needsUpdate = true;
@@ -426,6 +444,12 @@ export function useGraph3DRenderer(
             // Leaving all nodes: animate color and glow back to default
             const fromColor = mat.color.clone();
             const fromIntensity = mat.emissiveIntensity;
+            const targetOpacity =
+              selectedNodeId !== null
+                ? FADED_OPACITY
+                : isHub
+                  ? DEFAULT_HUB_OPACITY
+                  : DEFAULT_LEAF_OPACITY;
             const startTime = performance.now();
 
             function tickRestore(): void {
@@ -434,7 +458,7 @@ export function useGraph3DRenderer(
               const t = easeInOut(rawT);
               mat.color.copy(fromColor).lerp(defaultNodeColor, t);
               mat.emissiveIntensity = fromIntensity * (1 - t);
-              mat.opacity = isHub ? DEFAULT_HUB_OPACITY : DEFAULT_LEAF_OPACITY;
+              mat.opacity = targetOpacity;
               mat.needsUpdate = true;
               if (rawT < 1) {
                 hoverColorAnimFrameRef.current =
@@ -606,5 +630,14 @@ export function useGraph3DRenderer(
     [degreeMap, adjacencyMap, nodeMap, selectedNodeId],
   );
 
-  return { nodeThreeObject, linkColor, onNodeHover, hoveredNodeId };
+  const linkOpacity =
+    selectedNodeId !== undefined ? SELECTED_LINK_OPACITY : DEFAULT_LINK_OPACITY;
+
+  return {
+    nodeThreeObject,
+    linkColor,
+    linkOpacity,
+    onNodeHover,
+    hoveredNodeId,
+  };
 }

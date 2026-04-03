@@ -61,8 +61,13 @@ export function GraphCanvas3D({
 
   const { selectedNodeId, selectNode } = useNodeSelection();
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
-  const { nodeThreeObject, linkColor, onNodeHover, hoveredNodeId } =
-    useGraph3DRenderer(graphData, selectedNodeId ?? undefined);
+  const {
+    nodeThreeObject,
+    linkColor,
+    linkOpacity,
+    onNodeHover,
+    hoveredNodeId,
+  } = useGraph3DRenderer(graphData, selectedNodeId ?? undefined);
   const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
@@ -135,6 +140,7 @@ export function GraphCanvas3D({
         nodeThreeObject={nodeThreeObject}
         nodeThreeObjectExtend={false}
         linkColor={linkColor}
+        linkOpacity={linkOpacity}
         linkWidth={1}
         onNodeClick={handleNodeClick}
         onNodeHover={onNodeHover}

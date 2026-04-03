@@ -11,7 +11,7 @@
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 8-7-2, 8-8-1, 8-8-2, 8-12-1, 8-12-2 완료** → 다음: 8-6 선택 상태 또는 8-9 콘텐츠 전환
+Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-6, 8-7-1, 8-7-2, 8-8-1, 8-8-2, 8-12-1, 8-12-2 완료** → 다음: 8-9 콘텐츠 전환
 
 ## 완료된 Phase 요약
 
@@ -42,7 +42,7 @@ Phase 8 진행 중 — **8-1, 8-2, 8-3, 8-4, 8-5-1, 8-5-2, 8-5-3, 8-5-4, 8-7-1, 
 | 8-5-2 | 구현: 호버 시 플로팅 정지 — useNodePerturbation에 hoveredNodeId 전달하여 해당 노드만 스킵 | XS | - | [x] |
 | 8-5-3 | 구현: 호버 시 glow 효과 — MeshStandardMaterial(emissive) 또는 sprite overlay | S | 8-5-1 | [x] |
 | 8-5-4 | 수정: 호버 시 라벨 활성화 — 기본 라벨 숨김(opacity 0) + 호버 시 페이드 인 | XS | - | [x] |
-| 8-6 | 수정: 3D 그래프 노드 선택 상태 -- cluster.color 유지 + scale/glow 해제 + 나머지 노드 opacity 0.3 + 엣지 opacity 0.15 | S | 8-5-3 | [ ] |
+| 8-6 | 수정: 3D 그래프 노드 선택 상태 -- cluster.color 유지 + scale/glow 해제 + 나머지 노드 opacity 0.3 + 엣지 opacity 0.15 | S | 8-5-3 | [x] |
 | 8-7-1 | 구현: ContentHeader 컴포넌트 생성 (`src/features/content/components/ContentHeader.tsx` — ClusterBadge + DifficultyLabel + h1 타이틀) | S | - | [x] |
 | 8-7-2 | 구현: ContentSection 컴포넌트 조립 (`src/features/content/components/ContentSection.tsx` — ContentHeader + MdxRenderer 본문 + section 래퍼) | S | 8-7-1 | [x] |
 | 8-8-1 | 구현: HomeLayout에 ContentSection 조건부 렌더링 + grid-template-rows 0fr→1fr 슬라이드 다운 애니메이션 | S | 8-3, 8-7-2 | [x] |
