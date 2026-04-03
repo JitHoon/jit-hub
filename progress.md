@@ -5,12 +5,13 @@
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
 | 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치 | S | - | [ ] |
+| 8-7-2 | 구현: ContentSection 컴포넌트 조립 (`src/features/content/components/ContentSection.tsx` — ContentHeader + MdxRenderer 본문 + section 래퍼) | S | 8-7-1 | [ ] |
 
 ---
 
 ## 현재 단계
 
-Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4 완료** → 다음: 8-1 SiteHeader 구현
+Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4, 8-7-1 완료** → 다음: 8-1 SiteHeader 구현 또는 8-7-2 ContentSection 구현
 
 ## 완료된 Phase 요약
 
@@ -42,7 +43,7 @@ Phase 8 진행 중 — **8-2, 8-5-1, 8-5-2, 8-5-4 완료** → 다음: 8-1 SiteH
 | 8-5-3 | 구현: 호버 시 glow 효과 — MeshStandardMaterial(emissive) 또는 sprite overlay | S | 8-5-1 | [ ] |
 | 8-5-4 | 수정: 호버 시 라벨 활성화 — 기본 라벨 숨김(opacity 0) + 호버 시 페이드 인 | XS | - | [x] |
 | 8-6 | 수정: 3D 그래프 노드 선택 상태 -- cluster.color 유지 + scale/glow 해제 + 나머지 노드 opacity 0.3 + 엣지 opacity 0.15 | S | 8-5-3 | [ ] |
-| 8-7-1 | 구현: ContentHeader 컴포넌트 생성 (`src/features/content/components/ContentHeader.tsx` — ClusterBadge + DifficultyLabel + h1 타이틀) | S | - | [ ] |
+| 8-7-1 | 구현: ContentHeader 컴포넌트 생성 (`src/features/content/components/ContentHeader.tsx` — ClusterBadge + DifficultyLabel + h1 타이틀) | S | - | [x] |
 | 8-7-2 | 구현: ContentSection 컴포넌트 조립 (`src/features/content/components/ContentSection.tsx` — ContentHeader + MdxRenderer 본문 + section 래퍼) | S | 8-7-1 | [ ] |
 | 8-8-1 | 구현: HomeLayout에 ContentSection 조건부 렌더링 + grid-template-rows 0fr→1fr 슬라이드 다운 애니메이션 | S | 8-3, 8-7-2 | [ ] |
 | 8-8-2 | 구현: 콘텐츠 펼침 시 scrollIntoView 자동 스크롤 + ref 연결 | XS | 8-8-1 | [ ] |
