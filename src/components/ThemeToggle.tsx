@@ -13,7 +13,7 @@ export default function ThemeToggle() {
       data-theme-toggle
       onClick={toggle}
       aria-label={theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
-      className="fixed top-4 left-4 z-[100] cursor-pointer rounded-lg border border-border bg-surface p-2 text-foreground transition-colors hover:bg-background"
+      className="cursor-pointer rounded-lg border border-border bg-surface p-2 text-foreground transition-colors hover:bg-background"
     >
       {theme === "dark" ? <SunIcon /> : <MoonIcon />}
     </button>

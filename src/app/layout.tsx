@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Lexend, Noto_Sans_KR } from "next/font/google";
-import ThemeToggle from "@/components/ThemeToggle";
 import "./globals.css";
 
 const lexend = Lexend({
@@ -46,7 +45,6 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className={`font-sans bg-background text-foreground`}>
-        <ThemeToggle />
         {children}
       </body>
     </html>

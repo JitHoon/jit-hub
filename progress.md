@@ -10,7 +10,7 @@
 
 ## 현재 단계
 
-Phase 7 완료 → 다음: **Phase 8 홈페이지 리디자인 v2 (세로 스크롤)** (8-1 ~ 8-13)
+Phase 8 진행 중 — **8-2 완료** (ThemeToggle fixed 제거 + layout.tsx 직접 렌더링 제거) → 다음: 8-1 SiteHeader 구현
 
 ## 완료된 Phase 요약
 
@@ -35,7 +35,7 @@ Phase 7 완료 → 다음: **Phase 8 홈페이지 리디자인 v2 (세로 스크
 |---|------|------|------|------|
 | 8-1 | 구현: `src/components/SiteHeader.tsx` 생성 — sticky top-0 h-14 헤더, 로고("JIT-Hub") + Projects 링크 + ThemeToggle 배치. fixed 상태의 ThemeToggle과 충돌하므로 layout.tsx 배치는 8-3에서 수행 | S | - | [ ] |
 <!-- 완료 기준: SiteHeader 컴포넌트가 렌더링 시 sticky top-0 헤더에 로고/Projects/ThemeToggle이 표시됨 -->
-| 8-2 | 수정: ThemeToggle에서 fixed 포지셔닝 제거 + layout.tsx에서 직접 렌더링 제거 | XS | - | [ ] |
+| 8-2 | 수정: ThemeToggle에서 fixed 포지셔닝 제거 + layout.tsx에서 직접 렌더링 제거 | XS | - | [x] |
 <!-- 완료 기준: ThemeToggle이 fixed 위치가 아닌 부모 flow에 따라 배치됨 -->
 | 8-3 | 재작성: HomeLayout을 세로 스크롤 구조로 전환 (flex-col min-h-screen) + SiteHeader 배치 | S | 8-1, 8-2 | [ ] |
 <!-- 완료 기준: 페이지가 세로 스크롤 가능하고 SiteHeader 아래에 그래프가 뷰포트를 채움 -->
