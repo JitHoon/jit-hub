@@ -50,6 +50,13 @@
 - `Edit` 도구로 행 하나를 수정할 때 줄 양 끝의 `|`를 제거하지 않는다
 - 표 안 셀 내용에 `|` 문자가 포함될 경우 `\|`로 이스케이프한다
 
+## 보안
+
+- `dangerouslySetInnerHTML` 사용 시 반드시 sanitize 처리 (DOMPurify 등)
+- `NEXT_PUBLIC_` 환경변수에 밀키/토큰/비밀번호 등 민감 정보 금지
+- 사용자 입력을 href/src에 직접 삽입 금지 (javascript: 프로토콜 차단)
+- `eval()`, `new Function()` 사용 금지
+
 ## 커밋 메시지
 
 conventional commits 형식:
@@ -62,3 +69,8 @@ conventional commits 형식:
 - chore: 빌드, 설정 변경
 
 scope에 태스크/Phase 번호 금지: `feat(5-7-2):` ❌ → `feat:` ✅
+
+## 커맨드/에이전트 파일
+
+- 커맨드(`.claude/commands/*.md`)에 절대 경로 하드코딩 금지 — 상대 경로(`progress.md`, `.claude/docs/...`) 사용
+- 에이전트 간 산출물 경로는 하나의 정규 경로만 사용 (기획 산출물: `.claude/docs/planning/[slug]/`)

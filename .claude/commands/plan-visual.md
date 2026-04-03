@@ -1,5 +1,5 @@
 ---
-description: 시각적·인터랙티브 디자인을 AI가 구현 가능한 VSpec으로 구체화합니다
+description: /plan-product 이후 사용. 기획 문서 기반으로 시각 디자인 VSpec을 생성합니다
 argument-hint: "<컴포넌트명 또는 기획 슬러그>"
 ---
 
