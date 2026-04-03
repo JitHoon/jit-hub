@@ -18,9 +18,15 @@ interface NodeBaseCoords {
 export function useNodePerturbation(
   nodes: ForceGraph3DNode[],
   active: boolean,
+  hoveredNodeId: string | null = null,
 ): void {
   const rafRef = useRef<number | null>(null);
   const baseCoordsRef = useRef<Map<string | number, NodeBaseCoords>>(new Map());
+  const hoveredNodeIdRef = useRef<string | null>(hoveredNodeId);
+
+  useEffect(() => {
+    hoveredNodeIdRef.current = hoveredNodeId;
+  }, [hoveredNodeId]);
 
   useEffect(() => {
     if (!active) {
@@ -67,9 +73,12 @@ export function useNodePerturbation(
       }
 
       const map = baseCoordsRef.current;
+      const currentHoveredId = hoveredNodeIdRef.current;
 
       for (const node of nodes) {
         const id = node.id ?? "";
+        if (currentHoveredId !== null && id === currentHoveredId) continue;
+
         const base = map.get(id);
         if (!base) continue;
 

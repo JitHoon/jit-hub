@@ -61,15 +61,17 @@ export function GraphCanvas3D({
 
   const { selectedNodeId, selectNode } = useNodeSelection();
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
-  const { nodeThreeObject, linkColor, onNodeHover } = useGraph3DRenderer(
-    graphData,
-    selectedNodeId ?? undefined,
-  );
+  const { nodeThreeObject, linkColor, onNodeHover, hoveredNodeId } =
+    useGraph3DRenderer(graphData, selectedNodeId ?? undefined);
   const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
   const perturbationActive = engineReady && selectedNodeId === null;
-  useNodePerturbation(fg3dData.nodes as ForceGraph3DNode[], perturbationActive);
+  useNodePerturbation(
+    fg3dData.nodes as ForceGraph3DNode[],
+    perturbationActive,
+    hoveredNodeId,
+  );
 
   const prevSelectedNodeIdRef = useRef<string | null>(undefined);
 

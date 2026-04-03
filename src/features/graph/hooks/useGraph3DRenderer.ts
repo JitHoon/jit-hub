@@ -21,7 +21,7 @@ const EDGE_COLOR_DARK = "#FFFFFF";
 const EDGE_COLOR_LIGHT = "#111111";
 const CONNECTED_LIGHTEN = 0.45;
 
-const HOVER_SCALE = 1.3;
+const HOVER_SCALE = 1.1;
 const ACTIVE_SCALE = 1.5;
 const DEFAULT_SCALE = 1;
 const SCALE_ANIM_DURATION_MS = 200;
@@ -34,6 +34,10 @@ const ACTIVE_LEAF_OPACITY = 0.8;
 const LABEL_TEXT_HEIGHT = 3;
 const LABEL_OFFSET_Y_HUB = 5.5;
 const LABEL_OFFSET_Y_LEAF = 3.5;
+const LABEL_OPACITY_DEFAULT = 0;
+const LABEL_OPACITY_HOVER = 1;
+const LABEL_FADE_IN_MS = 200;
+const LABEL_FADE_OUT_MS = 150;
 
 function easeIn(t: number): number {
   return t * t * t;
@@ -157,6 +161,7 @@ function createNodeGroup(
   const gray = getGraphGray(isDark);
   const label = new SpriteText(graphNode.title, LABEL_TEXT_HEIGHT, gray.label);
   label.position.y = isHub ? LABEL_OFFSET_Y_HUB : LABEL_OFFSET_Y_LEAF;
+  label.opacity = LABEL_OPACITY_DEFAULT;
   label.raycast = () => undefined;
 
   const group = new THREE.Group();
@@ -172,6 +177,7 @@ interface UseGraph3DRendererReturn {
     node: ForceGraph3DNode | null,
     prevNode: ForceGraph3DNode | null,
   ) => void;
+  hoveredNodeId: string | null;
 }
 
 export function useGraph3DRenderer(
@@ -195,8 +201,8 @@ export function useGraph3DRenderer(
   const animationFrameRef = useRef<number | null>(null);
   const hoverScaleAnimFrameRef = useRef<number | null>(null);
   const hoverColorAnimFrameRef = useRef<number | null>(null);
+  const labelFadeAnimFrameRef = useRef<number | null>(null);
   const hoveredClusterColorRef = useRef<string>("#888888");
-  const selectedClusterColorRef = useRef<string>("#888888");
 
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
 
@@ -345,6 +351,10 @@ export function useGraph3DRenderer(
         cancelAnimationFrame(hoverColorAnimFrameRef.current);
         hoverColorAnimFrameRef.current = null;
       }
+      if (labelFadeAnimFrameRef.current !== null) {
+        cancelAnimationFrame(labelFadeAnimFrameRef.current);
+        labelFadeAnimFrameRef.current = null;
+      }
 
       // Restore previous hovered node
       if (prevNode) {
@@ -407,6 +417,29 @@ export function useGraph3DRenderer(
             prevGroup.scale.setScalar(DEFAULT_SCALE);
             hoverColorAnimFrameRef.current = requestAnimationFrame(tickRestore);
           }
+
+          // Fade out label
+          const prevLabel = getLabelFromGroup(prevGroup);
+          const fromLabelOpacity = prevLabel.opacity;
+          const fadeOutStart = performance.now();
+
+          function tickLabelFadeOut(): void {
+            const elapsed = performance.now() - fadeOutStart;
+            const rawT = Math.min(elapsed / LABEL_FADE_OUT_MS, 1);
+            const t = easeInOut(rawT);
+            prevLabel.opacity =
+              fromLabelOpacity + (LABEL_OPACITY_DEFAULT - fromLabelOpacity) * t;
+            if (rawT < 1) {
+              labelFadeAnimFrameRef.current =
+                requestAnimationFrame(tickLabelFadeOut);
+            } else {
+              labelFadeAnimFrameRef.current = null;
+              prevLabel.opacity = LABEL_OPACITY_DEFAULT;
+            }
+          }
+
+          labelFadeAnimFrameRef.current =
+            requestAnimationFrame(tickLabelFadeOut);
         }
 
         setHoveredNodeId(null);
@@ -444,9 +477,6 @@ export function useGraph3DRenderer(
         if (group) {
           const mesh = getMeshFromGroup(group);
           const mat = mesh.material as THREE.MeshBasicMaterial;
-          const degree = degreeMap.get(id) ?? 0;
-          const isHub = degree >= HUB_DEGREE_THRESHOLD;
-
           // Animate node color from default to cluster color
           const fromColor = mat.color.clone();
           const startTime = performance.now();
@@ -471,7 +501,7 @@ export function useGraph3DRenderer(
             requestAnimationFrame(tickHoverColor);
 
           // Scale animation
-          const targetScale = isHub ? HOVER_SCALE : DEFAULT_SCALE;
+          const targetScale = HOVER_SCALE;
           const startScale = group.scale.x;
           const startTime2 = performance.now();
 
@@ -491,11 +521,34 @@ export function useGraph3DRenderer(
 
           hoverScaleAnimFrameRef.current =
             requestAnimationFrame(tickHoverScale);
+
+          // Fade in label
+          const label = getLabelFromGroup(group);
+          const fromLabelOpacity = label.opacity;
+          const fadeInStart = performance.now();
+
+          function tickLabelFadeIn(): void {
+            const elapsed = performance.now() - fadeInStart;
+            const rawT = Math.min(elapsed / LABEL_FADE_IN_MS, 1);
+            const t = easeInOut(rawT);
+            label.opacity =
+              fromLabelOpacity + (LABEL_OPACITY_HOVER - fromLabelOpacity) * t;
+            if (rawT < 1) {
+              labelFadeAnimFrameRef.current =
+                requestAnimationFrame(tickLabelFadeIn);
+            } else {
+              labelFadeAnimFrameRef.current = null;
+              label.opacity = LABEL_OPACITY_HOVER;
+            }
+          }
+
+          labelFadeAnimFrameRef.current =
+            requestAnimationFrame(tickLabelFadeIn);
         }
       }
     },
     [degreeMap, adjacencyMap, nodeMap, selectedNodeId],
   );
 
-  return { nodeThreeObject, linkColor, onNodeHover };
+  return { nodeThreeObject, linkColor, onNodeHover, hoveredNodeId };
 }
