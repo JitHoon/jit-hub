@@ -285,7 +285,8 @@ body {
 }
 
 .prose-jithub table {
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   border-collapse: collapse;
   margin: 1rem 0;
   font-size: 0.875rem;
@@ -302,12 +303,14 @@ body {
   text-align: left;
   padding: 0.625rem 0.75rem;
   color: var(--foreground);
+  white-space: nowrap;
 }
 
 .prose-jithub td {
   padding: 0.625rem 0.75rem;
   border-bottom: 1px solid var(--border);
   color: var(--foreground);
+  white-space: nowrap;
 }
 
 .prose-jithub tbody tr:last-child td {
