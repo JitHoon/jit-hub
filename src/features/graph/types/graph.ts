@@ -4,6 +4,9 @@ export interface GraphNode {
   cluster: string;
   difficulty: string;
   tags: string[];
+  x?: number;
+  y?: number;
+  z?: number;
 }
 
 export type EdgeType = "prerequisite" | "related" | "child";

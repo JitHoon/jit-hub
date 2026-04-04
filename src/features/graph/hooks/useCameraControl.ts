@@ -1,27 +1,33 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import type { ForceGraphMethods } from "react-force-graph-3d";
 
 import type { CameraState, ForceGraph3DNode } from "../types/layout";
 
 const INITIAL_CAMERA: Pick<CameraState, "x" | "y" | "z"> = {
   x: 0,
-  y: 150,
-  z: 300,
+  y: 100,
+  z: 200,
 };
 
 const FOCUS_CAMERA_OFFSET = { x: 0, y: 50, z: 120 };
 const FOCUS_TRANSITION_MS = 800;
-const AUTO_ROTATE_RESUME_DELAY_MS = 3000;
+
+const DAMPING_FACTOR = 0.08;
+
+const AUTO_ROTATE_SPEED = 0.5;
 
 interface OrbitControlsLike {
   autoRotate: boolean;
+  autoRotateSpeed: number;
+  enableDamping: boolean;
+  dampingFactor: number;
 }
 
 function resolveControls(raw: object): OrbitControlsLike | null {
   const candidate = raw as Record<string, unknown>;
-  if (typeof candidate["autoRotate"] === "boolean") {
+  if (typeof candidate["enableDamping"] === "boolean") {
     return candidate as unknown as OrbitControlsLike;
   }
   return null;
@@ -29,7 +35,9 @@ function resolveControls(raw: object): OrbitControlsLike | null {
 
 interface UseCameraControlReturn {
   initCamera: (duration?: number) => void;
+  setCameraImmediate: () => void;
   setAutoRotate: (enabled: boolean) => void;
+  enableDamping: () => void;
   focusNode: (node: ForceGraph3DNode) => void;
   onInteractionEnd: () => void;
 }
@@ -37,8 +45,6 @@ interface UseCameraControlReturn {
 export function useCameraControl(
   graphRef: React.RefObject<ForceGraphMethods | undefined>,
 ): UseCameraControlReturn {
-  const autoRotateTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   const initCamera = useCallback(
     (duration?: number): void => {
       const fg = graphRef.current;
@@ -52,6 +58,14 @@ export function useCameraControl(
     [graphRef],
   );
 
+  const setCameraImmediate = useCallback((): void => {
+    const fg = graphRef.current;
+    if (!fg) return;
+    const camera = fg.camera();
+    camera.position.set(INITIAL_CAMERA.x, INITIAL_CAMERA.y, INITIAL_CAMERA.z);
+    camera.lookAt(0, 0, 0);
+  }, [graphRef]);
+
   const setAutoRotate = useCallback(
     (enabled: boolean): void => {
       const fg = graphRef.current;
@@ -60,10 +74,22 @@ export function useCameraControl(
       const controls = resolveControls(raw);
       if (controls) {
         controls.autoRotate = enabled;
+        controls.autoRotateSpeed = AUTO_ROTATE_SPEED;
       }
     },
     [graphRef],
   );
+
+  const enableDamping = useCallback((): void => {
+    const fg = graphRef.current;
+    if (!fg) return;
+    const raw = fg.controls();
+    const controls = resolveControls(raw);
+    if (controls) {
+      controls.enableDamping = true;
+      controls.dampingFactor = DAMPING_FACTOR;
+    }
+  }, [graphRef]);
 
   const focusNode = useCallback(
     (node: ForceGraph3DNode): void => {
@@ -82,20 +108,15 @@ export function useCameraControl(
   );
 
   const onInteractionEnd = useCallback((): void => {
-    if (autoRotateTimerRef.current !== null) {
-      clearTimeout(autoRotateTimerRef.current);
-    }
-    autoRotateTimerRef.current = setTimeout(() => {
-      autoRotateTimerRef.current = null;
-      const fg = graphRef.current;
-      if (!fg) return;
-      const raw = fg.controls();
-      const controls = resolveControls(raw);
-      if (controls) {
-        controls.autoRotate = true;
-      }
-    }, AUTO_ROTATE_RESUME_DELAY_MS);
-  }, [graphRef]);
+    setAutoRotate(true);
+  }, [setAutoRotate]);
 
-  return { initCamera, setAutoRotate, focusNode, onInteractionEnd };
+  return {
+    initCamera,
+    setCameraImmediate,
+    setAutoRotate,
+    enableDamping,
+    focusNode,
+    onInteractionEnd,
+  };
 }
