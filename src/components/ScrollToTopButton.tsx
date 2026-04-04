@@ -38,6 +38,7 @@ export default function ScrollToTopButton({
   return (
     <button
       type="button"
+      data-testid="scroll-to-top"
       onClick={handleClick}
       aria-label="페이지 상단으로 이동"
       className={[
