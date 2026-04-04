@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import type { GraphData } from "@/features/graph/types/graph";
+import type { GraphData } from "@/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
 import Link from "next/link";

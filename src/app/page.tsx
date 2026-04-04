@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { GraphData } from "@/features/graph/types/graph";
+import type { GraphData } from "@/types/graph";
 import { getNodeBySlug } from "@/features/content/utils/pipeline";
 import ContentSection from "@/features/content/components/ContentSection";
 import HomeLayout from "./HomeLayout";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ClusterId } from "@/constants/cluster";
-import type { GraphNode } from "@/features/graph/types/graph";
+import type { GraphNode } from "@/types/graph";
 import type { NodeConnection } from "../utils/node-connections";
 import { EDGE_TYPE_LABELS, EDGE_TYPE_ORDER } from "../utils/edge-type";
 import ClusterDot from "./ClusterDot";

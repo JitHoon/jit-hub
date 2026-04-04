@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { CLUSTER_IDS, CLUSTERS, type ClusterId } from "@/constants/cluster";
-import type { GraphData, GraphNode } from "@/features/graph/types/graph";
+import type { GraphData, GraphNode } from "@/types/graph";
 import { buildNodeConnectionMap } from "../utils/node-connections";
 import ClusterDot from "./ClusterDot";
 import CollapsibleGroup from "./CollapsibleGroup";

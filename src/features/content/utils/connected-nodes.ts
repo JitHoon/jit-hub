@@ -1,6 +1,6 @@
 import type { ClusterId } from "@/constants/cluster";
 import type { NodeFrontmatter } from "@/types/node";
-import type { GraphData, EdgeType } from "@/features/graph/types/graph";
+import type { GraphData, EdgeType } from "@/types/graph";
 
 export interface ConnectedNodeInfo {
   slug: string;

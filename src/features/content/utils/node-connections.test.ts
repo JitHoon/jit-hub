@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { GraphData } from "@/features/graph/types/graph";
+import type { GraphData } from "@/types/graph";
 import { buildNodeConnectionMap } from "./node-connections";
 
 function makeGraphData(overrides?: Partial<GraphData>): GraphData {
