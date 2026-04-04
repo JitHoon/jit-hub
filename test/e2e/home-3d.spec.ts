@@ -1,6 +1,36 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("홈 페이지 3D 그래프 렌더링", () => {
+  test("WebGL 미지원 환경에서 폴백 UI가 렌더링되고 canvas가 없다", async ({
+    page,
+  }) => {
+    await page.addInitScript(() => {
+      const original = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (
+        contextId: string,
+        ...args: unknown[]
+      ) {
+        if (contextId === "webgl" || contextId === "webgl2") {
+          return null;
+        }
+        return original.call(this, contextId, ...(args as []));
+      };
+    });
+
+    await page.goto("/");
+
+    const container = page.locator('[data-testid="graph-container"]');
+    await container.waitFor();
+
+    await expect(container).toContainText("3D 그래프를 표시할 수 없습니다");
+    await expect(container).toContainText(
+      "이 브라우저는 WebGL을 지원하지 않습니다",
+    );
+
+    const canvas = container.locator("canvas");
+    await expect(canvas).toHaveCount(0);
+  });
+
   test("graph-container가 존재하고 크기가 0보다 크다", async ({ page }) => {
     await page.goto("/");
 
