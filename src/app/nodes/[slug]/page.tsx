@@ -45,6 +45,34 @@ export async function generateMetadata({
   };
 }
 
+const BASE_URL = "https://jit-hub.vercel.app";
+
+function buildTechArticleJsonLd(
+  slug: string,
+  title: string,
+  tags: string[],
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: title,
+    description: tags.join(", "),
+    keywords: tags,
+    url: `${BASE_URL}/nodes/${slug}`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "JIT-Hub",
+      url: BASE_URL,
+    },
+    author: {
+      "@type": "Person",
+      name: "JitHoon",
+      url: "https://github.com/JitHoon",
+      jobTitle: "Frontend Engineer",
+    },
+  };
+}
+
 export default async function NodePage({ params }: PageProps) {
   const { slug } = await params;
   const node = getNodeBySlug(slug);
@@ -53,7 +81,8 @@ export default async function NodePage({ params }: PageProps) {
     notFound();
   }
 
-  const { title, cluster } = node.frontmatter;
+  const { title, cluster, tags } = node.frontmatter;
+  const techArticleJsonLd = buildTechArticleJsonLd(slug, title, tags);
 
   const graphDataPath = path.join(process.cwd(), "graph-data.json");
   const graphData = JSON.parse(
@@ -66,6 +95,12 @@ export default async function NodePage({ params }: PageProps) {
 
   return (
     <div className="mx-auto max-w-3xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(techArticleJsonLd),
+        }}
+      />
       <SiteHeader />
       <ReadingProgressBar cluster={cluster} />
       <main className="px-6 py-12">
