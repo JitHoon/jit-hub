@@ -22,16 +22,18 @@ export function GraphSection({
 }: GraphSectionProps): React.ReactElement {
   return (
     <div className={`flex flex-col items-center ${className ?? ""}`}>
-      <div
-        data-testid="graph-container"
-        className="relative h-[100cqmin] w-[100cqmin] overflow-hidden rounded-full border border-border"
-      >
-        <Suspense fallback={null}>
-          <GraphCanvas3D
-            graphData={graphData}
-            onNodeHoverChange={onNodeHoverChange}
-          />
-        </Suspense>
+      <div className="h-[100cqmin] w-[100cqmin] overflow-hidden rounded-full border border-border">
+        <div
+          data-testid="graph-container"
+          className="relative h-full w-full [clip-path:circle(50%)]"
+        >
+          <Suspense fallback={null}>
+            <GraphCanvas3D
+              graphData={graphData}
+              onNodeHoverChange={onNodeHoverChange}
+            />
+          </Suspense>
+        </div>
       </div>
     </div>
   );
