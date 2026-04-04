@@ -19,10 +19,11 @@ interface HomeLayoutProps {
 }
 
 export default function HomeLayout({
-  graphData,
+  graphData: graphDataProp,
   contentSection,
   contentKey,
 }: HomeLayoutProps): React.ReactElement {
+  const [graphData] = useState(graphDataProp);
   const hasContent = contentSection != null;
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
