@@ -6,7 +6,7 @@
 
 ## 현재 단계
 
-없음
+Phase 11 진행 중 — 배포 · CI/CD 구성. 11-2-1, 11-2-2 완료 (ci.yml vitest + Playwright E2E job 추가).
 
 ## 완료된 Phase 요약
 
@@ -34,8 +34,8 @@
 |---|------|------|------|------|
 | 11-1-1 | vercel.json 생성 — framework/buildCommand/outputDirectory 설정 | XS | - | [x] |
 | 11-1-2 | Vercel 프로젝트 연결 및 첫 배포 성공 확인 | S | 11-1-1 | [x] |
-| 11-2-1 | ci.yml에 vitest 유닛 테스트 스텝 추가 (`bun run test`) | XS | - | [ ] |
-| 11-2-2 | ci.yml에 Playwright E2E 테스트 job 추가 (chromium 설치 + `bun run test:e2e` + 리포트 업로드) | S | 11-2-1 | [ ] |
+| 11-2-1 | ci.yml에 vitest 유닛 테스트 스텝 추가 (`bun run test`) | XS | - | [x] |
+| 11-2-2 | ci.yml에 Playwright E2E 테스트 job 추가 (chromium 설치 + `bun run test:e2e` + 리포트 업로드) | S | 11-2-1 | [x] |
 | 11-3-1 | Vercel 대시보드에서 커스텀 도메인 등록 + DNS 레코드 설정 확인 | XS | 11-1-2 | [ ] |
 | 11-3-2 | sitemap.ts/robots.ts의 base URL을 커스텀 도메인으로 변경 + next.config.ts 도메인 관련 설정 추가 (필요 시) | XS | 11-3-1 | [ ] |
 
