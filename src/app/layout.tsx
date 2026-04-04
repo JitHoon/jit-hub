@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Lexend, Noto_Sans_KR } from "next/font/google";
-import Script from "next/script";
 import {
   SITE_URL,
   SITE_NAME,
@@ -74,10 +73,10 @@ export default function RootLayout({
       className={`${lexend.variable} ${notoSansKR.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={`font-sans bg-background text-foreground`}>
-        <Script id="theme-init" strategy="beforeInteractive">
-          {themeScript}
-        </Script>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}

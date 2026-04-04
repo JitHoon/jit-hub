@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 import {
   type Theme,
+  applyTheme,
   getEffectiveTheme,
   toggleTheme,
 } from "@/features/theme/utils/store";
@@ -32,6 +33,11 @@ interface UseThemeReturn {
 
 export function useTheme(): UseThemeReturn {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
+
   const toggle = useCallback(() => {
     toggleTheme();
   }, []);
