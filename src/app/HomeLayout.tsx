@@ -10,7 +10,7 @@ import ConnectionTree from "@/features/content/components/ConnectionTree";
 import FullNodeTree from "@/features/content/components/FullNodeTree";
 import { buildConnectedNodesFromGraph } from "@/features/content/utils/connected-nodes";
 import type { ClusterId } from "@/constants/cluster";
-import type { GraphData, GraphNode } from "@/features/graph/types/graph";
+import type { GraphData, GraphNode } from "@/types/graph";
 
 interface HomeLayoutProps {
   graphData: GraphData;

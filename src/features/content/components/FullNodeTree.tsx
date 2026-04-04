@@ -1,26 +1,16 @@
 "use client";
 
 import { useMemo } from "react";
-import { CLUSTER_IDS, CLUSTERS, type ClusterId } from "@/constants/cluster";
-import type { GraphData, GraphNode } from "@/features/graph/types/graph";
+import { CLUSTER_IDS, CLUSTERS } from "@/constants/cluster";
+import type { GraphData } from "@/types/graph";
 import { buildNodeConnectionMap } from "../utils/node-connections";
+import { groupByCluster } from "../utils/group-by-cluster";
 import ClusterDot from "./ClusterDot";
 import CollapsibleGroup from "./CollapsibleGroup";
 import NodeWithEdges from "./NodeWithEdges";
 
 interface FullNodeTreeProps {
   graphData: GraphData;
-}
-
-function groupByCluster(nodes: GraphNode[]): Map<ClusterId, GraphNode[]> {
-  const groups = new Map<ClusterId, GraphNode[]>();
-  for (const node of nodes) {
-    const cluster = node.cluster as ClusterId;
-    const list = groups.get(cluster) ?? [];
-    list.push(node);
-    groups.set(cluster, list);
-  }
-  return groups;
 }
 
 export default function FullNodeTree({

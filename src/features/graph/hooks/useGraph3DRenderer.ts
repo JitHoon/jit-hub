@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { CLUSTERS, type ClusterId } from "@/constants/cluster";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DLink, ForceGraph3DNode } from "../types/layout";
 
@@ -12,10 +12,10 @@ const LEAF_RADIUS = 2.25;
 const SEGMENTS = 32;
 const HUB_DEGREE_THRESHOLD = 3;
 
-const NODE_COLOR_DARK = "#FFFFFF";
-const NODE_COLOR_LIGHT = "#111111";
-const EDGE_COLOR_DARK = "#FFFFFF";
-const EDGE_COLOR_LIGHT = "#111111";
+const NODE_COLOR_DARK = "#111111";
+const NODE_COLOR_LIGHT = "#FFFFFF";
+const EDGE_COLOR_DARK = "#111111";
+const EDGE_COLOR_LIGHT = "#FFFFFF";
 const CONNECTED_LIGHTEN = 0.45;
 
 const HOVER_COLOR_IN_MS = 150;

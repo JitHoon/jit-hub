@@ -5,13 +5,13 @@ import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
 import { getGraphGray } from "@/constants/tokens";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import type { GraphData, GraphEdge, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
 import { useCameraControl } from "../hooks/useCameraControl";
 import { useGraph3DRenderer } from "../hooks/useGraph3DRenderer";
 import { useGraphLayout } from "../hooks/useGraphLayout";
-import { useNodeSelection } from "../hooks/useNodeSelection";
+import { useNodeSelection } from "@/hooks/useNodeSelection";
 import { useScene3D } from "../hooks/useScene3D";
 
 // three-render-objects, 3d-force-graph 내부에서 사용하는 THREE.Clock이

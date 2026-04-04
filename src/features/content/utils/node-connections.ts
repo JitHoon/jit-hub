@@ -1,4 +1,4 @@
-import type { EdgeType, GraphData } from "@/features/graph/types/graph";
+import type { EdgeType, GraphData } from "@/types/graph";
 
 export interface NodeConnection {
   slug: string;

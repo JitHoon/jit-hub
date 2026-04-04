@@ -1,7 +1,7 @@
 "use client";
 
 import ChevronIcon from "@/components/icons/ChevronIcon";
-import { useNodeSelection } from "@/features/graph/hooks/useNodeSelection";
+import { useNodeSelection } from "@/hooks/useNodeSelection";
 
 export default function BackToFullTreeButton(): React.ReactElement {
   const { clearSelection } = useNodeSelection();

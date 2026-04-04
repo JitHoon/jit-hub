@@ -1,4 +1,4 @@
-import type { EdgeType } from "@/features/graph/types/graph";
+import type { EdgeType } from "@/types/graph";
 
 export const EDGE_TYPE_LABELS: Record<EdgeType, string> = {
   prerequisite: "선수지식",

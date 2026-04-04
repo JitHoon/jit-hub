@@ -2,13 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import type { GraphData } from "@/features/graph/types/graph";
+import type { GraphData } from "@/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import ExpandIcon from "@/components/icons/ExpandIcon";
-import StickyContentHeader from "@/features/content/components/StickyContentHeader";
+import ContentHeader from "@/features/content/components/ContentHeader";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
 import HistoryBackButton from "@/features/content/components/HistoryBackButton";
 import MdxRenderer from "@/features/content/components/MdxRenderer";
@@ -69,7 +69,7 @@ export default async function NodePage({ params }: PageProps) {
       <SiteHeader />
       <ReadingProgressBar cluster={cluster} />
       <main className="px-6 py-12">
-        <StickyContentHeader title={title} cluster={cluster} />
+        <ContentHeader title={title} cluster={cluster} />
         <div className="mt-8">
           <MdxRenderer source={node.content} />
         </div>
@@ -78,9 +78,8 @@ export default async function NodePage({ params }: PageProps) {
             currentTitle={title}
             currentCluster={cluster}
             nodes={connectedNodes}
-            className="mt-10 border-t border-[var(--border)] pt-10"
+            className="mt-10"
             defaultOpen={true}
-            backButtonPosition="bottom"
             backButton={
               <div className="flex items-center gap-2">
                 <HistoryBackButton />
@@ -89,7 +88,7 @@ export default async function NodePage({ params }: PageProps) {
                   className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
                 >
                   <ExpandIcon size={12} />
-                  <span>홈으로</span>
+                  <span>전체 목차</span>
                 </Link>
               </div>
             }

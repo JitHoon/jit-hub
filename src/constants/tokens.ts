@@ -79,7 +79,7 @@ export interface GraphGray {
 }
 
 const GRAPH_GRAY_LIGHT: GraphGray = {
-  bg: "#F7F7F7",
+  bg: "#111111",
   node: "#C0C0C0",
   nodeFaded: "#D4D4D4",
   edge: "#D0D0D0",
@@ -90,7 +90,7 @@ const GRAPH_GRAY_LIGHT: GraphGray = {
 };
 
 const GRAPH_GRAY_DARK: GraphGray = {
-  bg: "#111111",
+  bg: "#F7F7F7",
   node: "#444444",
   nodeFaded: "#333333",
   edge: "#2A2A2A",

@@ -1,37 +1,14 @@
-import Link from "next/link";
 import type { ClusterId } from "@/constants/cluster";
-import type { GraphNode } from "@/features/graph/types/graph";
+import type { GraphNode } from "@/types/graph";
 import type { NodeConnection } from "../utils/node-connections";
 import { EDGE_TYPE_LABELS, EDGE_TYPE_ORDER } from "../utils/edge-type";
-import ClusterDot from "./ClusterDot";
+import { groupByEdgeType } from "../utils/group-by-edge-type";
 import CollapsibleGroup from "./CollapsibleGroup";
+import NodeLink from "./NodeLink";
 
 interface NodeWithEdgesProps {
   node: GraphNode;
   connections: NodeConnection[];
-}
-
-function NodeLink({
-  id,
-  title,
-  cluster,
-}: {
-  id: string;
-  title: string;
-  cluster: ClusterId;
-}): React.ReactElement {
-  return (
-    <Link
-      href={`/?node=${id}`}
-      scroll={false}
-      className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)]"
-    >
-      <ClusterDot cluster={cluster} />
-      <span className="text-sm text-[var(--foreground)] group-hover:text-[var(--accent)]">
-        {title}
-      </span>
-    </Link>
-  );
 }
 
 export default function NodeWithEdges({
@@ -49,12 +26,7 @@ export default function NodeWithEdges({
     );
   }
 
-  const grouped = new Map<NodeConnection["edgeType"], NodeConnection[]>();
-  for (const conn of connections) {
-    const list = grouped.get(conn.edgeType) ?? [];
-    list.push(conn);
-    grouped.set(conn.edgeType, list);
-  }
+  const grouped = groupByEdgeType(connections);
 
   return (
     <div className="relative ml-3">
