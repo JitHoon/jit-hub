@@ -9,7 +9,8 @@ import type { ForceGraph3DLink, ForceGraph3DNode } from "../types/layout";
 
 const HUB_RADIUS = 3.75;
 const LEAF_RADIUS = 2.25;
-const SEGMENTS = 32;
+const SEGMENTS_DESKTOP = 32;
+const SEGMENTS_MOBILE = 16;
 const HUB_DEGREE_THRESHOLD = 3;
 
 const NODE_COLOR_DARK = "#111111";
@@ -102,6 +103,7 @@ function rebuildGroupChildren(
   graphNode: GraphNode,
   isHub: boolean,
   isDark: boolean,
+  segments: number,
 ): void {
   group.children.forEach((child) => {
     if (child instanceof THREE.Mesh) {
@@ -111,7 +113,7 @@ function rebuildGroupChildren(
   });
   group.clear();
 
-  const tempGroup = createNodeGroup(graphNode, isHub, isDark);
+  const tempGroup = createNodeGroup(graphNode, isHub, isDark, segments);
   tempGroup.children.slice().forEach((child) => {
     group.add(child);
   });
@@ -121,11 +123,12 @@ function createNodeGroup(
   graphNode: GraphNode,
   isHub: boolean,
   isDark: boolean,
+  segments: number,
 ): THREE.Group {
   const radius = isHub ? HUB_RADIUS : LEAF_RADIUS;
   const nodeColor = isDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT;
 
-  const geometry = new THREE.SphereGeometry(radius, SEGMENTS, SEGMENTS);
+  const geometry = new THREE.SphereGeometry(radius, segments, segments);
   const material = new THREE.MeshBasicMaterial({
     color: new THREE.Color(nodeColor),
     transparent: true,
@@ -154,6 +157,20 @@ export function useGraph3DRenderer(
 ): UseGraph3DRendererReturn {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 768px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const handler = (e: MediaQueryListEvent): void => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const segments = isMobile ? SEGMENTS_MOBILE : SEGMENTS_DESKTOP;
 
   const degreeMap = useMemo(() => buildDegreeMap(data), [data]);
   const adjacencyMap = useMemo(() => buildAdjacencyMap(data), [data]);
@@ -268,13 +285,24 @@ export function useGraph3DRenderer(
       if (existing) {
         const mesh = getMeshFromGroup(existing);
         if (!mesh) {
-          rebuildGroupChildren(existing, graphNode, isHub, isDarkRef.current);
+          rebuildGroupChildren(
+            existing,
+            graphNode,
+            isHub,
+            isDarkRef.current,
+            segments,
+          );
           return existing;
         }
         return existing;
       }
 
-      const group = createNodeGroup(graphNode, isHub, isDarkRef.current);
+      const group = createNodeGroup(
+        graphNode,
+        isHub,
+        isDarkRef.current,
+        segments,
+      );
 
       if (
         selectedNodeIdRef.current !== undefined &&
@@ -288,7 +316,7 @@ export function useGraph3DRenderer(
       cache.set(id, group);
       return group;
     },
-    [degreeMap],
+    [degreeMap, segments],
   );
 
   const selectedClusterColor = useMemo(() => {
