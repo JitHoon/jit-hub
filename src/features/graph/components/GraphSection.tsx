@@ -29,6 +29,8 @@ export function GraphSection({
       <div className="h-[100cqmin] w-[100cqmin] overflow-hidden rounded-full border border-border">
         <div
           data-testid="graph-container"
+          role="img"
+          aria-label="지식 노드 관계를 보여주는 3D 그래프"
           className="relative h-full w-full [clip-path:circle(50%)]"
         >
           {supported === false ? (
