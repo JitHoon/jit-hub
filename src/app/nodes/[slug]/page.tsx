@@ -5,9 +5,14 @@ import type { Metadata } from "next";
 import type { GraphData } from "@/features/graph/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
-import ContentHeader from "@/features/content/components/ContentHeader";
+import Link from "next/link";
+import SiteHeader from "@/components/SiteHeader";
+import ExpandIcon from "@/components/icons/ExpandIcon";
+import StickyContentHeader from "@/features/content/components/StickyContentHeader";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
+import HistoryBackButton from "@/features/content/components/HistoryBackButton";
 import MdxRenderer from "@/features/content/components/MdxRenderer";
+import ReadingProgressBar from "@/features/content/components/ReadingProgressBar";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -60,20 +65,37 @@ export default async function NodePage({ params }: PageProps) {
   const connectedNodes = buildConnectedNodes(node.frontmatter, nodeMap);
 
   return (
-    <main className="max-w-3xl mx-auto px-6 py-12">
-      <ContentHeader title={title} cluster={cluster} />
-      {connectedNodes.length > 0 && (
-        <div className="mt-4">
+    <div className="mx-auto max-w-3xl">
+      <SiteHeader />
+      <ReadingProgressBar cluster={cluster} />
+      <main className="px-6 py-12">
+        <StickyContentHeader title={title} cluster={cluster} />
+        <div className="mt-8">
+          <MdxRenderer source={node.content} />
+        </div>
+        {connectedNodes.length > 0 && (
           <ConnectionTree
             currentTitle={title}
             currentCluster={cluster}
             nodes={connectedNodes}
+            className="mt-10 border-t border-[var(--border)] pt-10"
+            defaultOpen={true}
+            backButtonPosition="bottom"
+            backButton={
+              <div className="flex items-center gap-2">
+                <HistoryBackButton />
+                <Link
+                  href="/"
+                  className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
+                >
+                  <ExpandIcon size={12} />
+                  <span>홈으로</span>
+                </Link>
+              </div>
+            }
           />
-        </div>
-      )}
-      <div className="mt-8">
-        <MdxRenderer source={node.content} />
-      </div>
-    </main>
+        )}
+      </main>
+    </div>
   );
 }

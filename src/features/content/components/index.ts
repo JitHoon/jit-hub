@@ -7,3 +7,5 @@ export { default as ContentSection } from "./ContentSection";
 export { default as FullNodeTree } from "./FullNodeTree";
 export { default as MdxRenderer } from "./MdxRenderer";
 export { default as NodeWithEdges } from "./NodeWithEdges";
+export { default as ReadingProgressBar } from "./ReadingProgressBar";
+export { default as StickyContentHeader } from "./StickyContentHeader";

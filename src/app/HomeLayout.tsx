@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import ExpandIcon from "@/components/icons/ExpandIcon";
 import { GraphSection } from "@/features/graph/components/GraphSection";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
 import FullNodeTree from "@/features/content/components/FullNodeTree";
@@ -17,10 +19,11 @@ interface HomeLayoutProps {
 }
 
 export default function HomeLayout({
-  graphData,
+  graphData: graphDataProp,
   contentSection,
   contentKey,
 }: HomeLayoutProps): React.ReactElement {
+  const [graphData] = useState(graphDataProp);
   const hasContent = contentSection != null;
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
@@ -62,6 +65,17 @@ export default function HomeLayout({
             <FullNodeTree graphData={graphData} />
           )}
         </div>
+        {contentKey && (
+          <div className="flex justify-end px-6">
+            <Link
+              href={`/nodes/${contentKey}`}
+              className="text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+              aria-label="상세 페이지로 이동"
+            >
+              <ExpandIcon size={18} />
+            </Link>
+          </div>
+        )}
         <div
           data-testid="content-grid"
           className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import ChevronIcon from "@/components/icons/ChevronIcon";
@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 ] as const;
 
 export default function SiteHeader() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const toggle = useCallback(() => setOpen((prev) => !prev), []);
@@ -50,28 +50,28 @@ export default function SiteHeader() {
             JIT-Hub
             <ChevronIcon
               size={14}
-              className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+              className={`transition-transform duration-200 ${open ? "rotate-90" : "-rotate-90"}`}
             />
           </button>
 
           <div
-            className="absolute left-0 top-full overflow-hidden rounded-b-lg bg-[var(--background)]/60 backdrop-blur-md transition-[max-height] duration-200 ease-out"
-            style={{ maxHeight: open ? `${NAV_ITEMS.length * 40}px` : "0px" }}
+            className="absolute left-full top-0 flex h-full items-center overflow-hidden transition-[max-width] duration-200 ease-out"
+            style={{ maxWidth: open ? "300px" : "0px" }}
           >
-            <nav className="py-1">
+            <nav className="flex items-center">
               {NAV_ITEMS.map(({ href, label }, i) => (
-                <div key={href}>
+                <Fragment key={href}>
                   {i > 0 && (
-                    <div className="mx-3 border-t border-[var(--border)]" />
+                    <div className="h-4 border-l border-[var(--border)]" />
                   )}
                   <Link
                     href={href}
                     onClick={close}
-                    className="block whitespace-nowrap px-3 py-1.5 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
+                    className="whitespace-nowrap px-3 text-xs text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
                   >
                     {label}
                   </Link>
-                </div>
+                </Fragment>
               ))}
             </nav>
           </div>
