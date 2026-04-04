@@ -4,8 +4,7 @@
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [ ] |
-| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [ ] |
+| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [x] |
 | 9-6-1 | 구현: 모바일 감지 시 SphereGeometry 세그먼트를 32→16으로 줄이는 LOD 분기 추가 (`useGraph3DRenderer.ts`) | S | - | [ ] |
 | 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [ ] |
 | 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [ ] |
@@ -41,8 +40,8 @@ Phase 9 진행 중 — **폴백 + 접근성 + 성능** (브랜치: `feat/phase9-
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
 | 9-1 | 구현: `GraphSection`에 WebGL 사전 체크 훅 추가 및 미지원 시 `ErrorCard` 기반 폴백 UI 렌더링 (`src/features/graph/hooks/useWebGLSupport.ts`, `src/features/graph/components/GraphSection.tsx`) | S | - | [x] |
-| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [ ] |
-| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [ ] |
+| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [x] |
+| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [x] |
 | 9-6-1 | 구현: 모바일 감지 시 SphereGeometry 세그먼트를 32→16으로 줄이는 LOD 분기 추가 (`useGraph3DRenderer.ts`) | S | - | [ ] |
 | 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [ ] |
 | 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [ ] |

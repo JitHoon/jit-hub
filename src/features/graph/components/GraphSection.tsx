@@ -50,6 +50,13 @@ export function GraphSection({
           )}
         </div>
       </div>
+      <ul className="sr-only">
+        {graphData.nodes.map((node) => (
+          <li key={node.id}>
+            {node.title} — 클러스터: {node.cluster}, 난이도: {node.difficulty}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
