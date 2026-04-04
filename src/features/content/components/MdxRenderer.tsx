@@ -1,5 +1,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { MDXComponents } from "mdx/types";
 import { fixEmphasisEdgeCases } from "../utils/fix-emphasis";
@@ -18,7 +19,11 @@ const mdxComponents: MDXComponents = {
   blockquote: (props) => <blockquote {...props} />,
   strong: (props) => <strong {...props} />,
   em: (props) => <em {...props} />,
-  table: (props) => <table {...props} />,
+  table: (props) => (
+    <div className="overflow-x-auto">
+      <table {...props} />
+    </div>
+  ),
   thead: (props) => <thead {...props} />,
   tbody: (props) => <tbody {...props} />,
   tr: (props) => <tr {...props} />,
@@ -42,6 +47,7 @@ export default async function MdxRenderer({ source }: MdxRendererProps) {
             format: "md",
             remarkPlugins: [remarkGfm],
             rehypePlugins: [
+              rehypeSlug,
               [
                 rehypePrettyCode,
                 {
