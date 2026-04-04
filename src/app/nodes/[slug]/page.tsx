@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { GraphData } from "@/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
+import { SITE_URL, SITE_NAME, AUTHOR } from "@/constants/site";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
@@ -34,18 +35,26 @@ export async function generateMetadata({
 
   const { title, tags } = node.frontmatter;
 
+  const description = tags.join(", ");
+
   return {
     title,
-    description: tags.join(", "),
+    description,
     openGraph: {
       title,
-      description: tags.join(", "),
+      description,
       type: "article",
+      url: `${SITE_URL}/nodes/${slug}`,
+      locale: "ko_KR",
+      siteName: SITE_NAME,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
-
-const BASE_URL = "https://jit-hub.vercel.app";
 
 function buildTechArticleJsonLd(
   slug: string,
@@ -58,17 +67,17 @@ function buildTechArticleJsonLd(
     headline: title,
     description: tags.join(", "),
     keywords: tags,
-    url: `${BASE_URL}/nodes/${slug}`,
+    url: `${SITE_URL}/nodes/${slug}`,
     isPartOf: {
       "@type": "WebSite",
-      name: "JIT-Hub",
-      url: BASE_URL,
+      name: SITE_NAME,
+      url: SITE_URL,
     },
     author: {
       "@type": "Person",
-      name: "JitHoon",
-      url: "https://github.com/JitHoon",
-      jobTitle: "Frontend Engineer",
+      name: AUTHOR.name,
+      url: AUTHOR.url,
+      jobTitle: AUTHOR.jobTitle,
     },
   };
 }

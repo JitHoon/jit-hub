@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { Lexend, Noto_Sans_KR } from "next/font/google";
 import Script from "next/script";
+import {
+  SITE_URL,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  AUTHOR,
+} from "@/constants/site";
 import "./globals.css";
 
 const lexend = Lexend({
@@ -18,22 +25,32 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "JIT-Hub | 3D GIS 지식 포트폴리오",
-  description: "3D GIS 기술 지식을 시각적으로 탐색하는 인터랙티브 포트폴리오",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    siteName: SITE_NAME,
+    locale: "ko_KR",
+    type: "website",
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "JIT-Hub",
-  url: "https://jit-hub.vercel.app",
-  description: "3D GIS 기술 지식을 시각적으로 탐색하는 인터랙티브 포트폴리오",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
   author: {
     "@type": "Person",
-    name: "JitHoon",
-    url: "https://github.com/JitHoon",
-    jobTitle: "Frontend Engineer",
-    knowsAbout: ["3D GIS", "Cesium.js", "WebGL", "TypeScript", "Next.js"],
+    name: AUTHOR.name,
+    url: AUTHOR.url,
+    jobTitle: AUTHOR.jobTitle,
+    knowsAbout: [...AUTHOR.knowsAbout],
   },
 };
 
