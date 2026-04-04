@@ -4,6 +4,7 @@ import { CLUSTERS, type ClusterId } from "@/constants/cluster";
 import type { ConnectedNodeInfo } from "../utils/connected-nodes";
 import { EDGE_TYPE_LABELS, EDGE_TYPE_ORDER } from "../utils/edge-type";
 import BackToFullTreeButton from "./BackToFullTreeButton";
+import HistoryBackButton from "./HistoryBackButton";
 import ClusterDot from "./ClusterDot";
 import CollapsibleGroup from "./CollapsibleGroup";
 
@@ -44,9 +45,10 @@ export default function ConnectionTree({
   const clusterMeta = CLUSTERS[currentCluster];
 
   const backButtonEl = (
-    <div className="flex justify-end">
+    <div className="flex justify-end gap-1">
       {backButton ?? (
         <Suspense>
+          <HistoryBackButton />
           <BackToFullTreeButton />
         </Suspense>
       )}
