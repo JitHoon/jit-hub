@@ -7,6 +7,7 @@ interface ErrorCardProps {
   description?: string;
   onRetry?: () => void;
   variant: "panel" | "fatal";
+  alwaysShowDescription?: boolean;
 }
 
 export default function ErrorCard({
@@ -14,8 +15,10 @@ export default function ErrorCard({
   description,
   onRetry,
   variant,
+  alwaysShowDescription = false,
 }: ErrorCardProps) {
   const isDev = process.env.NODE_ENV === "development";
+  const showDescription = alwaysShowDescription || isDev;
 
   if (variant === "fatal") {
     return (
@@ -28,7 +31,7 @@ export default function ErrorCard({
           <h1 className="mb-2 font-display text-xl font-bold text-foreground">
             {title}
           </h1>
-          {isDev && description && (
+          {showDescription && description && (
             <p className="mb-6 font-mono text-xs text-muted">{description}</p>
           )}
           {onRetry && (
@@ -55,7 +58,7 @@ export default function ErrorCard({
         <p className="mb-1 font-sans text-sm font-semibold text-foreground">
           {title}
         </p>
-        {isDev && description && (
+        {showDescription && description && (
           <p className="mb-4 font-mono text-xs text-muted">{description}</p>
         )}
         {onRetry && (
