@@ -27,6 +27,10 @@ export function getEffectiveTheme(): Theme {
   return getStoredTheme() ?? getSystemTheme();
 }
 
+export function applyThemeToDOM(theme: Theme): void {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
+
 export function applyTheme(theme: Theme): void {
   document.documentElement.classList.toggle("dark", theme === "dark");
   localStorage.setItem(STORAGE_KEY, theme);
