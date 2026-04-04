@@ -6,7 +6,7 @@
 
 ## 현재 단계
 
-Phase 10 진행 중 — **라우팅 & SEO** (10-3-1, 10-3-2 완료)
+없음
 
 ## 완료된 Phase 요약
 
@@ -22,28 +22,22 @@ Phase 10 진행 중 — **라우팅 & SEO** (10-3-1, 10-3-2 완료)
 - **Phase 7** (홈 페이지 조립 + 전환 애니메이션): 분할 뷰 레이아웃, 로딩 시퀀스, 노드 클릭/닫기/전환 애니메이션, 노드 플로팅 효과 (7-1 ~ 7-7)
 - **Phase 8** (홈페이지 리디자인 v2): SiteHeader + 세로 스크롤 전환, 3D 인터랙션 고도화(호버 glow/라벨/선택), ContentSection 슬라이드 다운, ScrollToTopButton, SEO 정적 페이지 (8-1 ~ 8-13)
 - **Phase 9** (폴백 + 접근성 + 성능): WebGL 폴백 UI, 캔버스 aria-label/스크린리더 노드 목록, 모바일 LOD 분기, nodeThreeObject 캐싱 검증, E2E 테스트 3건 (9-1 ~ 9-7-3)
+- **Phase 10** (라우팅 & SEO): JSON-LD 구조화 데이터, sitemap.ts, robots.ts (10-2-1 ~ 10-3-2)
 
 ---
 
 ## 이후 Phase
 
-### Phase 10: 라우팅 & SEO · 브랜치: `feat/seo`
-
-| # | 작업 | 크기 | 의존 | 상태 |
-|---|------|------|------|------|
-| ~~10-1~~ | ~~`/nodes/[slug]` 정적 페이지~~ | ~~M~~ | - | 8-12로 통합 |
-| 10-2-1 | `layout.tsx`에 WebSite + Person JSON-LD 스크립트 추가 | XS | 8-12 | [x] |
-| 10-2-2 | `nodes/[slug]/page.tsx`에 TechArticle JSON-LD 생성 로직 추가 | S | 10-2-1 | [x] |
-| 10-3-1 | `src/app/sitemap.ts` 생성 -- getAllSlugs() 기반 동적 sitemap 반환 | XS | 8-12 | [x] |
-| 10-3-2 | `src/app/robots.ts` 생성 -- 크롤링 허용 + sitemap URL 명시 | XS | 10-3-1 | [x] |
-
 ### Phase 11: 배포 · 브랜치: `feat/deploy`
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 11-1 | Vercel 배포 설정 | S | - | [ ] |
-| 11-2 | GitHub Actions CI | S | 11-1 | [ ] |
-| 11-3 | 커스텀 도메인 | S | 11-1 | [ ] |
+| 11-1-1 | vercel.json 생성 — framework/buildCommand/outputDirectory 설정 | XS | - | [x] |
+| 11-1-2 | Vercel 프로젝트 연결 및 첫 배포 성공 확인 | S | 11-1-1 | [x] |
+| 11-2-1 | ci.yml에 vitest 유닛 테스트 스텝 추가 (`bun run test`) | XS | - | [ ] |
+| 11-2-2 | ci.yml에 Playwright E2E 테스트 job 추가 (chromium 설치 + `bun run test:e2e` + 리포트 업로드) | S | 11-2-1 | [ ] |
+| 11-3-1 | Vercel 대시보드에서 커스텀 도메인 등록 + DNS 레코드 설정 확인 | XS | 11-1-2 | [ ] |
+| 11-3-2 | sitemap.ts/robots.ts의 base URL을 커스텀 도메인으로 변경 + next.config.ts 도메인 관련 설정 추가 (필요 시) | XS | 11-3-1 | [ ] |
 
 ---
 
