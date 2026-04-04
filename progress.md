@@ -6,7 +6,7 @@
 
 ## 현재 단계
 
-Phase 11 진행 중 — 배포 · CI/CD 구성. 11-2-1, 11-2-2 완료 (ci.yml vitest + Playwright E2E job 추가).
+Phase 12 완료 — SEO · 공유 최적화. 전체 태스크 완료.
 
 ## 완료된 Phase 요약
 
@@ -38,6 +38,20 @@ Phase 11 진행 중 — 배포 · CI/CD 구성. 11-2-1, 11-2-2 완료 (ci.yml vi
 | 11-2-2 | ci.yml에 Playwright E2E 테스트 job 추가 (chromium 설치 + `bun run test:e2e` + 리포트 업로드) | S | 11-2-1 | [x] |
 | 11-3-1 | Vercel 대시보드에서 커스텀 도메인 등록 + DNS 레코드 설정 확인 | XS | 11-1-2 | [ ] |
 | 11-3-2 | sitemap.ts/robots.ts의 base URL을 커스텀 도메인으로 변경 + next.config.ts 도메인 관련 설정 추가 (필요 시) | XS | 11-3-1 | [ ] |
+
+### Phase 12: SEO · 공유 최적화 — 브랜치: `feat/seo-sharing`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 12-0-1 | `src/constants/site.ts` 생성 — SITE_URL 등 상수 추출 + 4개 파일의 하드코딩 교체 | S | - | [x] |
+| 12-1-1 | `src/app/icon.tsx` — "H" 텍스트 favicon 동적 생성 (32x32) | XS | - | [x] |
+| 12-2-1 | `src/app/opengraph-image.tsx` — 홈페이지 OG 이미지 (1200x630, 다크 배경 + 타이틀) | S | 12-0-1 | [x] |
+| 12-2-2 | `src/app/nodes/[slug]/opengraph-image.tsx` — 노드별 OG 이미지 (title + cluster 색상 + tags) | S | 12-0-1 | [x] |
+| 12-3-1 | `layout.tsx` — metadataBase 설정 + openGraph/twitter 메타데이터 추가 | XS | 12-0-1 | [x] |
+| 12-3-2 | `nodes/[slug]/page.tsx` — generateMetadata에 openGraph url/locale/images + twitter 추가 | XS | 12-0-1 | [x] |
+| 12-4-1 | `src/app/manifest.ts` — Web App Manifest (이름, 테마, 아이콘) | XS | 12-1-1 | [x] |
+| 12-4-2 | `src/app/apple-icon.tsx` — Apple Touch Icon (180x180) | XS | 12-1-1 | [x] |
+| 12-5-1 | 로컬 빌드 + OG 검증 | XS | all | [x] |
 
 ---
 
