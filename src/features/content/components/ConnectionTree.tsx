@@ -1,12 +1,13 @@
 import { Suspense } from "react";
-import Link from "next/link";
 import { CLUSTERS, type ClusterId } from "@/constants/cluster";
 import type { ConnectedNodeInfo } from "../utils/connected-nodes";
 import { EDGE_TYPE_LABELS, EDGE_TYPE_ORDER } from "../utils/edge-type";
+import { groupByEdgeType } from "../utils/group-by-edge-type";
 import BackToFullTreeButton from "./BackToFullTreeButton";
 import HistoryBackButton from "./HistoryBackButton";
 import ClusterDot from "./ClusterDot";
 import CollapsibleGroup from "./CollapsibleGroup";
+import NodeLink from "./NodeLink";
 
 interface ConnectionTreeProps {
   currentTitle: string;
@@ -16,18 +17,6 @@ interface ConnectionTreeProps {
   defaultOpen?: boolean;
   backButton?: React.ReactNode;
   backButtonPosition?: "top" | "bottom";
-}
-
-function groupByEdgeType(
-  nodes: ConnectedNodeInfo[],
-): Map<ConnectedNodeInfo["edgeType"], ConnectedNodeInfo[]> {
-  const groups = new Map<ConnectedNodeInfo["edgeType"], ConnectedNodeInfo[]>();
-  for (const node of nodes) {
-    const list = groups.get(node.edgeType) ?? [];
-    list.push(node);
-    groups.set(node.edgeType, list);
-  }
-  return groups;
 }
 
 export default function ConnectionTree({
@@ -88,19 +77,12 @@ export default function ConnectionTree({
                         className={`relative ml-3 ${idx > 0 ? "mt-0.5" : ""}`}
                       >
                         <span className="absolute -left-3 top-[9px] h-px w-2 bg-[var(--border)]" />
-                        <Link
-                          href={`/?node=${node.slug}`}
-                          scroll={false}
-                          className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)]"
-                        >
-                          <ClusterDot cluster={node.cluster} />
-                          <span className="text-sm text-[var(--foreground)] group-hover:text-[var(--accent)]">
-                            {node.title}
-                          </span>
-                          <span className="text-[10px] text-[var(--muted)]">
-                            {CLUSTERS[node.cluster].label}
-                          </span>
-                        </Link>
+                        <NodeLink
+                          id={node.slug}
+                          title={node.title}
+                          cluster={node.cluster}
+                          showLabel
+                        />
                       </div>
                     ))}
                   </div>
