@@ -68,15 +68,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="ko"
-      className={`${lexend.variable} ${notoSansKR.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className={`font-sans bg-background text-foreground`}>
+      <body
+        className={`${lexend.variable} ${notoSansKR.variable} font-sans bg-background text-foreground`}
+      >
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}

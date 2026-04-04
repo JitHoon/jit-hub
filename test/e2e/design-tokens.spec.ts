@@ -19,16 +19,16 @@ test.describe("디자인 토큰", () => {
     await page.locator("[data-theme-toggle]").waitFor();
   });
 
-  test("Lexend 폰트 변수가 html에 적용된다", async ({ page }) => {
+  test("Lexend 폰트 변수가 body에 적용된다", async ({ page }) => {
     const fontFamily = await page
-      .locator("html")
+      .locator("body")
       .evaluate((el) => getComputedStyle(el).getPropertyValue("--font-lexend"));
     expect(fontFamily.trim()).not.toBe("");
   });
 
-  test("Noto Sans KR 폰트 변수가 html에 적용된다", async ({ page }) => {
+  test("Noto Sans KR 폰트 변수가 body에 적용된다", async ({ page }) => {
     const fontFamily = await page
-      .locator("html")
+      .locator("body")
       .evaluate((el) =>
         getComputedStyle(el).getPropertyValue("--font-noto-kr"),
       );
