@@ -15,25 +15,34 @@ test.describe("SiteHeader", () => {
   });
 
   test("헤더가 sticky 포지션을 가진다", async ({ page }) => {
-    const position = await page.evaluate(() => {
-      const header = document.querySelector('[data-testid="site-header"]');
-      if (!header) return "";
-      return getComputedStyle(header).position;
-    });
+    const header = page.locator('[data-testid="site-header"]');
+    await header.waitFor();
+    const position = await header.evaluate(
+      (el) => getComputedStyle(el).position,
+    );
     expect(position).toBe("sticky");
   });
 
-  test("JIT-Hub 로고가 홈으로 링크된다", async ({ page }) => {
-    const logo = page.locator('[data-testid="site-header"] a', {
+  test("JIT-Hub 드롭다운을 열면 홈 링크가 존재한다", async ({ page }) => {
+    const dropdownButton = page.locator('[data-testid="site-header"] button', {
       hasText: "JIT-Hub",
     });
-    await expect(logo).toBeVisible();
-    await expect(logo).toHaveAttribute("href", "/");
+    await expect(dropdownButton).toBeVisible();
+    await dropdownButton.click();
+
+    const homeLink = page.locator('[data-testid="site-header"] a[href="/"]');
+    await expect(homeLink).toBeVisible();
+    await expect(homeLink).toHaveText("지식 그래프");
   });
 
-  test("Projects 링크가 존재한다", async ({ page }) => {
+  test("드롭다운에 프로젝트 링크가 존재한다", async ({ page }) => {
+    const dropdownButton = page.locator('[data-testid="site-header"] button', {
+      hasText: "JIT-Hub",
+    });
+    await dropdownButton.click();
+
     const link = page.locator('[data-testid="site-header"] a', {
-      hasText: "Projects",
+      hasText: "프로젝트",
     });
     await expect(link).toBeVisible();
     await expect(link).toHaveAttribute("href", "/projects");

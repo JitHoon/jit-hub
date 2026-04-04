@@ -5,7 +5,7 @@ test.describe("Vertical Layout", () => {
     await page.goto("/");
   });
 
-  test("그래프 섹션이 viewport 높이 - 56px를 차지한다", async ({ page }) => {
+  test("그래프 섹션이 60vh - 56px 높이를 가진다", async ({ page }) => {
     const graphSection = page.locator('[data-testid="graph-section"]');
     await expect(graphSection).toBeVisible();
 
@@ -13,7 +13,7 @@ test.describe("Vertical Layout", () => {
     const viewportHeight = await page.evaluate(() => window.innerHeight);
 
     expect(box).not.toBeNull();
-    expect(box!.height).toBeCloseTo(viewportHeight - 56, 1);
+    expect(box!.height).toBeCloseTo(viewportHeight * 0.6 - 56, 0);
   });
 
   test("콘텐츠 미선택 시 content-grid 높이가 0이다", async ({ page }) => {
