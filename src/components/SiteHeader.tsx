@@ -5,10 +5,7 @@ import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import ChevronIcon from "@/components/icons/ChevronIcon";
 
-const NAV_ITEMS = [
-  { href: "/", label: "지식 그래프" },
-  { href: "/projects", label: "프로젝트" },
-] as const;
+const NAV_ITEMS = [{ href: "/", label: "지식 그래프" }] as const;
 
 export default function SiteHeader() {
   const [open, setOpen] = useState(true);
