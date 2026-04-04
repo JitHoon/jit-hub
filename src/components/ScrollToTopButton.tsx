@@ -1,35 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-interface ScrollToTopButtonProps {
-  targetRef: React.RefObject<Element | null>;
-}
+const SCROLL_THRESHOLD = 200;
 
-export default function ScrollToTopButton({
-  targetRef,
-}: ScrollToTopButtonProps): React.ReactElement {
+export default function ScrollToTopButton(): React.ReactElement {
   const [visible, setVisible] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    const target = targetRef.current;
-    if (!target) return;
+    function handleScroll() {
+      setVisible(window.scrollY > SCROLL_THRESHOLD);
+    }
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry) setVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 },
-    );
-
-    observerRef.current.observe(target);
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [targetRef]);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   function handleClick() {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -42,7 +28,7 @@ export default function ScrollToTopButton({
       onClick={handleClick}
       aria-label="페이지 상단으로 이동"
       className={[
-        "fixed bottom-8 right-8 z-50",
+        "pointer-events-auto",
         "h-11 w-11 rounded-full",
         "bg-[var(--surface-elevated)] border border-[var(--border)]",
         "shadow-[var(--shadow-md)]",
@@ -51,7 +37,7 @@ export default function ScrollToTopButton({
         "hover:border-[var(--border-strong)] hover:shadow-[var(--shadow-lg)]",
         "transition-all duration-200",
         visible
-          ? "opacity-100 scale-100 pointer-events-auto"
+          ? "opacity-100 scale-100"
           : "opacity-0 scale-90 pointer-events-none",
       ].join(" ")}
     >

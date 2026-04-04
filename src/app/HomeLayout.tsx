@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { GraphSection } from "@/features/graph/components/GraphSection";
@@ -22,7 +22,6 @@ export default function HomeLayout({
   contentKey,
 }: HomeLayoutProps): React.ReactElement {
   const hasContent = contentSection != null;
-  const contentRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
   const selectedGraphNode = useMemo(() => {
@@ -64,7 +63,6 @@ export default function HomeLayout({
           )}
         </div>
         <div
-          ref={contentRef}
           data-testid="content-grid"
           className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"
           style={{ gridTemplateRows: hasContent ? "1fr" : "0fr" }}
@@ -77,7 +75,13 @@ export default function HomeLayout({
           </div>
         </div>
       </main>
-      <ScrollToTopButton targetRef={contentRef} />
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="flex justify-end pb-8">
+            <ScrollToTopButton />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
