@@ -5,6 +5,6 @@ test.describe("@smoke", () => {
     const response = await page.goto("/");
 
     expect(response?.status()).toBe(200);
-    await expect(page).toHaveTitle(/jit-hub|지식 포트폴리오/i);
+    await expect(page).toHaveTitle(/JIT Hub|지식 포트폴리오/i);
   });
 });

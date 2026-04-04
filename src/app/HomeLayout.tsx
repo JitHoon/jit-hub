@@ -60,6 +60,7 @@ export default function HomeLayout({
               currentTitle={treeData.title}
               currentCluster={treeData.cluster as ClusterId}
               nodes={treeData.nodes}
+              backButtonPosition="bottom"
             />
           ) : (
             <FullNodeTree graphData={graphData} />
