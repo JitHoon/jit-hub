@@ -22,6 +22,21 @@ export const metadata: Metadata = {
   description: "3D GIS 기술 지식을 시각적으로 탐색하는 인터랙티브 포트폴리오",
 };
 
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "JIT-Hub",
+  url: "https://jit-hub.vercel.app",
+  description: "3D GIS 기술 지식을 시각적으로 탐색하는 인터랙티브 포트폴리오",
+  author: {
+    "@type": "Person",
+    name: "JitHoon",
+    url: "https://github.com/JitHoon",
+    jobTitle: "Frontend Engineer",
+    knowsAbout: ["3D GIS", "Cesium.js", "WebGL", "TypeScript", "Next.js"],
+  },
+};
+
 const themeScript = `
 (function(){
   var t = localStorage.getItem('theme');
@@ -46,6 +61,10 @@ export default function RootLayout({
         <Script id="theme-init" strategy="beforeInteractive">
           {themeScript}
         </Script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         {children}
       </body>
     </html>

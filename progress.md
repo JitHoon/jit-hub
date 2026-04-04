@@ -2,17 +2,11 @@
 
 ## 다음 작업
 
-| # | 작업 | 크기 | 의존 | 상태 |
-|---|------|------|------|------|
-| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [x] |
-| 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [x] |
-| 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [x] |
-| 9-7-2 | 검증: E2E 테스트 -- URL 파라미터로 노드 선택 시 content-grid에 콘텐츠 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-7-1 | [x] |
 ---
 
 ## 현재 단계
 
-Phase 9 완료 — **폴백 + 접근성 + 성능** (브랜치: `feat/phase9-polish`)
+Phase 10 진행 중 — **라우팅 & SEO** (10-2-1 완료)
 
 ## 완료된 Phase 요약
 
@@ -27,31 +21,21 @@ Phase 9 완료 — **폴백 + 접근성 + 성능** (브랜치: `feat/phase9-poli
 - **Phase 6** (콘텐츠 패널 + 분할 뷰): CloseButton, LoadingIndicator, ClusterBadge, DifficultyLabel, PanelHeader, ContentPanel + re-export 정리 (6-1 ~ 6-5)
 - **Phase 7** (홈 페이지 조립 + 전환 애니메이션): 분할 뷰 레이아웃, 로딩 시퀀스, 노드 클릭/닫기/전환 애니메이션, 노드 플로팅 효과 (7-1 ~ 7-7)
 - **Phase 8** (홈페이지 리디자인 v2): SiteHeader + 세로 스크롤 전환, 3D 인터랙션 고도화(호버 glow/라벨/선택), ContentSection 슬라이드 다운, ScrollToTopButton, SEO 정적 페이지 (8-1 ~ 8-13)
+- **Phase 9** (폴백 + 접근성 + 성능): WebGL 폴백 UI, 캔버스 aria-label/스크린리더 노드 목록, 모바일 LOD 분기, nodeThreeObject 캐싱 검증, E2E 테스트 3건 (9-1 ~ 9-7-3)
 
 ---
 
 ## 이후 Phase
-
-### Phase 9: 폴백 + 접근성 + 성능 · 브랜치: `feat/phase9-polish`
-
-| # | 작업 | 크기 | 의존 | 상태 |
-|---|------|------|------|------|
-| 9-1 | 구현: `GraphSection`에 WebGL 사전 체크 훅 추가 및 미지원 시 `ErrorCard` 기반 폴백 UI 렌더링 (`src/features/graph/hooks/useWebGLSupport.ts`, `src/features/graph/components/GraphSection.tsx`) | S | - | [x] |
-| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [x] |
-| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [x] |
-| 9-6-1 | 구현: 모바일 감지 시 SphereGeometry 세그먼트를 32→16으로 줄이는 LOD 분기 추가 (`useGraph3DRenderer.ts`) | S | - | [x] |
-| 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [x] |
-| 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [x] |
-| 9-7-2 | 검증: E2E 테스트 -- URL 파라미터로 노드 선택 시 content-grid에 콘텐츠 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-7-1 | [x] |
-| 9-7-3 | 검증: E2E 테스트 -- WebGL 폴백 UI 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-1 | [x] |
 
 ### Phase 10: 라우팅 & SEO · 브랜치: `feat/seo`
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
 | ~~10-1~~ | ~~`/nodes/[slug]` 정적 페이지~~ | ~~M~~ | - | 8-12로 통합 |
-| 10-2 | JSON-LD 구조화 데이터 | S | 8-12 | [ ] |
-| 10-3 | sitemap.xml + robots.txt | S | 8-12 | [ ] |
+| 10-2-1 | `layout.tsx`에 WebSite + Person JSON-LD 스크립트 추가 | XS | 8-12 | [x] |
+| 10-2-2 | `nodes/[slug]/page.tsx`에 TechArticle JSON-LD 생성 로직 추가 | S | 10-2-1 | [ ] |
+| 10-3-1 | `src/app/sitemap.ts` 생성 -- getAllSlugs() 기반 동적 sitemap 반환 | XS | 8-12 | [ ] |
+| 10-3-2 | `src/app/robots.ts` 생성 -- 크롤링 허용 + sitemap URL 명시 | XS | 10-3-1 | [ ] |
 
 ### Phase 11: 배포 · 브랜치: `feat/deploy`
 
