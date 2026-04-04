@@ -35,17 +35,17 @@ test.describe("SiteHeader", () => {
     await expect(homeLink).toHaveText("지식 그래프");
   });
 
-  test("드롭다운에 프로젝트 링크가 존재한다", async ({ page }) => {
+  test("드롭다운에 지식 그래프 링크가 존재한다", async ({ page }) => {
     const dropdownButton = page.locator('[data-testid="site-header"] button', {
       hasText: "JIT-Hub",
     });
     await dropdownButton.click();
 
     const link = page.locator('[data-testid="site-header"] a', {
-      hasText: "프로젝트",
+      hasText: "지식 그래프",
     });
     await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/projects");
+    await expect(link).toHaveAttribute("href", "/");
   });
 
   test("ThemeToggle이 헤더 내에 존재한다", async ({ page }) => {
