@@ -28,8 +28,8 @@ export default function ScrollToTopButton(): React.ReactElement {
       onClick={handleClick}
       aria-label="페이지 상단으로 이동"
       className={[
-        "pointer-events-auto",
-        "h-11 w-11 rounded-full",
+        "pointer-events-auto cursor-pointer",
+        "h-9 w-9 rounded-full",
         "bg-[var(--surface-elevated)] border border-[var(--border)]",
         "shadow-[var(--shadow-md)]",
         "flex items-center justify-center",
@@ -42,8 +42,8 @@ export default function ScrollToTopButton(): React.ReactElement {
       ].join(" ")}
     >
       <svg
-        width="18"
-        height="18"
+        width="16"
+        height="16"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
