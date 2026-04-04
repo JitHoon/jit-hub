@@ -122,8 +122,9 @@ export default async function NodePage({ params }: PageProps) {
             currentTitle={title}
             currentCluster={cluster}
             nodes={connectedNodes}
-            className="mt-10"
+            className="mt-10 border-t border-[var(--border)] pt-8"
             defaultOpen={true}
+            backButtonPosition="bottom"
             backButton={
               <div className="flex items-center gap-2">
                 <HistoryBackButton />
@@ -132,7 +133,7 @@ export default async function NodePage({ params }: PageProps) {
                   className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
                 >
                   <ExpandIcon size={12} />
-                  <span>전체 목차</span>
+                  <span>전체 노드</span>
                 </Link>
               </div>
             }
