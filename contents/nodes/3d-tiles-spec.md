@@ -27,13 +27,11 @@ childConcepts:
 tags: ["3d-tiles", "ogc", "b3dm", "glb", "pnts", "tileset-json", "geometric-error"]
 ---
 
-# 3D Tiles 스펙
+# 3D Tiles Spec
 
 ## 한 줄 요약
 
-대용량 3D 모델을 LOD 기법을 활용하여 계층화한, 웹에 최적화된 3D 데이터 스펙이다. OGC 국제 표준이며, Cesium이 만들었다.
-
----
+대용량 3D 모델을 LOD 기법을 활용하여 계층화한, 웹에 최적화된 3D 데이터 Spec이다. OGC 국제 표준이며, Cesium이 만들었다.
 
 ## 3D Tiles가 해결하는 문제
 
@@ -140,19 +138,6 @@ IFC → 3D Tiles 파이프라인에서 LOD를 생성할 때, 각 LOD 단계의 g
 
 ## 이 경험에서 추출한 원칙
 
-1. **스펙을 "사용"하는 것과 "이해"하는 것은 다르다.** b3dm을 매일 다뤄도 geometricError의 정확한 작동 원리를 모를 수 있다. 깊이 있는 이해는 의도적으로 파고들어야 생긴다.
+1. **Spec을 "사용"하는 것과 "이해"하는 것은 다르다.** b3dm을 매일 다뤄도 geometricError의 정확한 작동 원리를 모를 수 있다. 깊이 있는 이해는 의도적으로 파고들어야 생긴다.
 
 2. **도구의 출력 포맷에 끌려가지 말고, 스펙의 선택지를 먼저 파악하라.** 상용 도구가 b3dm을 뽑아주니까 b3dm을 쓴 것은 결과적으로 동작했지만, glb 직접 사용이 가능했는지 먼저 검토했다면 더 나은 선택을 할 수 있었을 것이다.
-
----
-
-## 연결된 노드
-
-- **← Cesium.js 도입 결정** (이 스펙을 요구한 의사결정)
-- **→ Mesh·BIM·Point Cloud** (이 스펙이 시각화하는 데이터 유형)
-- **→ 좌표계 변환** (boundingVolume의 region이 요구하는 좌표 체계)
-- **→ IFC→3D Tiles 파이프라인** (이 스펙의 타일을 생성하는 시스템)
-- **→ LOD 레벨 오브 디테일** (geometricError가 제어하는 메커니즘)
-- **→ Draco 지오메트리 압축** (glb 타일에 적용되는 압축)
-- **→ KTX2 Basis Universal** (타일 내 텍스처에 적용되는 압축)
-- **→ 측정 도구 7종** (pnts + Clipping Plane으로 구현한 단면도)
