@@ -21,16 +21,6 @@ export default function OgImage(): ImageResponse {
     >
       <div
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "6px",
-          backgroundColor: "#E60012",
-        }}
-      />
-      <div
-        style={{
           display: "flex",
           alignItems: "center",
           gap: "16px",
@@ -44,11 +34,11 @@ export default function OgImage(): ImageResponse {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#E60012",
+            backgroundColor: "#FFFFFF",
             borderRadius: "10px",
             fontSize: "26px",
             fontWeight: 700,
-            color: "#FFFFFF",
+            color: "#111111",
           }}
         >
           JH
@@ -72,7 +62,7 @@ export default function OgImage(): ImageResponse {
           margin: 0,
         }}
       >
-        3D GIS 지식 포트폴리오
+        3D GIS 테크 노트
       </h1>
       <p
         style={{

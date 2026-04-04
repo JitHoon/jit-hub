@@ -55,16 +55,6 @@ export default async function OgImage({
     >
       <div
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "6px",
-          backgroundColor: clusterMeta.color,
-        }}
-      />
-      <div
-        style={{
           display: "flex",
           alignItems: "center",
           gap: "12px",
@@ -84,7 +74,7 @@ export default async function OgImage({
         <span
           style={{
             fontSize: "18px",
-            color: clusterMeta.color,
+            color: "#888888",
             fontWeight: 600,
           }}
         >
