@@ -4,19 +4,19 @@
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 9-1 | 구현: WebGL 지원 여부 사전 체크 + 폴백 UI 메시지 표시 | S | - | [ ] |
-| 9-2 | 구현: BackToGraphButton 컴포넌트 -- 모바일 전용, sticky top-0 z-10, 그래프로 복귀 (`src/features/graph/components/BackToGraphButton.tsx`) | XS | - | [ ] |
-| 9-3 | 구현: 반응형 레이아웃 -- md 미만에서 그래프 숨김 + ContentPanel w-full + BackToGraphButton 표시 | S | 9-2 | [ ] |
-| 9-4 | 추가: 접근성 -- 3D 캔버스 aria-label, 숨겨진 노드 목록, 키보드 탐색(Tab/Enter), Escape로 패널 닫기, 포커스 관리(패널 열림 시 h1, 닫기 시 이전 노드) | S | - | [ ] |
-| 9-5 | 추가: prefers-reduced-motion 대응 -- 자동 회전 비활성화, 전환 duration 0ms, 패널 등장 opacity만 유지(150ms), 노드 플로팅 비활성화 | S | - | [ ] |
-| 9-6 | 검증: 성능 프로파일링 -- 50개 노드 60fps 확인, 모바일 LOD(32seg→16seg), nodeThreeObject 캐싱 | S | - | [ ] |
-| 9-7 | 검증: E2E 테스트 -- 3D 그래프 렌더링 + 노드 클릭 + 분할 뷰 전환 (`test/e2e/home-3d.spec.ts`) | M | 9-1, 9-3, 9-4 | [ ] |
+| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [ ] |
+| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [ ] |
+| 9-6-1 | 구현: 모바일 감지 시 SphereGeometry 세그먼트를 32→16으로 줄이는 LOD 분기 추가 (`useGraph3DRenderer.ts`) | S | - | [ ] |
+| 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [ ] |
+| 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [ ] |
+| 9-7-2 | 검증: E2E 테스트 -- URL 파라미터로 노드 선택 시 content-grid에 콘텐츠 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-7-1 | [ ] |
+| 9-7-3 | 검증: E2E 테스트 -- WebGL 폴백 UI 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-1 | [ ] |
 
 ---
 
 ## 현재 단계
 
-Phase 9 진행 중 — **폴백 + 반응형 + 접근성** (브랜치: `feat/home-page-redesign`)
+Phase 9 진행 중 — **폴백 + 접근성 + 성능** (브랜치: `feat/phase9-polish`)
 
 ## 완료된 Phase 요약
 
@@ -36,17 +36,18 @@ Phase 9 진행 중 — **폴백 + 반응형 + 접근성** (브랜치: `feat/home
 
 ## 이후 Phase
 
-### Phase 9: 폴백 + 반응형 + 접근성 · 브랜치: `feat/home-page-redesign`
+### Phase 9: 폴백 + 접근성 + 성능 · 브랜치: `feat/phase9-polish`
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 9-1 | 구현: WebGL 지원 여부 사전 체크 + 폴백 UI 메시지 표시 | S | - | [ ] |
-| 9-2 | 구현: BackToGraphButton 컴포넌트 -- 모바일 전용, sticky top-0 z-10, 그래프로 복귀 (`src/features/graph/components/BackToGraphButton.tsx`) | XS | - | [ ] |
-| 9-3 | 구현: 반응형 레이아웃 -- md 미만에서 그래프 숨김 + ContentPanel w-full + BackToGraphButton 표시 | S | 9-2 | [ ] |
-| 9-4 | 추가: 접근성 -- 3D 캔버스 aria-label, 숨겨진 노드 목록, 키보드 탐색(Tab/Enter), Escape로 패널 닫기, 포커스 관리(패널 열림 시 h1, 닫기 시 이전 노드) | S | - | [ ] |
-| 9-5 | 추가: prefers-reduced-motion 대응 -- 자동 회전 비활성화, 전환 duration 0ms, 패널 등장 opacity만 유지(150ms), 노드 플로팅 비활성화 | S | - | [ ] |
-| 9-6 | 검증: 성능 프로파일링 -- 50개 노드 60fps 확인, 모바일 LOD(32seg→16seg), nodeThreeObject 캐싱 | S | - | [ ] |
-| 9-7 | 검증: E2E 테스트 -- 3D 그래프 렌더링 + 노드 클릭 + 분할 뷰 전환 (`test/e2e/home-3d.spec.ts`) | M | 9-1, 9-3, 9-4 | [ ] |
+| 9-1 | 구현: `GraphSection`에 WebGL 사전 체크 훅 추가 및 미지원 시 `ErrorCard` 기반 폴백 UI 렌더링 (`src/features/graph/hooks/useWebGLSupport.ts`, `src/features/graph/components/GraphSection.tsx`) | S | - | [x] |
+| 9-4-1 | 추가: 3D 캔버스 컨테이너에 aria-label 및 role 속성 부여 (`GraphSection.tsx`) | XS | - | [ ] |
+| 9-4-2 | 추가: 스크린 리더용 숨겨진 노드 목록 렌더링 (`GraphSection.tsx`) | S | 9-4-1 | [ ] |
+| 9-6-1 | 구현: 모바일 감지 시 SphereGeometry 세그먼트를 32→16으로 줄이는 LOD 분기 추가 (`useGraph3DRenderer.ts`) | S | - | [ ] |
+| 9-6-2 | 검증: nodeThreeObject 캐싱 정상 동작 확인 및 캐시 미스 시 불필요한 geometry 재생성 방지 (`useGraph3DRenderer.ts`) | XS | - | [ ] |
+| 9-7-1 | 검증: E2E 테스트 -- 홈 페이지에서 3D canvas 렌더링 확인 (canvas 요소 존재 + 크기 검증) (`test/e2e/home-3d.spec.ts`) | XS | - | [ ] |
+| 9-7-2 | 검증: E2E 테스트 -- URL 파라미터로 노드 선택 시 content-grid에 콘텐츠 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-7-1 | [ ] |
+| 9-7-3 | 검증: E2E 테스트 -- WebGL 폴백 UI 렌더링 확인 (`test/e2e/home-3d.spec.ts`) | S | 9-1 | [ ] |
 
 ### Phase 10: 라우팅 & SEO · 브랜치: `feat/seo`
 
