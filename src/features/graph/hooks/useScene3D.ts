@@ -7,10 +7,6 @@ import type { ForceGraphMethods } from "react-force-graph-3d";
 import { getGraphGray } from "@/constants/tokens";
 import { useTheme } from "@/features/theme/hooks/useTheme";
 
-const AMBIENT_LIGHT_INTENSITY = 0.6;
-const DIRECTIONAL_LIGHT_INTENSITY = 0.8;
-const FOG_DENSITY = 0.002;
-
 interface UseScene3DReturn {
   onEngineReady: () => void;
 }
@@ -27,10 +23,7 @@ export function useScene3D(
       const bgColor = new THREE.Color(gray.bg);
 
       scene.background = bgColor;
-
-      if (scene.fog instanceof THREE.FogExp2) {
-        scene.fog.color = bgColor;
-      }
+      scene.fog = null;
     },
     [isDark],
   );
@@ -41,23 +34,10 @@ export function useScene3D(
 
     const scene = fg.scene();
 
-    const ambientLight = new THREE.AmbientLight(
-      0xffffff,
-      AMBIENT_LIGHT_INTENSITY,
-    );
-    scene.add(ambientLight);
-
-    const dirLight = new THREE.DirectionalLight(
-      0xffffff,
-      DIRECTIONAL_LIGHT_INTENSITY,
-    );
-    dirLight.position.set(1, 1, 1);
-    scene.add(dirLight);
-
     const gray = getGraphGray(isDark);
     const bgColor = new THREE.Color(gray.bg);
     scene.background = bgColor;
-    scene.fog = new THREE.FogExp2(bgColor, FOG_DENSITY);
+    scene.fog = null;
   }, [graphRef, isDark]);
 
   useEffect(() => {

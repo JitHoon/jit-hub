@@ -1,10 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { getNodeBySlug } from "@/features/content/utils/pipeline";
-import { MdxRenderer } from "@/features/content/components";
 import type { GraphData } from "@/features/graph/types/graph";
+import { getNodeBySlug } from "@/features/content/utils/pipeline";
+import ContentSection from "@/features/content/components/ContentSection";
 import HomeLayout from "./HomeLayout";
+
+interface PageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
 function loadGraphData(): GraphData {
   const filePath = path.join(process.cwd(), "graph-data.json");
@@ -12,33 +16,28 @@ function loadGraphData(): GraphData {
   return JSON.parse(raw) as GraphData;
 }
 
-interface HomePageProps {
-  searchParams: Promise<{ node?: string }>;
-}
-
 export default async function Home({
   searchParams,
-}: HomePageProps): Promise<React.ReactElement> {
+}: PageProps): Promise<React.ReactElement> {
   const graphData = loadGraphData();
-  const { node: nodeSlug } = await searchParams;
+  const params = await searchParams;
+  const nodeSlug = typeof params.node === "string" ? params.node : undefined;
 
-  const selectedNode = nodeSlug ? getNodeBySlug(nodeSlug) : null;
+  const node = nodeSlug ? getNodeBySlug(nodeSlug) : undefined;
+
+  const contentSection = node ? (
+    <ContentSection
+      title={node.frontmatter.title}
+      cluster={node.frontmatter.cluster}
+      mdxSource={node.content}
+    />
+  ) : undefined;
 
   return (
     <HomeLayout
       graphData={graphData}
-      selectedNode={
-        selectedNode
-          ? {
-              title: selectedNode.frontmatter.title,
-              cluster: selectedNode.frontmatter.cluster,
-              difficulty: selectedNode.frontmatter.difficulty,
-            }
-          : null
-      }
-      mdxContent={
-        selectedNode ? <MdxRenderer source={selectedNode.content} /> : null
-      }
+      contentSection={contentSection}
+      contentKey={nodeSlug}
     />
   );
 }

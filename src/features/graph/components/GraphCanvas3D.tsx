@@ -4,12 +4,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
+import { getGraphGray } from "@/constants/tokens";
+import { useTheme } from "@/features/theme/hooks/useTheme";
 import type { GraphData, GraphEdge, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
 import { useCameraControl } from "../hooks/useCameraControl";
 import { useGraph3DRenderer } from "../hooks/useGraph3DRenderer";
 import { useGraphLayout } from "../hooks/useGraphLayout";
-import { useNodePerturbation } from "../hooks/useNodePerturbation";
 import { useNodeSelection } from "../hooks/useNodeSelection";
 import { useScene3D } from "../hooks/useScene3D";
 
@@ -33,23 +34,22 @@ const CHARGE_STRENGTH = -120;
 const LINK_DISTANCE = 80;
 const WARMUP_TICKS = 100;
 const COOLDOWN_TICKS = 0;
-const PANEL_CLOSE_CAMERA_DURATION_MS = 600;
-const LAYOUT_TRANSITION_MS = 400;
 
 interface GraphCanvas3DProps {
   graphData: GraphData;
-  onEngineReady?: () => void;
-  style?: React.CSSProperties;
+  onNodeHoverChange?: (node: GraphNode | null) => void;
 }
 
 export function GraphCanvas3D({
   graphData,
-  onEngineReady: onEngineReadyProp,
-  style,
+  onNodeHoverChange,
 }: GraphCanvas3DProps): React.ReactElement {
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const hasInitPhysics = useRef(false);
+  const hasForcesConfigured = useRef(false);
   const [engineReady, setEngineReady] = useState(false);
+  const { theme } = useTheme();
+  const bgColor = getGraphGray(theme === "dark").bg;
 
   const fg3dData = useMemo(
     () => ({
@@ -61,15 +61,30 @@ export function GraphCanvas3D({
 
   const { selectedNodeId, selectNode } = useNodeSelection();
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
-  const { nodeThreeObject, linkColor, onNodeHover } = useGraph3DRenderer(
-    graphData,
-    selectedNodeId ?? undefined,
-  );
-  const { initCamera, setAutoRotate, focusNode, onInteractionEnd } =
+  const {
+    nodeThreeObject,
+    linkColor,
+    linkOpacity,
+    onNodeHover: rendererOnNodeHover,
+  } = useGraph3DRenderer(graphData, selectedNodeId ?? undefined);
+  const { setCameraImmediate, setAutoRotate, enableDamping, onInteractionEnd } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
-  const perturbationActive = engineReady && selectedNodeId === null;
-  useNodePerturbation(fg3dData.nodes as ForceGraph3DNode[], perturbationActive);
+  useEffect(() => {
+    if (hasForcesConfigured.current) return;
+    const fg = graphRef.current;
+    if (!fg) return;
+    hasForcesConfigured.current = true;
+
+    const chargeFn = fg.d3Force("charge");
+    if (chargeFn) chargeFn.strength(CHARGE_STRENGTH);
+
+    const linkFn = fg.d3Force("link");
+    if (linkFn) linkFn.distance(LINK_DISTANCE);
+
+    setCameraImmediate();
+    enableDamping();
+  });
 
   const prevSelectedNodeIdRef = useRef<string | null>(undefined);
 
@@ -78,50 +93,82 @@ export function GraphCanvas3D({
     prevSelectedNodeIdRef.current = selectedNodeId;
 
     if (prev !== null && prev !== undefined && selectedNodeId === null) {
-      initCamera(PANEL_CLOSE_CAMERA_DURATION_MS);
       onInteractionEnd();
     }
-  }, [selectedNodeId, initCamera, onInteractionEnd]);
+  }, [selectedNodeId, onInteractionEnd]);
 
   const handleEngineStop = useCallback((): void => {
     if (hasInitPhysics.current) return;
     hasInitPhysics.current = true;
 
-    const fg = graphRef.current;
-    if (fg) {
-      const chargeFn = fg.d3Force("charge");
-      if (chargeFn) chargeFn.strength(CHARGE_STRENGTH);
-
-      const linkFn = fg.d3Force("link");
-      if (linkFn) linkFn.distance(LINK_DISTANCE);
-    }
-
     setEngineReady(true);
     onEngineReady();
-    onEngineReadyProp?.();
-    initCamera();
-    setAutoRotate(true);
-  }, [onEngineReady, onEngineReadyProp, initCamera, setAutoRotate]);
+  }, [onEngineReady]);
+
+  useEffect(() => {
+    if (!engineReady) return;
+    const raf = requestAnimationFrame(() => {
+      setAutoRotate(true);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [engineReady, setAutoRotate]);
+
+  useEffect(() => {
+    if (!engineReady) return;
+    const fg = graphRef.current;
+    if (!fg) return;
+    const doc = fg.renderer().domElement.ownerDocument;
+
+    const guardSyntheticPointerUp = (e: PointerEvent): void => {
+      if (!e.isTrusted && e.pointerType === "touch") {
+        e.stopImmediatePropagation();
+      }
+    };
+
+    doc.addEventListener("pointerup", guardSyntheticPointerUp, {
+      capture: true,
+    });
+    return () => {
+      doc.removeEventListener("pointerup", guardSyntheticPointerUp, {
+        capture: true,
+      });
+    };
+  }, [engineReady]);
+
+  const handleNodeHover = useCallback(
+    (
+      node: ForceGraph3DNode | null,
+      prevNode: ForceGraph3DNode | null,
+    ): void => {
+      setAutoRotate(node === null);
+      rendererOnNodeHover(node, prevNode);
+
+      if (node) {
+        const id = (node as ForceGraph3DNode & { id?: string }).id;
+        const graphNode = id
+          ? (graphData.nodes.find((n) => n.id === id) ?? null)
+          : null;
+        onNodeHoverChange?.(graphNode);
+      } else {
+        onNodeHoverChange?.(null);
+      }
+    },
+    [rendererOnNodeHover, setAutoRotate, graphData.nodes, onNodeHoverChange],
+  );
 
   const handleNodeClick = useCallback(
     (node: ForceGraph3DNode): void => {
       const graphNode = node as ForceGraph3DNode & { id?: string };
       const id = graphNode.id;
       if (!id) return;
-      const isFirstSelection = selectedNodeId === null;
       selectNode(id);
-      if (isFirstSelection) {
-        setTimeout(() => focusNode(node), LAYOUT_TRANSITION_MS);
-      } else {
-        focusNode(node);
-      }
       onInteractionEnd();
     },
-    [selectNode, focusNode, onInteractionEnd, selectedNodeId],
+    [selectNode, onInteractionEnd],
   );
 
   return (
-    <div ref={containerRef} className="h-full w-full" style={style}>
+    <div ref={containerRef} className="h-full w-full">
       <ForceGraph3D
         ref={graphRef}
         graphData={fg3dData}
@@ -130,13 +177,16 @@ export function GraphCanvas3D({
         numDimensions={3}
         warmupTicks={WARMUP_TICKS}
         cooldownTicks={COOLDOWN_TICKS}
+        controlType="orbit"
         nodeThreeObject={nodeThreeObject}
         nodeThreeObjectExtend={false}
         linkColor={linkColor}
+        linkOpacity={linkOpacity}
         linkWidth={1}
         onNodeClick={handleNodeClick}
-        onNodeHover={onNodeHover}
+        onNodeHover={handleNodeHover}
         onEngineStop={handleEngineStop}
+        backgroundColor={bgColor}
         showNavInfo={false}
       />
     </div>

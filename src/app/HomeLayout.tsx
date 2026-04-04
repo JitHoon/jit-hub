@@ -1,70 +1,87 @@
 "use client";
 
-import { useState } from "react";
-import { ContentPanelWrapper } from "@/features/content/components";
+import { useMemo, useState } from "react";
+import SiteHeader from "@/components/SiteHeader";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import { GraphSection } from "@/features/graph/components/GraphSection";
+import ConnectionTree from "@/features/content/components/ConnectionTree";
+import FullNodeTree from "@/features/content/components/FullNodeTree";
+import { buildConnectedNodesFromGraph } from "@/features/content/utils/connected-nodes";
 import type { ClusterId } from "@/constants/cluster";
-import type { Difficulty } from "@/types/node";
-import type { GraphData } from "@/features/graph/types/graph";
-
-interface SelectedNodeData {
-  title: string;
-  cluster: ClusterId;
-  difficulty: Difficulty;
-}
+import type { GraphData, GraphNode } from "@/features/graph/types/graph";
 
 interface HomeLayoutProps {
   graphData: GraphData;
-  selectedNode: SelectedNodeData | null;
-  mdxContent: React.ReactNode;
+  contentSection?: React.ReactNode;
+  contentKey?: string;
 }
 
 export default function HomeLayout({
   graphData,
-  selectedNode,
-  mdxContent,
+  contentSection,
+  contentKey,
 }: HomeLayoutProps): React.ReactElement {
-  const [closing, setClosing] = useState(false);
+  const hasContent = contentSection != null;
+  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
-  const [prevNode, setPrevNode] = useState(selectedNode);
+  const selectedGraphNode = useMemo(() => {
+    if (!contentKey) return null;
+    return graphData.nodes.find((n) => n.id === contentKey) ?? null;
+  }, [contentKey, graphData.nodes]);
 
-  if (selectedNode !== prevNode) {
-    setPrevNode(selectedNode);
-    setClosing(false);
-  }
+  const activeNode = hoveredNode ?? selectedGraphNode;
 
-  const hasNode = !!selectedNode && !closing;
-  const expandGraph = !selectedNode || closing;
+  const treeData = useMemo(() => {
+    if (!activeNode) return null;
+    const nodes = buildConnectedNodesFromGraph(activeNode.id, graphData);
+    if (nodes.length === 0) return null;
+    return { title: activeNode.title, cluster: activeNode.cluster, nodes };
+  }, [activeNode, graphData]);
 
   return (
-    <main className="flex h-screen w-screen overflow-hidden">
-      <div
-        className={`transition-all ${
-          expandGraph
-            ? "duration-[350ms] ease-[cubic-bezier(0,0,0.2,1)] w-full"
-            : "duration-[400ms] ease-[cubic-bezier(0,0,0.2,1)] w-[38%]"
-        }`}
-      >
-        <GraphSection graphData={graphData} />
-      </div>
-      {selectedNode && (
+    <div className="mx-auto flex min-h-screen max-w-3xl flex-col">
+      <SiteHeader />
+      <main className="flex flex-1 flex-col">
         <div
-          className={`overflow-hidden transition-all ${
-            hasNode
-              ? "duration-[400ms] ease-[cubic-bezier(0,0,0.2,1)] w-[62%]"
-              : "duration-[300ms] ease-[cubic-bezier(0.4,0,1,1)] w-0"
-          }`}
+          data-testid="graph-section"
+          className="flex h-[calc(60vh-56px)] items-center justify-center px-6 py-6 [container-type:size]"
         >
-          <ContentPanelWrapper
-            title={selectedNode.title}
-            cluster={selectedNode.cluster}
-            difficulty={selectedNode.difficulty}
-            onClosingStart={() => setClosing(true)}
-          >
-            {mdxContent}
-          </ContentPanelWrapper>
+          <GraphSection
+            graphData={graphData}
+            onNodeHoverChange={setHoveredNode}
+          />
         </div>
-      )}
-    </main>
+        <div data-testid="connection-tree-grid">
+          {treeData ? (
+            <ConnectionTree
+              currentTitle={treeData.title}
+              currentCluster={treeData.cluster as ClusterId}
+              nodes={treeData.nodes}
+            />
+          ) : (
+            <FullNodeTree graphData={graphData} />
+          )}
+        </div>
+        <div
+          data-testid="content-grid"
+          className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"
+          style={{ gridTemplateRows: hasContent ? "1fr" : "0fr" }}
+        >
+          <div
+            key={contentKey}
+            className="overflow-hidden animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
+          >
+            {contentSection}
+          </div>
+        </div>
+      </main>
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="flex justify-end pb-8">
+            <ScrollToTopButton />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

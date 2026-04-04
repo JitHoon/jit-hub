@@ -21,7 +21,7 @@ export function useNodeSelection(): UseNodeSelectionReturn {
     (slug: string): void => {
       const params = new URLSearchParams(searchParams.toString());
       params.set(NODE_PARAM, slug);
-      router.push(`?${params.toString()}`);
+      router.push(`?${params.toString()}`, { scroll: false });
     },
     [router, searchParams],
   );
@@ -30,7 +30,7 @@ export function useNodeSelection(): UseNodeSelectionReturn {
     const params = new URLSearchParams(searchParams.toString());
     params.delete(NODE_PARAM);
     const query = params.toString();
-    router.push(query ? `?${query}` : "/");
+    router.push(query ? `?${query}` : "/", { scroll: false });
   }, [router, searchParams]);
 
   return { selectedNodeId, selectNode, clearSelection };
