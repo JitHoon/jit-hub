@@ -3,7 +3,7 @@
 import { useCallback, useLayoutEffect, useSyncExternalStore } from "react";
 import {
   type Theme,
-  applyTheme,
+  applyThemeToDOM,
   getEffectiveTheme,
   toggleTheme,
 } from "@/features/theme/utils/store";
@@ -35,7 +35,7 @@ export function useTheme(): UseThemeReturn {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useLayoutEffect(() => {
-    applyTheme(theme);
+    applyThemeToDOM(theme);
   }, [theme]);
 
   const toggle = useCallback(() => {
