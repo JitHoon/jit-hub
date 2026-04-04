@@ -6,7 +6,7 @@
 
 ## 현재 단계
 
-Phase 10 진행 중 — **라우팅 & SEO** (10-3-1 완료)
+Phase 10 진행 중 — **라우팅 & SEO** (10-3-1, 10-3-2 완료)
 
 ## 완료된 Phase 요약
 
@@ -35,7 +35,7 @@ Phase 10 진행 중 — **라우팅 & SEO** (10-3-1 완료)
 | 10-2-1 | `layout.tsx`에 WebSite + Person JSON-LD 스크립트 추가 | XS | 8-12 | [x] |
 | 10-2-2 | `nodes/[slug]/page.tsx`에 TechArticle JSON-LD 생성 로직 추가 | S | 10-2-1 | [x] |
 | 10-3-1 | `src/app/sitemap.ts` 생성 -- getAllSlugs() 기반 동적 sitemap 반환 | XS | 8-12 | [x] |
-| 10-3-2 | `src/app/robots.ts` 생성 -- 크롤링 허용 + sitemap URL 명시 | XS | 10-3-1 | [ ] |
+| 10-3-2 | `src/app/robots.ts` 생성 -- 크롤링 허용 + sitemap URL 명시 | XS | 10-3-1 | [x] |
 
 ### Phase 11: 배포 · 브랜치: `feat/deploy`
 
