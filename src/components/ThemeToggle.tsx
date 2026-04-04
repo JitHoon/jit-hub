@@ -1,6 +1,6 @@
 "use client";
 
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
 

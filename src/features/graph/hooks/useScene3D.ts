@@ -5,7 +5,7 @@ import * as THREE from "three";
 import type { ForceGraphMethods } from "react-force-graph-3d";
 
 import { getGraphGray } from "@/constants/tokens";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 
 interface UseScene3DReturn {
   onEngineReady: () => void;

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { CLUSTERS, type ClusterId } from "@/constants/cluster";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DLink, ForceGraph3DNode } from "../types/layout";
 

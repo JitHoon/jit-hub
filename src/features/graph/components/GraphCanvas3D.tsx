@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
 import { getGraphGray } from "@/constants/tokens";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 import type { GraphData, GraphEdge, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
 import { useCameraControl } from "../hooks/useCameraControl";
