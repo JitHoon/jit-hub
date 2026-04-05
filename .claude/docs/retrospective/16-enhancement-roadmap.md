@@ -1,5 +1,15 @@
 # 16. 프로젝트 고도화 방향
 
+## 이 문서의 위치
+
+> **Tier 5: 성찰 & 액션** — 모든 분석을 바탕으로 성찰하고 액션을 도출
+>
+> 📍 현재 문서: **16-enhancement-roadmap** (16/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → 05 → 02 → 10 → 07 → 08 → 09 → 14 → 15 → 12 → 11 → 13 → **16** → 17
+>
+> 이전: [13-reflection](./13-reflection.md) · 다음: [17-next-project-checklist](./17-next-project-checklist.md)
+
 ## 개요
 
 기능 추가가 아닌, 기존 코드 최적화 + 하네스 엔지니어링 고도화 + 범용 플러그인 생성에 초점을 맞춘 고도화 로드맵.
@@ -22,7 +32,7 @@
 
 | 항목 | 현재 | 목표 | 복잡도 |
 |------|------|------|--------|
-| 유닛 테스트 | 4개 | 주요 유틸 전수 커버 | 중 |
+| 유닛 테스트 | 5개 | 주요 유틸 전수 커버 | 중 |
 | 통합 테스트 | 0개 | 파이프라인 전체 흐름 | 중 |
 | 접근성 테스트 | 0개 | axe-core 자동화 | 낮 |
 | 성능 회귀 CI | 없음 | Lighthouse CI | 중 |
@@ -46,7 +56,6 @@
 
 | 항목 | 작업 내용 |
 |------|----------|
-| Agent maxTurns | 모든 에이전트에 maxTurns: 20 추가 |
 | 중복 파일 삭제 | think-reviewer 2.md 제거 |
 | Skill 보강 | code-reviewer에 graph-visualization Skill 추가 |
 | allowed-tools 차별화 | 스킬별 필요 도구만 허용 |
@@ -127,7 +136,7 @@
 ## 고도화 우선순위 로드맵
 
 ### Phase 1: 부채 상환 + 측정 (1~2일)
-1. 하네스 부채 즉시 해결 (maxTurns, 중복 파일, Skill 보강)
+1. 하네스 부채 즉시 해결 (중복 파일 삭제, Skill 보강)
 2. Lighthouse 베이스라인 측정
 3. 번들 분석 실행
 4. 접근성 자동 테스트 도입
@@ -148,6 +157,24 @@
 2. theme-system 범용 모듈
 3. error-boundary-kit 범용 모듈
 4. 하네스 템플릿 패키지
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] 범용 모듈 5개의 추출 가능성을 실제 코드에서 결합도 분석으로 검증
+- [ ] 하네스 템플릿 패키지의 최소 구성 요소(MVP) 정의
+- [ ] 각 고도화 Phase의 예상 소요 시간을 이번 프로젝트 생산성 데이터 기반으로 추정
+- [ ] 고도화 vs 새 프로젝트 시작의 ROI 비교
+
+### 관련 소스 파일
+- `src/features/theme/` — theme-system 추출 대상
+- `src/features/content/` — content-pipeline 추출 대상
+- `src/components/FeatureBoundary.tsx` — error-boundary-kit 추출 대상
+
+### 관련 회고 문서
+- [11-tech-debt-inventory](./11-tech-debt-inventory.md) — 고도화 전 해결할 부채 목록
+- [02-harness-engineering](./02-harness-engineering.md) — 하네스 고도화 대상
+- [17-next-project-checklist](./17-next-project-checklist.md) — 고도화 결과가 반영될 체크리스트
 
 ## 액션 아이템
 

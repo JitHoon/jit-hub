@@ -1,5 +1,15 @@
 # 09. SEO 및 접근성 효과 측정
 
+## 이 문서의 위치
+
+> **Tier 3: 프로세스 품질** — 개발 프로세스와 품질 관리를 평가
+>
+> 📍 현재 문서: **09-seo-accessibility** (10/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → 05 → 02 → 10 → 07 → 08 → **09** → 14 → 15 → 12 → 11 → 13 → 16 → 17
+>
+> 이전: [08-performance-bundle](./08-performance-bundle.md) · 다음: [14-design-system-maturity](./14-design-system-maturity.md)
+
 ## 개요
 
 듀얼 라우트 SEO 전략과 접근성 구현의 효과를 평가한다.
@@ -77,6 +87,25 @@
 - [ ] 스크린리더(NVDA/VoiceOver) 수동 테스트
 - [ ] 키보드 전용 탐색 테스트
 - [ ] 색상 대비 검사 (WebAIM Contrast Checker)
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] Google Rich Results Test로 JSON-LD 유효성 검증
+- [ ] Google Search Console에서 실제 인덱싱 페이지 수 확인
+- [ ] Lighthouse 접근성 점수 측정 + 개별 항목 분석
+- [ ] axe-core DevTools 확장으로 접근성 위반 사항 전수 조사
+
+### 관련 소스 파일
+- `src/app/layout.tsx` — WebSite + Person JSON-LD
+- `src/app/nodes/[slug]/page.tsx` — TechArticle JSON-LD + 메타데이터
+- `src/app/sitemap.ts`, `src/app/robots.ts` — 크롤링 설정
+- `src/features/content/utils/structured-data.ts` — JSON-LD 빌더
+
+### 관련 회고 문서
+- [08-performance-bundle](./08-performance-bundle.md) — Lighthouse 성능 점수와 함께 측정
+- [04-architecture-maturity](./04-architecture-maturity.md) — 듀얼 라우트 SEO 전략 평가
+- [14-design-system-maturity](./14-design-system-maturity.md) — 색상 대비 접근성
 
 ## 액션 아이템
 

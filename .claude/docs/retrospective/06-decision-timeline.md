@@ -1,5 +1,15 @@
 # 06. 의사결정 타임라인 분석
 
+## 이 문서의 위치
+
+> **Tier 1: 맥락 파악** — 프로젝트의 규모와 의사결정을 이해하는 출발점
+>
+> 📍 현재 문서: **06-decision-timeline** (2/17)
+>
+> **권장 읽기 순서**: 01 → **06** → 03 → 04 → 05 → 02 → 10 → 07 → 08 → 09 → 14 → 15 → 12 → 11 → 13 → 16 → 17
+>
+> 이전: [01-project-dashboard](./01-project-dashboard.md) · 다음: [03-ai-collaboration-patterns](./03-ai-collaboration-patterns.md)
+
 ## 개요
 
 프로젝트 방향을 결정지은 주요 기술 결정들을 시간순으로 분석한다. 결정의 트리거, 대안, 선택 근거, 결과를 기록하여 다음 프로젝트에서 유사한 갈림길에서 더 빠르게 판단할 수 있게 한다.
@@ -104,6 +114,23 @@
 - project-blueprint-v2.md가 핵심 의사결정 저장소 역할
 - CLAUDE.md의 절대 규칙이 일상적 결정을 자동화
 - **교훈**: 의사결정을 문서화하면 AI 협업 시에도 일관성 유지 가능
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] 각 결정의 실제 소요 시간 측정 (커밋 타임스탬프 기반)
+- [ ] "번복하고 싶었지만 참은 결정"이 있었는지 회고
+- [ ] Velite → 커스텀 파이프라인 전환에 실제로 소요된 시간/커밋 수
+- [ ] 결정 품질 = "결정 후 관련 fix 커밋 수"로 정량 평가
+
+### 관련 소스 파일
+- `.claude/docs/project-blueprint-v2.md` — 아키텍처 결정 원본 (v1→v2 변경 이력)
+- `progress.md` — Phase별 진행 상황과 결정 사항
+
+### 관련 회고 문서
+- [01-project-dashboard](./01-project-dashboard.md) — 결정의 결과로 나온 수치
+- [04-architecture-maturity](./04-architecture-maturity.md) — 결정이 만들어낸 아키텍처 평가
+- [03-ai-collaboration-patterns](./03-ai-collaboration-patterns.md) — AI가 결정에 미친 영향
 
 ## 액션 아이템
 

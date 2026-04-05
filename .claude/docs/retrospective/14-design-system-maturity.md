@@ -1,5 +1,15 @@
 # 14. 디자인 시스템 성숙도 평가
 
+## 이 문서의 위치
+
+> **Tier 4: 시스템 성숙도** — 디자인 시스템, 문서, 에러 처리, 부채를 평가
+>
+> 📍 현재 문서: **14-design-system-maturity** (11/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → 05 → 02 → 10 → 07 → 08 → 09 → **14** → 15 → 12 → 11 → 13 → 16 → 17
+>
+> 이전: [09-seo-accessibility](./09-seo-accessibility.md) · 다음: [15-documentation-quality](./15-documentation-quality.md)
+
 ## 개요
 
 9개 클러스터 컬러, 라이트/다크 팔레트, CSS 변수 + JS 토큰 이중 체계의 확장성과 일관성을 평가한다.
@@ -87,6 +97,25 @@
 2. **Storybook 병행 개발**: 컴포넌트 개발과 동시에 스토리 작성
 3. **반응형 규칙 체계화**: 브레이크포인트별 레이아웃/사이즈 규칙 사전 정의
 4. **JS-only 토큰의 필요성 인지**: 캔버스 렌더링 시 CSS 변수 사용 불가 → 별도 JS 상수 필요
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] src/ 내에서 하드코딩된 색상값(#xxx, rgb) 검색 — 토큰 미사용 사례
+- [ ] Storybook에 등록된 컴포넌트 vs 전체 컴포넌트 수 비교
+- [ ] 다크모드 전환 시 깜빡임(FOUC) 발생 여부 실제 녹화 테스트
+- [ ] 클러스터 컬러 9개의 접근성(색각 이상자 구분 가능 여부) 검증
+
+### 관련 소스 파일
+- `src/constants/tokens.ts` — JS 디자��� 토큰
+- `src/constants/cluster.ts` — 클러스터 컬러 정의
+- `src/app/globals.css` — @theme CSS 변수
+- `src/stories/` — Storybook 스토리
+
+### 관련 회고 문서
+- [09-seo-accessibility](./09-seo-accessibility.md) — 색상 대비 접근성
+- [05-core-code-review](./05-core-code-review.md) — 테마 시스템 코드 분석
+- [15-documentation-quality](./15-documentation-quality.md) — 디자인 시스템 문서화 수준
 
 ## 액션 아이템
 
