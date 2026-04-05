@@ -33,29 +33,9 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
 
   const q = useMemo(() => query.trim().toLowerCase(), [query]);
 
-  const { results, matchedTags } = useMemo(() => {
-    if (q.length === 0)
-      return {
-        results: [] as GraphNode[],
-        matchedTags: new Map<string, string>(),
-      };
-
-    const matched: GraphNode[] = [];
-    const tags = new Map<string, string>();
-
-    for (const node of nodes) {
-      if (node.title.toLowerCase().includes(q)) {
-        matched.push(node);
-        continue;
-      }
-      const tag = node.tags.find((t) => t.toLowerCase().includes(q));
-      if (tag) {
-        matched.push(node);
-        tags.set(node.id, tag);
-      }
-    }
-
-    return { results: matched, matchedTags: tags };
+  const results = useMemo(() => {
+    if (q.length === 0) return [] as GraphNode[];
+    return nodes.filter((node) => node.title.toLowerCase().includes(q));
   }, [nodes, q]);
 
   const mode: SearchMode =
@@ -93,7 +73,6 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
     mode,
     groups,
     results,
-    matchedTags,
     handleChange,
     handleFocus,
     handleBlur,

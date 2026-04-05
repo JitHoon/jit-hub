@@ -9,7 +9,6 @@ interface SearchSuggestionsProps {
   mode: SearchMode;
   groups: SuggestionGroup[];
   results: GraphNode[];
-  matchedTags: Map<string, string>;
   onSelect: (node: GraphNode) => void;
 }
 
@@ -28,11 +27,9 @@ const itemClass = cn(
 
 function NodeItem({
   node,
-  matchedTag,
   onSelect,
 }: {
   node: GraphNode;
-  matchedTag?: string;
   onSelect: (node: GraphNode) => void;
 }) {
   return (
@@ -45,7 +42,6 @@ function NodeItem({
       <span className="font-medium">{node.title}</span>
       <span className="text-xs text-[var(--muted)]">
         {node.cluster} · {node.difficulty}
-        {matchedTag && ` · ${matchedTag}`}
       </span>
     </li>
   );
@@ -56,7 +52,6 @@ export function SearchSuggestions({
   mode,
   groups,
   results,
-  matchedTags,
   onSelect,
 }: SearchSuggestionsProps) {
   if (mode === "empty") {
@@ -73,12 +68,7 @@ export function SearchSuggestions({
     return (
       <ul id={listId} role="listbox" className={containerClass}>
         {results.map((node) => (
-          <NodeItem
-            key={node.id}
-            node={node}
-            matchedTag={matchedTags.get(node.id)}
-            onSelect={onSelect}
-          />
+          <NodeItem key={node.id} node={node} onSelect={onSelect} />
         ))}
       </ul>
     );

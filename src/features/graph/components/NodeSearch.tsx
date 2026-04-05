@@ -20,7 +20,6 @@ export function NodeSearch({ nodes, onSelect }: NodeSearchProps) {
     mode,
     groups,
     results,
-    matchedTags,
     handleChange,
     handleFocus,
     handleBlur,
@@ -55,7 +54,6 @@ export function NodeSearch({ nodes, onSelect }: NodeSearchProps) {
           mode={mode}
           groups={groups}
           results={results}
-          matchedTags={matchedTags}
           onSelect={handleSelect}
         />
       )}
