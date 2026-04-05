@@ -1,13 +1,32 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import type { Metadata } from "next";
 import type { GraphData } from "@/types/graph";
+import { SITE_URL } from "@/constants/site";
 import { getNodeBySlug } from "@/features/content/utils/pipeline";
 import ContentSection from "@/features/content/components/ContentSection";
 import HomeLayout from "./HomeLayout";
 
 interface PageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  const nodeSlug = typeof params.node === "string" ? params.node : undefined;
+
+  if (!nodeSlug) {
+    return {};
+  }
+
+  return {
+    alternates: {
+      canonical: `${SITE_URL}/nodes/${nodeSlug}`,
+    },
+  };
 }
 
 function loadGraphData(): GraphData {

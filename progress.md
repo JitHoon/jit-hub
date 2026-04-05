@@ -2,7 +2,7 @@
 
 ## 현재 상태
 
-**1차 MVP 배포 완료** (2026-04-05)
+**1차 MVP 배포 완료** (2026-04-05) | Phase 13 진행 중 (13-1 ~ 13-7 완료, 13-8 수동 작업 남음)
 
 ## 완료된 Phase 요약
 
@@ -21,6 +21,57 @@
 - **Phase 10**: JSON-LD + sitemap.ts + robots.ts
 - **Phase 11**: Vercel 배포 + CI (vitest + Playwright)
 - **Phase 12**: SEO · 공유 최적화 (OG 이미지, favicon, manifest, 메타데이터)
+
+## 다음 작업: SEO & 사이트 완성도 개선
+
+Chrome 분석 기반 (SEO 55/100, 완성도 68/100). sitemap, robots, JSON-LD, 노드별 메타데이터는 이미 구현 완료 — 실제 미비한 부분만 대상.
+
+### Phase 13: 도메인 수정 + Canonical URL + 내부 링크 SEO 정합성 · 브랜치: `chore/seo-canonical`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 13-1 | SITE_URL을 `jithub-space.vercel.app`으로 수정 (`src/constants/site.ts`) | XS | - | [x] |
+| 13-2 | 루트 layout에 `alternates.canonical` 추가 (`src/app/layout.tsx`) | XS | 13-1 | [x] |
+| 13-3 | `/?node=slug` 페이지에 canonical을 `/nodes/slug`로 지정 (`src/app/page.tsx` — generateMetadata에서 searchParams.node 기반) | S | 13-1 | [x] |
+| 13-4 | 노드 페이지 generateMetadata에 `alternates.canonical` 추가 (`src/app/nodes/[slug]/page.tsx`) | XS | 13-1 | [x] |
+| 13-5 | NodeLink에 `linkMode` prop 추가 — `"graph"`: `/?node=id`, `"seo"`: `/nodes/id` (`src/features/content/components/NodeLink.tsx`) | S | - | [x] |
+| 13-6 | ConnectionTree에 `linkMode` prop 전파 (`src/features/content/components/ConnectionTree.tsx`) | XS | 13-5 | [x] |
+| 13-7 | `/nodes/[slug]` 페이지에서 ConnectionTree에 `linkMode="seo"` 전달 (`src/app/nodes/[slug]/page.tsx`) | XS | 13-6 | [x] |
+| 13-8 | 배포 후 Google Search Console에 `jithub-space.vercel.app` 속성 등록 + sitemap 재제출 (수동) | XS | 13-1 | [ ] |
+<!-- 완료 기준: 모든 페이지에 canonical URL 지정, SEO 페이지 내부 링크가 /nodes/slug 형태 -->
+
+### Phase 14: 메인 페이지 H1 + 소개 텍스트 · 브랜치: `feat/home-intro`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 14-1 | HomeLayout에 `?node=` 파라미터가 없는 상태에서만 시각적 H1 + 1-2줄 소개 문구 렌더링 (조건부), 삽입 위치: 그래프 컨테이너와 노드 카테고리 리스트 사이 (`src/app/HomeLayout.tsx`) | XS | - | [ ] |
+<!-- 완료 기준: 메인 페이지에 H1 태그와 소개 문구 노출, 노드 선택 시 숨김 -->
+
+### Phase 15: Footer 컴포넌트 · 브랜치: `feat/footer`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 15-1 | SiteFooter 컴포넌트 생성 — 저작자, 저작권, GitHub 링크 (`src/components/SiteFooter.tsx`) | S | - | [ ] |
+| 15-2 | HomeLayout에 Footer 추가 — `/?node=` 페이지 포함 자동 적용, fixed bottom 레이어와 겹침 방지 `pb-16` 이상 확보 (`src/app/HomeLayout.tsx`) | XS | 15-1 | [ ] |
+| 15-3 | 노드 상세 페이지에 Footer 추가 (`src/app/nodes/[slug]/page.tsx`) | XS | 15-1 | [ ] |
+<!-- 완료 기준: 홈·노드 상세 페이지 하단에 Footer 렌더링, ScrollToTopButton과 겹치지 않음 -->
+
+### Phase 16: 노드 검색 기능 · 브랜치: `feat/node-search`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 16-1 | NodeSearch 컴포넌트 생성 — 클라이언트 사이드 substring 매칭 (`src/features/graph/components/NodeSearch.tsx`) | S | - | [ ] |
+| 16-2 | 검색 입력창을 기존 fixed bottom 레이어(`pointer-events-none`)에 배치, 입력 요소에 `pointer-events-auto` 적용 (`src/features/graph/components/NodeSearch.tsx`) | S | 16-1 | [ ] |
+| 16-3 | HomeLayout에 검색 통합 (`src/app/HomeLayout.tsx`) | XS | 16-2 | [ ] |
+<!-- 완료 기준: 검색어 입력 시 매칭 노드 목록 표시, 클릭 시 노드 선택 -->
+
+### Phase 17: 콘텐츠 외부 링크 · 브랜치: `content/external-links`
+
+| # | 작업 | 크기 | 의존 | 상태 |
+|---|------|------|------|------|
+| 17-1 | MDX 링크 컴포넌트에서 외부 링크 `target="_blank" rel="noopener noreferrer"` 처리 (구현 완료 확인) | XS | - | [x] |
+| 17-2 | 각 노드 마크다운에 관련 공식 문서 외부 링크 추가 (`contents/nodes/*.md`) — 콘텐츠 편집, 우선순위 낮음 | S | - | [ ] |
+<!-- 완료 기준: 주요 노드에 공식 문서 링크 1개 이상 포함 -->
 
 ## 핵심 결정 사항
 

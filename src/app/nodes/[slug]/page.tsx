@@ -40,6 +40,9 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `${SITE_URL}/nodes/${slug}`,
+    },
     openGraph: {
       title,
       description,
@@ -124,6 +127,7 @@ export default async function NodePage({ params }: PageProps) {
             nodes={connectedNodes}
             className="mt-10 border-t border-[var(--border)] pt-8"
             defaultOpen={true}
+            linkMode="seo"
             backButtonPosition="bottom"
             backButton={
               <div className="flex items-center gap-2">

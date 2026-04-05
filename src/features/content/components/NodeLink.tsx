@@ -7,6 +7,7 @@ interface NodeLinkProps {
   title: string;
   cluster: ClusterId;
   showLabel?: boolean;
+  linkMode?: "graph" | "seo";
 }
 
 export default function NodeLink({
@@ -14,10 +15,13 @@ export default function NodeLink({
   title,
   cluster,
   showLabel = false,
+  linkMode = "graph",
 }: NodeLinkProps): React.ReactElement {
+  const href = linkMode === "seo" ? `/nodes/${id}` : `/?node=${id}`;
+
   return (
     <Link
-      href={`/?node=${id}`}
+      href={href}
       scroll={false}
       className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)]"
     >

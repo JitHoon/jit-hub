@@ -17,6 +17,7 @@ interface ConnectionTreeProps {
   defaultOpen?: boolean;
   backButton?: React.ReactNode;
   backButtonPosition?: "top" | "bottom";
+  linkMode?: "graph" | "seo";
 }
 
 export default function ConnectionTree({
@@ -27,6 +28,7 @@ export default function ConnectionTree({
   defaultOpen = true,
   backButton,
   backButtonPosition = "top",
+  linkMode = "graph",
 }: ConnectionTreeProps): React.ReactElement | null {
   if (nodes.length === 0) return null;
 
@@ -82,6 +84,7 @@ export default function ConnectionTree({
                           title={node.title}
                           cluster={node.cluster}
                           showLabel
+                          linkMode={linkMode}
                         />
                       </div>
                     ))}
