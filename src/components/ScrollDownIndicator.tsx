@@ -38,7 +38,7 @@ export default function ScrollDownIndicator({
       aria-label="본문으로 스크롤"
       className={cn(
         "pointer-events-auto cursor-pointer",
-        "flex items-center justify-center",
+        "flex flex-col items-center justify-center gap-0",
         "text-[var(--foreground)]",
         "transition-all duration-200",
         visible
@@ -48,17 +48,31 @@ export default function ScrollDownIndicator({
     >
       <svg
         width="24"
-        height="24"
-        viewBox="0 0 24 24"
+        height="14"
+        viewBox="0 0 24 14"
         fill="none"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
-        className="animate-[bounce-down_1.5s_ease-in-out_infinite]"
+        className="animate-[bounce-down-top_1.8s_ease-in-out_infinite]"
       >
-        <polyline points="6 9 12 15 18 9" />
+        <polyline points="6 2 12 10 18 2" />
+      </svg>
+      <svg
+        width="24"
+        height="14"
+        viewBox="0 0 24 14"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="animate-[bounce-down-bottom_1.8s_ease-in-out_infinite]"
+      >
+        <polyline points="6 2 12 10 18 2" />
       </svg>
     </button>
   );
