@@ -26,7 +26,7 @@ export default function ConnectionTree({
   currentCluster,
   nodes,
   className = "px-6 py-4",
-  defaultOpen = true,
+  defaultOpen = false,
   backButton,
   backButtonPosition = "top",
   linkMode = "graph",

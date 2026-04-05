@@ -13,7 +13,7 @@ interface CollapsibleGroupProps {
 
 export default function CollapsibleGroup({
   label,
-  defaultOpen = true,
+  defaultOpen = false,
   leading,
   trailing,
   children,

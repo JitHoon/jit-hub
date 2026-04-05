@@ -41,7 +41,7 @@ export default function NodeWithEdges({
             <div key={edgeType} className="relative ml-3 mt-0.5">
               <span className="absolute -left-3 top-[9px] h-px w-2 bg-[var(--border)]" />
               <CollapsibleGroup
-                defaultOpen={true}
+                defaultOpen={false}
                 label={EDGE_TYPE_LABELS[edgeType]}
                 trailing={
                   <span className="text-[10px] text-[var(--muted)]">

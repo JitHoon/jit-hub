@@ -9,6 +9,7 @@ import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
 import { buildTechArticleJsonLd } from "@/features/content/utils/structured-data";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import HeaderNodeSearch from "@/components/HeaderNodeSearch";
 import SiteFooter from "@/components/SiteFooter";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import ContentHeader from "@/features/content/components/ContentHeader";
@@ -89,7 +90,9 @@ export default async function NodePage({ params }: PageProps) {
           __html: JSON.stringify(techArticleJsonLd),
         }}
       />
-      <SiteHeader />
+      <SiteHeader>
+        <HeaderNodeSearch nodes={graphData.nodes} />
+      </SiteHeader>
       <ReadingProgressBar cluster={cluster} />
       <main className="px-6 py-12">
         <ContentHeader title={title} cluster={cluster} />
