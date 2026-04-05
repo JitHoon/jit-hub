@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type RefObject } from "react";
+import { cn } from "@/lib/cn";
 
 interface ScrollDownIndicatorProps {
   targetRef: RefObject<HTMLElement | null>;
@@ -35,7 +36,7 @@ export default function ScrollDownIndicator({
       type="button"
       onClick={handleClick}
       aria-label="본문으로 스크롤"
-      className={[
+      className={cn(
         "pointer-events-auto cursor-pointer",
         "flex items-center justify-center",
         "text-[var(--foreground)]",
@@ -43,7 +44,7 @@ export default function ScrollDownIndicator({
         visible
           ? "opacity-70 translate-y-0"
           : "opacity-0 translate-y-2 pointer-events-none",
-      ].join(" ")}
+      )}
     >
       <svg
         width="24"

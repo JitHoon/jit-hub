@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { cn } from "@/lib/cn";
 import { CLUSTERS, type ClusterId } from "@/constants/cluster";
 import type { ConnectedNodeInfo } from "../utils/connected-nodes";
 import { EDGE_TYPE_LABELS, EDGE_TYPE_ORDER } from "../utils/edge-type";
@@ -49,7 +50,7 @@ export default function ConnectionTree({
   return (
     <div className={className}>
       {backButtonPosition === "top" && backButtonEl}
-      <div className={`ml-4 ${backButtonPosition === "top" ? "mt-3" : ""}`}>
+      <div className={cn("ml-4", backButtonPosition === "top" && "mt-3")}>
         <div className="flex items-center gap-1.5">
           <ClusterDot cluster={currentCluster} />
           <p className="text-sm font-medium text-[var(--foreground)]">
@@ -76,7 +77,7 @@ export default function ConnectionTree({
                     {group.map((node, idx) => (
                       <div
                         key={node.slug}
-                        className={`relative ml-3 ${idx > 0 ? "mt-0.5" : ""}`}
+                        className={cn("relative ml-3", idx > 0 && "mt-0.5")}
                       >
                         <span className="absolute -left-3 top-[9px] h-px w-2 bg-[var(--border)]" />
                         <NodeLink
