@@ -4,10 +4,12 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { GraphData } from "@/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
-import { SITE_URL, SITE_NAME, AUTHOR } from "@/constants/site";
+import { SITE_URL, SITE_NAME } from "@/constants/site";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
+import { buildTechArticleJsonLd } from "@/features/content/utils/structured-data";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import ContentHeader from "@/features/content/components/ContentHeader";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
@@ -59,32 +61,6 @@ export async function generateMetadata({
   };
 }
 
-function buildTechArticleJsonLd(
-  slug: string,
-  title: string,
-  tags: string[],
-): Record<string, unknown> {
-  return {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    headline: title,
-    description: tags.join(", "),
-    keywords: tags,
-    url: `${SITE_URL}/nodes/${slug}`,
-    isPartOf: {
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    author: {
-      "@type": "Person",
-      name: AUTHOR.name,
-      url: AUTHOR.url,
-      jobTitle: AUTHOR.jobTitle,
-    },
-  };
-}
-
 export default async function NodePage({ params }: PageProps) {
   const { slug } = await params;
   const node = getNodeBySlug(slug);
@@ -130,7 +106,7 @@ export default async function NodePage({ params }: PageProps) {
             linkMode="seo"
             backButtonPosition="bottom"
             backButton={
-              <div className="flex items-center gap-2">
+              <>
                 <HistoryBackButton />
                 <Link
                   href="/"
@@ -139,11 +115,12 @@ export default async function NodePage({ params }: PageProps) {
                   <ExpandIcon size={12} />
                   <span>전체 노드</span>
                 </Link>
-              </div>
+              </>
             }
           />
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }

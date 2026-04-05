@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
+import ScrollDownIndicator from "@/components/ScrollDownIndicator";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import { GraphSection } from "@/features/graph/components/GraphSection";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
@@ -25,6 +27,7 @@ export default function HomeLayout({
 }: HomeLayoutProps): React.ReactElement {
   const [graphData] = useState(graphDataProp);
   const hasContent = contentSection != null;
+  const contentRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
 
   const selectedGraphNode = useMemo(() => {
@@ -44,7 +47,16 @@ export default function HomeLayout({
   return (
     <div className="mx-auto flex min-h-screen max-w-3xl flex-col">
       <SiteHeader />
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col pb-16">
+        <div className="px-6 pt-6 text-center">
+          <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
+            3D GIS 지식 그래프
+          </h1>
+          <p className="mt-1 text-sm text-[var(--muted)]">
+            지리공간 기술과 프론트엔드 엔지니어링을 연결하는 인터랙티브
+            포트폴리오
+          </p>
+        </div>
         <div
           data-testid="graph-section"
           className="flex h-[calc(60vh-56px)] items-center justify-center px-6 py-6 [container-type:size]"
@@ -54,24 +66,14 @@ export default function HomeLayout({
             onNodeHoverChange={setHoveredNode}
           />
         </div>
-        {!contentKey && (
-          <div className="px-6 py-4 text-center">
-            <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
-              3D GIS 지식 그래프
-            </h1>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              지리공간 기술과 프론트엔드 엔지니어링을 연결하는 인터랙티브
-              포트폴리오
-            </p>
-          </div>
-        )}
         <div data-testid="connection-tree-grid">
           {treeData ? (
             <ConnectionTree
               currentTitle={treeData.title}
               currentCluster={treeData.cluster as ClusterId}
               nodes={treeData.nodes}
-              backButtonPosition="bottom"
+              defaultOpen={true}
+              backButtonPosition="top"
             />
           ) : (
             <FullNodeTree graphData={graphData} />
@@ -89,6 +91,7 @@ export default function HomeLayout({
           </div>
         )}
         <div
+          ref={contentRef}
           data-testid="content-grid"
           className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"
           style={{ gridTemplateRows: hasContent ? "1fr" : "0fr" }}
@@ -101,11 +104,17 @@ export default function HomeLayout({
           </div>
         </div>
       </main>
+      <SiteFooter />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
         <div className="mx-auto max-w-3xl px-6">
           <div className="flex justify-end pb-8">
             <ScrollToTopButton />
           </div>
+          {hasContent && (
+            <div className="flex justify-center pb-4">
+              <ScrollDownIndicator targetRef={contentRef} />
+            </div>
+          )}
         </div>
       </div>
     </div>
