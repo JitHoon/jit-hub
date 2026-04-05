@@ -1,5 +1,15 @@
 # 12. 에러 핸들링 및 장애 대응 패턴
 
+## 이 문서의 위치
+
+> **Tier 4: 시스템 성숙도** — 디자인 시스템, 문서, 에러 처리, 부채를 평가
+>
+> 📍 현재 문서: **12-error-handling-patterns** (13/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → 05 → 02 → 10 → 07 → 08 → 09 → 14 → 15 → **12** → 11 → 13 → 16 → 17
+>
+> 이전: [15-documentation-quality](./15-documentation-quality.md) · 다음: [11-tech-debt-inventory](./11-tech-debt-inventory.md)
+
 ## 개요
 
 프로젝트에서 경험한 주요 버그들의 발견→해결 과정을 복기하고, 에러 핸들링 패턴을 평가한다.
@@ -99,6 +109,25 @@ Layer 1: global-error.tsx (앱 전체 — layout.tsx 포함 에러)
 ### 과잉 방어 주의
 - 내부 함수 간 타입 검증 → TypeScript strict가 이미 보장
 - null 체크 남발 → noUncheckedIndexedAccess로 컴파일러가 강제
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] hydration 버그 4단계 해결 과정의 각 커밋을 git show로 실제 diff 확인
+- [ ] FeatureBoundary가 실제로 에러를 격리한 사례 재현 테스트
+- [ ] Sentry 등 에러 모니터링 도구 도입 시 ROI 분석
+- [ ] 현재 에러 처리가 커버하지 못하는 시나리오 목록화
+
+### 관련 소스 파일
+- `src/app/global-error.tsx` — 최상위 에러 바운더리
+- `src/app/error.tsx` — 페이지 레벨 에러
+- `src/components/FeatureBoundary.tsx` — 피처 레벨 래퍼
+- `src/features/graph/hooks/useGraph3DRenderer.ts` — 캐시 null 안전성
+
+### 관련 회고 문서
+- [05-core-code-review](./05-core-code-review.md) — 테마 hydration 버그 코드 분석
+- [07-testing-strategy](./07-testing-strategy.md) — 에러 케이스 테스트 전략
+- [11-tech-debt-inventory](./11-tech-debt-inventory.md) — 에러 처리 관련 부채
 
 ## 액션 아이템
 

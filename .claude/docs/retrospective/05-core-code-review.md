@@ -1,5 +1,15 @@
 # 05. 주요 기능 핵심 코드 회고 및 학습
 
+## 이 문서의 위치
+
+> **Tier 2: 구현 분석** — 아키텍처와 핵심 코드 구현을 분석
+>
+> 📍 현재 문서: **05-core-code-review** (5/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → **05** → 02 → 10 → 07 → 08 → 09 → 14 → 15 → 12 → 11 → 13 → 16 → 17
+>
+> 이전: [04-architecture-maturity](./04-architecture-maturity.md) · 다음: [02-harness-engineering](./02-harness-engineering.md)
+
 ## 개요
 
 프로젝트의 3대 핵심 기능(콘텐츠 파이프라인, 3D 그래프 시각화, 테마 시스템)의 코드를 리뷰하고 학습 포인트를 정리한다.
@@ -153,6 +163,25 @@ c977ec4 fix: hydration 시 localStorage 덮어쓰기 방지 — applyThemeToDOM 
 - Zod 스키마 기반 빌드 타임 검증
 - FeatureBoundary (ErrorBoundary + Suspense + Skeleton) 조합
 - prebuild 스크립트로 정적 데이터 생성
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] useGraph3DRenderer 훅의 THREE.js 메모리 프로파일링 (Chrome DevTools Memory 탭)
+- [ ] MDX 커스텀 컴포넌트의 접근성 검증 (스크린리더 테스트)
+- [ ] useSyncExternalStore의 서버/클라이언트 동기화 edge case 탐색
+- [ ] 콘텐츠 파이프라인의 빌드 타임 성능 (21개 vs 50개 노드 벤치마크)
+
+### 관련 소스 파일
+- `src/features/graph/hooks/useGraph3DRenderer.ts` — 3D 렌더링 핵심
+- `src/features/content/utils/pipeline.ts` — 콘텐츠 로딩/파싱
+- `src/features/theme/hooks/useTheme.ts` — 테마 동기화
+- `src/features/content/components/MdxRenderer.tsx` — MDX 렌더링
+
+### 관련 회고 문서
+- [04-architecture-maturity](./04-architecture-maturity.md) — 이 코드가 놓인 아키텍처 맥락
+- [12-error-handling-patterns](./12-error-handling-patterns.md) — hydration 버그 해결 상세
+- [08-performance-bundle](./08-performance-bundle.md) — 성능 관점의 코드 분석
 
 ## 액션 아이템
 

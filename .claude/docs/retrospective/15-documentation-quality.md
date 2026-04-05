@@ -1,5 +1,15 @@
 # 15. 문서화 품질 회고
 
+## 이 문서의 위치
+
+> **Tier 4: 시스템 성숙도** — 디자인 시스템, 문서, 에러 처리, 부채를 평가
+>
+> 📍 현재 문서: **15-documentation-quality** (12/17)
+>
+> **권장 읽기 순서**: 01 → 06 → 03 → 04 → 05 → 02 → 10 → 07 → 08 → 09 → 14 → **15** → 12 → 11 → 13 → 16 → 17
+>
+> 이전: [14-design-system-maturity](./14-design-system-maturity.md) · 다음: [12-error-handling-patterns](./12-error-handling-patterns.md)
+
 ## 개요
 
 71개 .md 파일로 구성된 하네스 문서가 실제로 AI 코딩 품질을 향상시켰는지, 유지보수 부담은 적절한지 평가한다.
@@ -97,6 +107,24 @@ CLAUDE.md의 `<important if="...">` 패턴:
 - 모든 것을 문서화하려 하지 말 것 (코드가 스스로 설명하는 것은 제외)
 - 구현 세부사항을 문서에 넣지 말 것 (코드와 불일치 위험)
 - 문서 양이 목표가 되지 말 것 (효과가 목표)
+
+## 심화 탐구 가이드
+
+### 이 회고를 더 깊이 파고들 때 확인할 것
+- [ ] 각 스킬 문서의 마지막 수정일 확인 — stale 문서 식별
+- [ ] CLAUDE.md의 8개 조건부 로딩 중 실제로 트리거된 것 추정 (작업 유형별)
+- [ ] 문서 양(71개 .md) vs 코드 양(4,644 LOC) 비율이 다른 프로젝트와 비교 시 어떤 수준인지
+- [ ] 인간 독자(리크루터, 동료 개발자)를 위한 문서 vs AI 독자를 위한 문서 비율 분석
+
+### 관련 소스 파일
+- `CLAUDE.md` — 프로젝트 메인 문서 (99줄)
+- `.claude/docs/project-blueprint-v2.md` — 아키텍처 설계 문서 (259줄)
+- `.claude/skills/` — 11개 스킬 문서
+
+### 관련 회고 문서
+- [02-harness-engineering](./02-harness-engineering.md) — 문서가 속한 하네스 시스템 전체
+- [14-design-system-maturity](./14-design-system-maturity.md) — 디자인 시스템 문서화 수준
+- [03-ai-collaboration-patterns](./03-ai-collaboration-patterns.md) — 문서가 AI 협업에 미친 영향
 
 ## 액션 아이템
 
