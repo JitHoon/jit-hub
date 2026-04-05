@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
     siteName: SITE_NAME,
     locale: "ko_KR",
@@ -35,6 +38,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+  },
+  verification: {
+    google: "jkUV6WJPhvlMl3D04ZjG4Oq6MAk4qEnkZGESH8Nb4a0",
   },
 };
 
