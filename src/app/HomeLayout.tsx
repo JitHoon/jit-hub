@@ -54,6 +54,17 @@ export default function HomeLayout({
             onNodeHoverChange={setHoveredNode}
           />
         </div>
+        {!contentKey && (
+          <div className="px-6 py-4 text-center">
+            <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
+              3D GIS 지식 그래프
+            </h1>
+            <p className="mt-1 text-sm text-[var(--muted)]">
+              지리공간 기술과 프론트엔드 엔지니어링을 연결하는 인터랙티브
+              포트폴리오
+            </p>
+          </div>
+        )}
         <div data-testid="connection-tree-grid">
           {treeData ? (
             <ConnectionTree
