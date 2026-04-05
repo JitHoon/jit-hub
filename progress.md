@@ -2,7 +2,7 @@
 
 ## 현재 상태
 
-**1차 MVP 배포 완료** (2026-04-05) | Phase 14 진행 중
+**1차 MVP 배포 완료** (2026-04-05) | Phase 15 대기
 
 ## 완료된 Phase 요약
 
@@ -22,17 +22,11 @@
 - **Phase 11**: Vercel 배포 + CI (vitest + Playwright)
 - **Phase 12**: SEO · 공유 최적화 (OG 이미지, favicon, manifest, 메타데이터)
 - **Phase 13**: Canonical URL + 내부 링크 SEO 정합성 + Google Search Console 등록
+- **Phase 14**: 메인 페이지 H1 + 소개 텍스트 (조건부 렌더링)
 
 ## 다음 작업: SEO & 사이트 완성도 개선
 
 Chrome 분석 기반 (SEO 55/100, 완성도 68/100). sitemap, robots, JSON-LD, 노드별 메타데이터는 이미 구현 완료 — 실제 미비한 부분만 대상.
-
-### Phase 14: 메인 페이지 H1 + 소개 텍스트 · 브랜치: `feat/home-intro`
-
-| # | 작업 | 크기 | 의존 | 상태 |
-|---|------|------|------|------|
-| 14-1 | HomeLayout에 `?node=` 파라미터가 없는 상태에서만 시각적 H1 + 1-2줄 소개 문구 렌더링 (조건부), 삽입 위치: 그래프 컨테이너와 노드 카테고리 리스트 사이 (`src/app/HomeLayout.tsx`) | XS | - | [x] |
-<!-- 완료 기준: 메인 페이지에 H1 태그와 소개 문구 노출, 노드 선택 시 숨김 -->
 
 ### Phase 15: Footer 컴포넌트 · 브랜치: `feat/footer`
 
