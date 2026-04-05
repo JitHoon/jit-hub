@@ -1,5 +1,7 @@
 "use client";
 
+import "./globals.css";
+
 export const dynamic = "force-dynamic";
 
 interface GlobalErrorProps {
@@ -20,72 +22,25 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
   const isDev = process.env.NODE_ENV === "development";
 
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body
-        style={{
-          margin: 0,
-          fontFamily: "sans-serif",
-          background: "#0f0f0f",
-          color: "#f0f0f0",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            minHeight: "100vh",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "2rem",
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "28rem",
-              borderRadius: "0.5rem",
-              border: "1px solid #2a2a2a",
-              background: "#1a1a1a",
-              padding: "2rem",
-              textAlign: "center",
-            }}
-          >
-            <h1
-              style={{
-                marginBottom: "0.5rem",
-                fontSize: "1.25rem",
-                fontWeight: "bold",
-              }}
-            >
+      <body className="bg-background text-foreground">
+        <div className="flex min-h-screen items-center justify-center p-8">
+          <div className="w-full max-w-md rounded-lg border border-border bg-surface p-8 text-center">
+            <h1 className="mb-2 font-display text-xl font-bold text-foreground">
               예기치 않은 오류가 발생했습니다
             </h1>
             {isDev && (error.digest ?? error.message) && (
-              <p
-                style={{
-                  marginBottom: "1.5rem",
-                  fontFamily: "monospace",
-                  fontSize: "0.75rem",
-                  color: "#888",
-                }}
-              >
+              <p className="mb-6 font-mono text-xs text-muted">
                 {error.digest ?? error.message}
               </p>
             )}
             <button
               type="button"
               onClick={reset}
-              style={{
-                borderRadius: "0.25rem",
-                background: "#0070f3",
-                padding: "0.5rem 1rem",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                color: "#fff",
-                border: "none",
-                cursor: "pointer",
-              }}
+              className="rounded bg-[var(--color-kick-blue)] px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
             >
               다시 시도
             </button>
