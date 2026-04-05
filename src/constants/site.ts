@@ -1,4 +1,4 @@
-export const SITE_URL = "https://jit-hub.vercel.app";
+export const SITE_URL = "https://jithub-space.vercel.app";
 export const SITE_NAME = "JIT Hub";
 export const SITE_TITLE = "JIT Hub";
 export const SITE_DESCRIPTION =
