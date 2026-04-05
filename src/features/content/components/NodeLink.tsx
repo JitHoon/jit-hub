@@ -22,7 +22,7 @@ export default function NodeLink({
   return (
     <Link
       href={href}
-      scroll={false}
+      scroll={linkMode === "seo"}
       className="group inline-flex items-center gap-1.5 rounded px-1.5 py-0.5 transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)]"
     >
       <ClusterDot cluster={cluster} />
