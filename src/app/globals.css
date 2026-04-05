@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* ──────────────────────────────────────────
    1. 디자인 토큰 (@theme)
    - 클러스터 색상: Tailwind 유틸리티로 직접 사용 가능
@@ -119,9 +121,18 @@ html.dark {
 body {
   background-color: var(--background);
   color: var(--foreground);
+}
+
+body.theme-ready {
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
+}
+
+body.theme-ready .site-header {
+  background-color: color-mix(in oklab, var(--background) 60%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 *,
@@ -392,13 +403,45 @@ html.dark [data-rehype-pretty-code-figure] code [data-theme="light"] {
 /* ──────────────────────────────────────────
    8. Float keyframes (노드 플로팅 애니메이션)
    ────────────────────────────────────────── */
-@keyframes bounce-down {
-  0%,
+@keyframes bounce-down-top {
+  0% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
   100% {
     transform: translateY(0);
+    opacity: 0.4;
   }
-  50% {
-    transform: translateY(3px);
+}
+
+@keyframes bounce-down-bottom {
+  0% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  15% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  45% {
+    transform: translateY(5px);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.2;
   }
 }
 

@@ -1,10 +1,12 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
+import { cn } from "@/lib/cn";
 import ErrorCard from "@/components/error/ErrorCard";
 import type { GraphData, GraphNode } from "../types/graph";
 import { useWebGLSupport } from "../hooks/useWebGLSupport";
+import { GraphSkeleton } from "./GraphSkeleton";
 
 const GraphCanvas3D = dynamic(
   () => import("./GraphCanvas3D").then((m) => m.GraphCanvas3D),
@@ -23,9 +25,11 @@ export function GraphSection({
   onNodeHoverChange,
 }: GraphSectionProps): React.ReactElement {
   const { supported } = useWebGLSupport();
+  const [graphReady, setGraphReady] = useState(false);
+  const handleGraphReady = useCallback(() => setGraphReady(true), []);
 
   return (
-    <div className={`flex flex-col items-center ${className ?? ""}`}>
+    <div className={cn("flex flex-col items-center", className)}>
       <div className="h-[100cqmin] w-[100cqmin] overflow-hidden rounded-full border border-border">
         <div
           data-testid="graph-container"
@@ -41,12 +45,23 @@ export function GraphSection({
               alwaysShowDescription
             />
           ) : (
-            <Suspense fallback={null}>
-              <GraphCanvas3D
-                graphData={graphData}
-                onNodeHoverChange={onNodeHoverChange}
-              />
-            </Suspense>
+            <>
+              <Suspense fallback={<GraphSkeleton />}>
+                <GraphCanvas3D
+                  graphData={graphData}
+                  onNodeHoverChange={onNodeHoverChange}
+                  onReady={handleGraphReady}
+                />
+              </Suspense>
+              <div
+                className={cn(
+                  "absolute inset-0 transition-opacity duration-[var(--duration-slow)] ease-[var(--ease-out)]",
+                  graphReady ? "pointer-events-none opacity-0" : "opacity-100",
+                )}
+              >
+                <GraphSkeleton />
+              </div>
+            </>
           )}
         </div>
       </div>

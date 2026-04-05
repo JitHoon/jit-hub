@@ -38,11 +38,13 @@ const COOLDOWN_TICKS = 0;
 interface GraphCanvas3DProps {
   graphData: GraphData;
   onNodeHoverChange?: (node: GraphNode | null) => void;
+  onReady?: () => void;
 }
 
 export function GraphCanvas3D({
   graphData,
   onNodeHoverChange,
+  onReady,
 }: GraphCanvas3DProps): React.ReactElement {
   const graphRef = useRef<ForceGraphMethods | undefined>(undefined);
   const hasInitPhysics = useRef(false);
@@ -103,7 +105,8 @@ export function GraphCanvas3D({
 
     setEngineReady(true);
     onEngineReady();
-  }, [onEngineReady]);
+    onReady?.();
+  }, [onEngineReady, onReady]);
 
   useEffect(() => {
     if (!engineReady) return;

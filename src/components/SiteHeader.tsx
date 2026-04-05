@@ -9,7 +9,7 @@ export default function SiteHeader({ children }: SiteHeaderProps) {
   return (
     <header
       data-testid="site-header"
-      className="sticky top-0 z-50 bg-[var(--background)]/60 backdrop-blur-md"
+      className="sticky top-0 z-50 bg-background site-header"
     >
       <div className="flex h-14 items-center gap-4 px-6">
         <Link
