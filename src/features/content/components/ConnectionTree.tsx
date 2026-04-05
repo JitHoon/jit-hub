@@ -36,7 +36,7 @@ export default function ConnectionTree({
   const clusterMeta = CLUSTERS[currentCluster];
 
   const backButtonEl = (
-    <div className="flex justify-end gap-1">
+    <div className="flex justify-between gap-1">
       {backButton ?? (
         <Suspense>
           <HistoryBackButton />

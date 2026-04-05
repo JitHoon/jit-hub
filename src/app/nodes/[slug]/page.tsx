@@ -131,7 +131,7 @@ export default async function NodePage({ params }: PageProps) {
             linkMode="seo"
             backButtonPosition="bottom"
             backButton={
-              <div className="flex items-center gap-2">
+              <>
                 <HistoryBackButton />
                 <Link
                   href="/"
@@ -140,7 +140,7 @@ export default async function NodePage({ params }: PageProps) {
                   <ExpandIcon size={12} />
                   <span>전체 노드</span>
                 </Link>
-              </div>
+              </>
             }
           />
         )}
