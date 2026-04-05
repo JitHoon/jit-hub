@@ -1,6 +1,11 @@
 "use client";
 
-import { useCallback, useLayoutEffect, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useLayoutEffect,
+  useRef,
+  useSyncExternalStore,
+} from "react";
 import {
   type Theme,
   applyThemeToDOM,
@@ -33,8 +38,13 @@ interface UseThemeReturn {
 
 export function useTheme(): UseThemeReturn {
   const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isHydrating = useRef(true);
 
   useLayoutEffect(() => {
+    if (isHydrating.current) {
+      isHydrating.current = false;
+      return;
+    }
     applyThemeToDOM(theme);
   }, [theme]);
 

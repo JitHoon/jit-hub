@@ -59,12 +59,45 @@ const websiteJsonLd = {
   },
 };
 
+// FOUC 방지용 인라인 CSS — globals.css :root/.dark 블록의 색상값과 동기화 필요
+const criticalThemeCSS = `
+:root {
+  --background: #f7f7f7;
+  --foreground: #1a1a1a;
+  --border: #d0d0d0;
+  --graph-bg: #111111;
+  --graph-dot: #b0b0b0;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-border: var(--border);
+  --color-graph-bg: var(--graph-bg);
+  --color-graph-dot: var(--graph-dot);
+}
+.dark {
+  --background: #111111;
+  --foreground: #eeeeee;
+  --border: #2e2e2e;
+  --graph-bg: #f7f7f7;
+  --graph-dot: #333333;
+}
+html { background-color: var(--background); color: var(--foreground); }
+`;
+
 const themeScript = `
 (function(){
   var t = localStorage.getItem('theme');
-  if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme:dark)').matches)) {
+  var d = t === 'dark' || (!t && matchMedia('(prefers-color-scheme:dark)').matches);
+  if (d) {
     document.documentElement.classList.add('dark');
+    document.documentElement.style.colorScheme = 'dark';
+  } else {
+    document.documentElement.style.colorScheme = 'light';
   }
+  requestAnimationFrame(function(){
+    requestAnimationFrame(function(){
+      document.body.classList.add('theme-ready');
+    });
+  });
 })();
 `;
 
@@ -76,10 +109,13 @@ export default function RootLayout({
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
+        <meta name="color-scheme" content="dark light" />
+        <style dangerouslySetInnerHTML={{ __html: criticalThemeCSS }} />
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
         className={`${lexend.variable} ${notoSansKR.variable} font-sans bg-background text-foreground`}
+        suppressHydrationWarning
       >
         <script
           type="application/ld+json"

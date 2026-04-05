@@ -16,23 +16,17 @@ export default function ThemeToggle() {
       aria-label="다크 모드 전환"
       data-theme-toggle
       onClick={toggle}
-      className={`relative flex h-6 w-11 cursor-pointer items-center rounded-full p-0.5 transition-colors ${isDark ? "bg-white" : "bg-neutral-800"}`}
+      className="relative flex h-6 w-11 cursor-pointer items-center rounded-full p-0.5 transition-colors bg-neutral-800 dark:bg-white"
     >
-      {isDark && (
-        <SunIcon
-          size={12}
-          className="absolute left-1.5 top-1/2 -translate-y-1/2 text-neutral-800"
-        />
-      )}
-      <span
-        className={`absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full shadow transition-transform duration-200 ease-in-out ${isDark ? "translate-x-5.5 bg-neutral-800" : "translate-x-1 bg-white"}`}
+      <SunIcon
+        size={12}
+        className="absolute left-1.5 top-1/2 -translate-y-1/2 text-neutral-800 hidden dark:block"
       />
-      {!isDark && (
-        <MoonIcon
-          size={12}
-          className="absolute right-1.5 top-1/2 -translate-y-1/2 text-white"
-        />
-      )}
+      <span className="absolute top-1/2 -translate-y-1/2 h-3.5 w-3.5 rounded-full shadow transition-transform duration-200 ease-in-out translate-x-1 bg-white dark:translate-x-5.5 dark:bg-neutral-800" />
+      <MoonIcon
+        size={12}
+        className="absolute right-1.5 top-1/2 -translate-y-1/2 text-white block dark:hidden"
+      />
     </button>
   );
 }
