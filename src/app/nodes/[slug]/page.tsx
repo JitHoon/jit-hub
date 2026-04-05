@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { GraphData } from "@/types/graph";
 import { getAllSlugs, getNodeBySlug } from "@/features/content/utils/pipeline";
-import { SITE_URL, SITE_NAME, AUTHOR } from "@/constants/site";
+import { SITE_URL, SITE_NAME } from "@/constants/site";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
+import { buildTechArticleJsonLd } from "@/features/content/utils/structured-data";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -56,32 +57,6 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-    },
-  };
-}
-
-function buildTechArticleJsonLd(
-  slug: string,
-  title: string,
-  tags: string[],
-): Record<string, unknown> {
-  return {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    headline: title,
-    description: tags.join(", "),
-    keywords: tags,
-    url: `${SITE_URL}/nodes/${slug}`,
-    isPartOf: {
-      "@type": "WebSite",
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
-    author: {
-      "@type": "Person",
-      name: AUTHOR.name,
-      url: AUTHOR.url,
-      jobTitle: AUTHOR.jobTitle,
     },
   };
 }
