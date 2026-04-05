@@ -1,13 +1,15 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ScrollDownIndicator from "@/components/ScrollDownIndicator";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import { GraphSection } from "@/features/graph/components/GraphSection";
+import { NodeSearch } from "@/features/graph/components/NodeSearch";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
 import FullNodeTree from "@/features/content/components/FullNodeTree";
 import { buildConnectedNodesFromGraph } from "@/features/content/utils/connected-nodes";
@@ -25,10 +27,18 @@ export default function HomeLayout({
   contentSection,
   contentKey,
 }: HomeLayoutProps): React.ReactElement {
+  const router = useRouter();
   const [graphData] = useState(graphDataProp);
   const hasContent = contentSection != null;
   const contentRef = useRef<HTMLDivElement>(null);
   const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
+
+  const handleNodeSelect = useCallback(
+    (nodeId: string) => {
+      router.push(`/?node=${nodeId}`);
+    },
+    [router],
+  );
 
   const selectedGraphNode = useMemo(() => {
     if (!contentKey) return null;
@@ -46,7 +56,9 @@ export default function HomeLayout({
 
   return (
     <div className="mx-auto flex min-h-screen max-w-3xl flex-col">
-      <SiteHeader />
+      <SiteHeader>
+        <NodeSearch nodes={graphData.nodes} onSelect={handleNodeSelect} />
+      </SiteHeader>
       <main className="flex flex-1 flex-col pb-16">
         <div className="px-6 pt-6 text-center">
           <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
