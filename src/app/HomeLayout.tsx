@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import { GraphSection } from "@/features/graph/components/GraphSection";
@@ -44,7 +45,7 @@ export default function HomeLayout({
   return (
     <div className="mx-auto flex min-h-screen max-w-3xl flex-col">
       <SiteHeader />
-      <main className="flex flex-1 flex-col">
+      <main className="flex flex-1 flex-col pb-16">
         <div
           data-testid="graph-section"
           className="flex h-[calc(60vh-56px)] items-center justify-center px-6 py-6 [container-type:size]"
@@ -101,6 +102,7 @@ export default function HomeLayout({
           </div>
         </div>
       </main>
+      <SiteFooter />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
         <div className="mx-auto max-w-3xl px-6">
           <div className="flex justify-end pb-8">

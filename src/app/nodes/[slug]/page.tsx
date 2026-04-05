@@ -8,6 +8,7 @@ import { SITE_URL, SITE_NAME, AUTHOR } from "@/constants/site";
 import { buildConnectedNodes } from "@/features/content/utils/connected-nodes";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import ContentHeader from "@/features/content/components/ContentHeader";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
@@ -144,6 +145,7 @@ export default async function NodePage({ params }: PageProps) {
           />
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }
