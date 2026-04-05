@@ -2,7 +2,7 @@
 
 ## 현재 상태
 
-**1차 MVP 배포 완료** (2026-04-05) | Phase 13 진행 중 (13-1 ~ 13-7 완료, 13-8 수동 작업 남음)
+**1차 MVP 배포 완료** (2026-04-05) | Phase 14 진행 중
 
 ## 완료된 Phase 요약
 
@@ -21,30 +21,17 @@
 - **Phase 10**: JSON-LD + sitemap.ts + robots.ts
 - **Phase 11**: Vercel 배포 + CI (vitest + Playwright)
 - **Phase 12**: SEO · 공유 최적화 (OG 이미지, favicon, manifest, 메타데이터)
+- **Phase 13**: Canonical URL + 내부 링크 SEO 정합성 + Google Search Console 등록
 
 ## 다음 작업: SEO & 사이트 완성도 개선
 
 Chrome 분석 기반 (SEO 55/100, 완성도 68/100). sitemap, robots, JSON-LD, 노드별 메타데이터는 이미 구현 완료 — 실제 미비한 부분만 대상.
 
-### Phase 13: 도메인 수정 + Canonical URL + 내부 링크 SEO 정합성 · 브랜치: `chore/seo-canonical`
-
-| # | 작업 | 크기 | 의존 | 상태 |
-|---|------|------|------|------|
-| 13-1 | SITE_URL을 `jithub-space.vercel.app`으로 수정 (`src/constants/site.ts`) | XS | - | [x] |
-| 13-2 | 루트 layout에 `alternates.canonical` 추가 (`src/app/layout.tsx`) | XS | 13-1 | [x] |
-| 13-3 | `/?node=slug` 페이지에 canonical을 `/nodes/slug`로 지정 (`src/app/page.tsx` — generateMetadata에서 searchParams.node 기반) | S | 13-1 | [x] |
-| 13-4 | 노드 페이지 generateMetadata에 `alternates.canonical` 추가 (`src/app/nodes/[slug]/page.tsx`) | XS | 13-1 | [x] |
-| 13-5 | NodeLink에 `linkMode` prop 추가 — `"graph"`: `/?node=id`, `"seo"`: `/nodes/id` (`src/features/content/components/NodeLink.tsx`) | S | - | [x] |
-| 13-6 | ConnectionTree에 `linkMode` prop 전파 (`src/features/content/components/ConnectionTree.tsx`) | XS | 13-5 | [x] |
-| 13-7 | `/nodes/[slug]` 페이지에서 ConnectionTree에 `linkMode="seo"` 전달 (`src/app/nodes/[slug]/page.tsx`) | XS | 13-6 | [x] |
-| 13-8 | 배포 후 Google Search Console에 `jithub-space.vercel.app` 속성 등록 + sitemap 재제출 (수동) | XS | 13-1 | [ ] |
-<!-- 완료 기준: 모든 페이지에 canonical URL 지정, SEO 페이지 내부 링크가 /nodes/slug 형태 -->
-
 ### Phase 14: 메인 페이지 H1 + 소개 텍스트 · 브랜치: `feat/home-intro`
 
 | # | 작업 | 크기 | 의존 | 상태 |
 |---|------|------|------|------|
-| 14-1 | HomeLayout에 `?node=` 파라미터가 없는 상태에서만 시각적 H1 + 1-2줄 소개 문구 렌더링 (조건부), 삽입 위치: 그래프 컨테이너와 노드 카테고리 리스트 사이 (`src/app/HomeLayout.tsx`) | XS | - | [ ] |
+| 14-1 | HomeLayout에 `?node=` 파라미터가 없는 상태에서만 시각적 H1 + 1-2줄 소개 문구 렌더링 (조건부), 삽입 위치: 그래프 컨테이너와 노드 카테고리 리스트 사이 (`src/app/HomeLayout.tsx`) | XS | - | [x] |
 <!-- 완료 기준: 메인 페이지에 H1 태그와 소개 문구 노출, 노드 선택 시 숨김 -->
 
 ### Phase 15: Footer 컴포넌트 · 브랜치: `feat/footer`
