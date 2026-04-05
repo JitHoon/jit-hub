@@ -23,29 +23,10 @@ test.describe("SiteHeader", () => {
     expect(position).toBe("sticky");
   });
 
-  test("JIT-Hub 드롭다운을 열면 홈 링크가 존재한다", async ({ page }) => {
-    const dropdownButton = page.locator('[data-testid="site-header"] button', {
-      hasText: "JIT-Hub",
-    });
-    await expect(dropdownButton).toBeVisible();
-    await dropdownButton.click();
-
-    const homeLink = page.locator('[data-testid="site-header"] a[href="/"]');
-    await expect(homeLink).toBeVisible();
-    await expect(homeLink).toHaveText("지식 그래프");
-  });
-
-  test("드롭다운에 지식 그래프 링크가 존재한다", async ({ page }) => {
-    const dropdownButton = page.locator('[data-testid="site-header"] button', {
-      hasText: "JIT-Hub",
-    });
-    await dropdownButton.click();
-
-    const link = page.locator('[data-testid="site-header"] a', {
-      hasText: "지식 그래프",
-    });
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/");
+  test("JIT-Hub 로고 링크가 홈으로 연결된다", async ({ page }) => {
+    const logoLink = page.locator('[data-testid="site-header"] a[href="/"]');
+    await expect(logoLink).toBeVisible();
+    await expect(logoLink).toHaveText("JIT-Hub");
   });
 
   test("ThemeToggle이 헤더 내에 존재한다", async ({ page }) => {
