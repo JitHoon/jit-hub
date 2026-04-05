@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useRef, useCallback, useId, useMemo } from "react";
+import {
+  useState,
+  useRef,
+  useCallback,
+  useId,
+  useMemo,
+  type KeyboardEvent,
+} from "react";
 import { CLUSTER_IDS, CLUSTERS } from "@/constants/cluster";
 import type { GraphNode } from "../types/graph";
 import type { SuggestionGroup, SearchMode } from "../types/search";
@@ -13,6 +20,7 @@ interface UseNodeSearchParams {
 export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = useId();
 
@@ -41,6 +49,12 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
   const mode: SearchMode =
     q.length === 0 ? "suggestions" : results.length > 0 ? "results" : "empty";
 
+  const flatItems = useMemo(() => {
+    if (mode === "results") return results;
+    if (mode === "suggestions") return groups.flatMap((g) => g.nodes);
+    return [] as GraphNode[];
+  }, [mode, results, groups]);
+
   const handleSelect = useCallback(
     (node: GraphNode) => {
       onSelect(node.id);
@@ -54,28 +68,68 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     setOpen(true);
+    setActiveIndex(-1);
   };
 
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "ArrowDown" || (e.key === "Tab" && !e.shiftKey && open)) {
+        e.preventDefault();
+        if (!open) setOpen(true);
+        setActiveIndex((prev) => Math.min(prev + 1, flatItems.length - 1));
+      } else if (
+        e.key === "ArrowUp" ||
+        (e.key === "Tab" && e.shiftKey && open)
+      ) {
+        e.preventDefault();
+        setActiveIndex((prev) => Math.max(prev - 1, -1));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        const target = flatItems[activeIndex];
+        if (activeIndex >= 0 && target) {
+          handleSelect(target);
+        }
+      } else if (e.key === "Escape") {
+        setOpen(false);
+        setActiveIndex(-1);
+        inputRef.current?.blur();
+      }
+    },
+    [open, flatItems, activeIndex, handleSelect],
+  );
+
   const handleBlur = () => {
-    // onMouseDown 클릭이 blur보다 먼저 처리되도록 딜레이
-    setTimeout(() => setOpen(false), 150);
+    setTimeout(() => {
+      setOpen(false);
+      setActiveIndex(-1);
+    }, 150);
   };
 
   const handleFocus = () => {
     setOpen(true);
   };
 
+  const activeNode = flatItems[activeIndex];
+  const activeItemId =
+    activeIndex >= 0 && activeNode
+      ? `${listId}-item-${activeNode.id}`
+      : undefined;
+
   return {
     query,
     open,
     inputRef,
     listId,
+    activeIndex,
+    activeItemId,
+    flatItems,
     mode,
     groups,
     results,
     handleChange,
     handleFocus,
     handleBlur,
+    handleKeyDown,
     handleSelect,
   };
 }

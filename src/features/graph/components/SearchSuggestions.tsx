@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
 import type { GraphNode } from "../types/graph";
 import type { SuggestionGroup, SearchMode } from "../types/search";
@@ -9,6 +10,8 @@ interface SearchSuggestionsProps {
   mode: SearchMode;
   groups: SuggestionGroup[];
   results: GraphNode[];
+  activeIndex: number;
+  flatItems: GraphNode[];
   onSelect: (node: GraphNode) => void;
 }
 
@@ -27,17 +30,40 @@ const itemClass = cn(
 
 function NodeItem({
   node,
+  itemId,
+  isActive,
   onSelect,
 }: {
   node: GraphNode;
+  itemId: string;
+  isActive: boolean;
   onSelect: (node: GraphNode) => void;
 }) {
+  const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    const container = el?.closest("[role='listbox']");
+    if (!isActive || !el || !(container instanceof HTMLElement)) return;
+
+    const elTop = el.offsetTop;
+    const elBottom = elTop + el.offsetHeight;
+    const ctTop = container.scrollTop;
+    const ctBottom = ctTop + container.clientHeight;
+
+    if (elTop < ctTop) container.scrollTop = elTop;
+    else if (elBottom > ctBottom)
+      container.scrollTop = elBottom - container.clientHeight;
+  }, [isActive]);
+
   return (
     <li
+      ref={ref}
+      id={itemId}
       role="option"
-      aria-selected={false}
+      aria-selected={isActive}
       onMouseDown={() => onSelect(node)}
-      className={itemClass}
+      className={cn(itemClass, isActive && "bg-surface-alt")}
     >
       <span className="font-medium">{node.title}</span>
       <span className="text-xs text-[var(--muted)]">
@@ -52,6 +78,8 @@ export function SearchSuggestions({
   mode,
   groups,
   results,
+  activeIndex,
+  flatItems,
   onSelect,
 }: SearchSuggestionsProps) {
   if (mode === "empty") {
@@ -67,33 +95,55 @@ export function SearchSuggestions({
   if (mode === "results") {
     return (
       <ul id={listId} role="listbox" className={containerClass}>
-        {results.map((node) => (
-          <NodeItem key={node.id} node={node} onSelect={onSelect} />
-        ))}
+        {results.map((node) => {
+          const idx = flatItems.indexOf(node);
+          return (
+            <NodeItem
+              key={node.id}
+              node={node}
+              itemId={`${listId}-item-${node.id}`}
+              isActive={idx === activeIndex}
+              onSelect={onSelect}
+            />
+          );
+        })}
       </ul>
     );
   }
 
+  let runningIndex = 0;
   return (
     <ul id={listId} role="listbox" className={containerClass}>
-      {groups.map((group) => (
-        <li key={group.clusterId} role="presentation">
-          <div className="flex items-center gap-1.5 px-3 pt-3 pb-1">
-            <span
-              className="h-2 w-2 shrink-0 rounded-full"
-              style={{ backgroundColor: group.color }}
+      {groups.map((group) => {
+        const groupItems = group.nodes.map((node) => {
+          const idx = runningIndex++;
+          return (
+            <NodeItem
+              key={node.id}
+              node={node}
+              itemId={`${listId}-item-${node.id}`}
+              isActive={idx === activeIndex}
+              onSelect={onSelect}
             />
-            <span className="text-xs font-semibold text-[var(--muted)]">
-              {group.label}
-            </span>
-          </div>
-          <ul role="group" aria-label={group.label}>
-            {group.nodes.map((node) => (
-              <NodeItem key={node.id} node={node} onSelect={onSelect} />
-            ))}
-          </ul>
-        </li>
-      ))}
+          );
+        });
+        return (
+          <li key={group.clusterId} role="presentation">
+            <div className="flex items-center gap-1.5 px-3 pt-3 pb-1">
+              <span
+                className="h-2 w-2 shrink-0 rounded-full"
+                style={{ backgroundColor: group.color }}
+              />
+              <span className="text-xs font-semibold text-[var(--muted)]">
+                {group.label}
+              </span>
+            </div>
+            <ul role="group" aria-label={group.label}>
+              {groupItems}
+            </ul>
+          </li>
+        );
+      })}
     </ul>
   );
 }
