@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import * as THREE from "three";
 import type { ForceGraphMethods } from "react-force-graph-3d";
 
@@ -31,16 +31,10 @@ export function useScene3D(
   const onEngineReady = useCallback((): void => {
     const fg = graphRef.current;
     if (!fg) return;
+    applySceneTheme(fg.scene());
+  }, [graphRef, applySceneTheme]);
 
-    const scene = fg.scene();
-
-    const gray = getGraphGray(isDark);
-    const bgColor = new THREE.Color(gray.bg);
-    scene.background = bgColor;
-    scene.fog = null;
-  }, [graphRef, isDark]);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fg = graphRef.current;
     if (!fg) return;
 

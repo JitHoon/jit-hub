@@ -124,9 +124,7 @@ body {
 }
 
 body.theme-ready {
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: none;
 }
 
 body.theme-ready .site-header {

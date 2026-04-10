@@ -92,7 +92,7 @@ export default function HomeLayout({
           )}
         </div>
         {contentKey && (
-          <div className="flex justify-end px-6">
+          <div className="flex justify-end px-6 mb-4">
             <Link
               href={`/nodes/${contentKey}`}
               className="text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
