@@ -17,9 +17,9 @@ maxTurns: 30
 
 작업 시작 전 다음 파일들을 읽어라:
 
-- `.claude/docs/component-patterns.md` — 기존 UI 패턴 확인
-- `.claude/docs/token-catalog.md` — 사용 가능한 토큰 전체 목록
-- `.claude/docs/design-references.md` — 레퍼런스 패턴
+- `.claude/docs/design/component-patterns.md` — 기존 UI 패턴 확인
+- `.claude/docs/design/token-catalog.md` — 사용 가능한 토큰 전체 목록
+- `.claude/docs/design/design-references.md` — 레퍼런스 패턴
 
 이미 존재하는 패턴과 유사한 컴포넌트인지 파악하라. 기존 패턴을 확장하는 것인지, 완전히 새로운 것인지에 따라 인터뷰 질문을 조정하라.
 
