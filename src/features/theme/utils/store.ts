@@ -29,10 +29,11 @@ export function getEffectiveTheme(): Theme {
 
 export function applyThemeToDOM(theme: Theme): void {
   document.documentElement.classList.toggle("dark", theme === "dark");
+  document.documentElement.style.colorScheme = theme;
 }
 
 export function applyTheme(theme: Theme): void {
-  document.documentElement.classList.toggle("dark", theme === "dark");
+  applyThemeToDOM(theme);
   localStorage.setItem(STORAGE_KEY, theme);
   // useSyncExternalStore의 subscribe 콜백을 트리거
   window.dispatchEvent(new StorageEvent("storage", { key: STORAGE_KEY }));
