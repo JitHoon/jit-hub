@@ -62,11 +62,10 @@ export default function HomeLayout({
       <main className="flex flex-1 flex-col pb-16">
         <div className="px-6 pt-6 text-center">
           <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
-            3D GIS 지식 그래프
+            GIS × Frontend
           </h1>
           <p className="mt-1 text-sm text-[var(--muted)]">
-            지리공간 기술과 프론트엔드 엔지니어링을 연결하는 인터랙티브
-            포트폴리오
+            Interactive 3D GIS Knowledge Graph
           </p>
         </div>
         <div
@@ -102,31 +101,28 @@ export default function HomeLayout({
             </Link>
           </div>
         )}
-        <div
-          ref={contentRef}
-          data-testid="content-grid"
-          className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"
-          style={{ gridTemplateRows: hasContent ? "1fr" : "0fr" }}
-        >
+        {hasContent && (
           <div
+            ref={contentRef}
+            data-testid="content-grid"
             key={contentKey}
-            className="overflow-hidden animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
+            className="animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
           >
             {contentSection}
           </div>
-        </div>
+        )}
       </main>
       <SiteFooter />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
         <div className="mx-auto max-w-3xl px-6">
-          <div className="flex justify-end pb-8">
-            <ScrollToTopButton />
-          </div>
           {hasContent && (
             <div className="flex justify-center pb-4">
               <ScrollDownIndicator targetRef={contentRef} />
             </div>
           )}
+          <div className="flex justify-end pb-8">
+            <ScrollToTopButton />
+          </div>
         </div>
       </div>
     </div>

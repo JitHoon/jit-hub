@@ -70,10 +70,13 @@ export default function ScrollDownIndicator({
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
-        className="animate-[bounce-down-bottom_1.8s_ease-in-out_infinite]"
+        className="-mt-1 animate-[bounce-down-bottom_1.8s_ease-in-out_infinite]"
       >
         <polyline points="6 2 12 10 18 2" />
       </svg>
+      <span className="mt-3 text-[10px] tracking-wider text-[var(--muted)] animate-[fade-pulse_2.4s_ease-in-out_infinite]">
+        아래로 스크롤
+      </span>
     </button>
   );
 }
