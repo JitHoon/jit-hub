@@ -102,19 +102,16 @@ export default function HomeLayout({
             </Link>
           </div>
         )}
-        <div
-          ref={contentRef}
-          data-testid="content-grid"
-          className="grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0,0,0.2,1)]"
-          style={{ gridTemplateRows: hasContent ? "1fr" : "0fr" }}
-        >
+        {hasContent && (
           <div
+            ref={contentRef}
+            data-testid="content-grid"
             key={contentKey}
-            className="overflow-hidden animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
+            className="animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
           >
             {contentSection}
           </div>
-        </div>
+        )}
       </main>
       <SiteFooter />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
