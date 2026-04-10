@@ -5,20 +5,22 @@ import { getClusterColor, type ClusterId } from "@/constants/cluster";
 
 interface ReadingProgressBarProps {
   cluster: ClusterId;
+  targetRef?: React.RefObject<HTMLElement | null>;
 }
 
 export default function ReadingProgressBar({
   cluster,
+  targetRef,
 }: ReadingProgressBarProps) {
   const barRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const bar = barRef.current;
-    const main = document.querySelector("main");
-    if (!bar || !main) return;
+    const target = targetRef?.current ?? document.querySelector("main");
+    if (!bar || !target) return;
 
     function handleScroll() {
-      const { top, height } = main!.getBoundingClientRect();
+      const { top, height } = target!.getBoundingClientRect();
       const scrollable = height - window.innerHeight;
 
       const progress =
@@ -30,7 +32,7 @@ export default function ReadingProgressBar({
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [targetRef]);
 
   return (
     <div
