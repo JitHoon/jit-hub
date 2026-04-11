@@ -14,10 +14,10 @@
 | 3 | Skill별 allowed-tools 차별화 검토 | 02,16 | [x] |
 | 4 | `features/theme/hooks/useTheme.ts` re-export 미사용 시 삭제 | deep/03 | [x] |
 | 5 | Lighthouse 4개 카테고리 베이스라인 점수 측정 및 기록 | 01,08,16 | [x] |
-| 6 | Google Search Console 인덱싱 상태 확인 | 09 | [ ] |
-| 7 | JSON-LD 유효성 검증 (Google Rich Results Test) | 09 | [ ] |
-| 8 | 다크모드 전환 시 미세 깜빡임 최종 점검 | 14 | [ ] |
-| 9 | hydration 버그 패턴을 library-practices Skill에 추가 | 12 | [ ] |
+| 6 | Google Search Console 인덱싱 상태 확인 | 09 | [x] |
+| 7 | JSON-LD 유효성 검증 (Google Rich Results Test) | 09 | [x] |
+| 8 | 다크모드 전환 시 미세 깜빡임 최종 점검 | 14 | [x] |
+| 9 | hydration 버그 패턴을 library-practices Skill에 추가 | 12 | [x] |
 | 10 | PR 템플릿에 "변경 사유" 필드 추가 | 10 | [ ] |
 
 ---

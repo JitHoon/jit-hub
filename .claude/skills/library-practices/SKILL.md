@@ -57,6 +57,12 @@ allowed-tools: Read, Grep, Glob
 - next-mdx-remote/rsc에서 MDXProvider 컨텍스트 사용 불가 → components prop 직접 전달
 - rehype-pretty-code는 CSS 미포함 — `globals.css`에 `[data-rehype-pretty-code-figure]` 스타일 정의 필요
 - remark-gfm 등 remark/rehype 플러그인은 ESM-only — `require()` 사용 불가
+- **SSR + 테마/다크모드 Hydration 패턴**: 서버/클라이언트 테마 불일치로 깜빡임 발생 시 아래 4단계로 해결
+  1. `<head>`에 인라인 `<script>`로 localStorage/시스템 설정 읽어 hydration 전에 `.dark` 클래스 적용
+  2. `useSyncExternalStore`의 `getServerSnapshot()`으로 서버 초기값 명시 (항상 `"light"`)
+  3. `useLayoutEffect` + hydration guard 플래그로 페인트 전 DOM 업데이트 (초기 hydration 시에는 스킵)
+  4. `<html>`, `<body>`에 `suppressHydrationWarning` 적용 (클래스 불일치 경고 방지)
+- **`suppressHydrationWarning` 남용 금지** — hydration 전 인라인 스크립트가 변경하는 요소에만 사용. 근본 원인을 해결하지 않고 경고만 숨기면 UI 불일치 발생
 
 ## 상세 레퍼런스
 
