@@ -59,6 +59,19 @@
 
 ---
 
+## 후속 수정 (2026-04-11)
+
+Turbopack + 가변 폰트 조합에서 dev 서버 무한 대기가 발생하여 Noto Sans KR을 정적 weight로 복원했으나,
+원인이 **iCloud 동기화**(`.next` 캐시 파일 충돌)로 밝혀짐.
+
+- **Turbopack**: 유지 (`next dev --turbopack`)
+- **Noto Sans KR**: 가변 폰트로 재전환 (weight 파라미터 제거)
+- **Lexend**: 가변 폰트 유지
+
+iCloud 동기화 대상에서 프로젝트 디렉토리를 제외한 뒤 정상 작동 확인.
+
+---
+
 ## 배포 후 실측 결과
 
 > (배포 후 기입)
