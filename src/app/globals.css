@@ -49,8 +49,6 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.06);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.08);
   --shadow-lg: 0 10px 40px rgb(0 0 0 / 0.12);
-  --glow-node: 0 0 20px rgb(0 88 166 / 0.4);
-
   --graph-bg: #111111;
   --graph-dot: #b0b0b0;
 
@@ -77,8 +75,6 @@
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 10px 40px rgb(0 0 0 / 0.5);
-  --glow-node: 0 0 24px rgb(43 124 182 / 0.5);
-
   --graph-bg: #f7f7f7;
   --graph-dot: #333333;
 }
@@ -381,32 +377,7 @@ html.dark [data-rehype-pretty-code-figure] code [data-theme="light"] {
 }
 
 /* ──────────────────────────────────────────
-   7. 얇은 스크롤바
-   ────────────────────────────────────────── */
-.scrollbar-thin {
-  scrollbar-width: thin;
-  scrollbar-color: rgb(0 0 0 / 0.3) transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar {
-  width: 4px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgb(0 0 0 / 0.3);
-  border-radius: 9999px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(0 0 0 / 0.5);
-}
-
-/* ──────────────────────────────────────────
-   8. Float keyframes (노드 플로팅 애니메이션)
+   7. Keyframes
    ────────────────────────────────────────── */
 @keyframes bounce-down-top {
   0% {
@@ -468,53 +439,5 @@ html.dark [data-rehype-pretty-code-figure] code [data-theme="light"] {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes float-a {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(3px, -5px);
-  }
-  50% {
-    transform: translate(-2px, -2px);
-  }
-  75% {
-    transform: translate(4px, 3px);
-  }
-}
-
-@keyframes float-b {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(-4px, 3px);
-  }
-  50% {
-    transform: translate(2px, 5px);
-  }
-  75% {
-    transform: translate(-3px, -2px);
-  }
-}
-
-@keyframes float-c {
-  0%,
-  100% {
-    transform: translate(0, 0);
-  }
-  25% {
-    transform: translate(2px, 4px);
-  }
-  50% {
-    transform: translate(-5px, -1px);
-  }
-  75% {
-    transform: translate(1px, -4px);
   }
 }
