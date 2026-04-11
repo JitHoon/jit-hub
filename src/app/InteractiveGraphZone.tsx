@@ -28,8 +28,9 @@ interface ContentState {
 }
 
 export default function InteractiveGraphZone({
-  graphData,
+  graphData: graphDataProp,
 }: InteractiveGraphZoneProps): React.ReactElement {
+  const [graphData] = useState(graphDataProp);
   const searchParams = useSearchParams();
   const contentKey = searchParams.get("node") ?? undefined;
 
@@ -137,7 +138,7 @@ export default function InteractiveGraphZone({
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
         <div className="mx-auto max-w-3xl px-6">
           {currentContent != null && (
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-8">
               <ScrollDownIndicator targetRef={contentRef} />
             </div>
           )}
