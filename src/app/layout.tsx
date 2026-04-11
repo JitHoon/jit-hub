@@ -17,7 +17,6 @@ const lexend = Lexend({
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   display: "swap",
   variable: "--font-noto-kr",
 });

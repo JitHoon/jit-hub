@@ -61,12 +61,14 @@
 
 ## 후속 수정 (2026-04-11)
 
-Noto Sans KR 가변 폰트 파일이 너무 커서 Turbopack 개발 서버(`bun run dev`) 컴파일이 무한 대기하는 문제 발생.
+Turbopack + 가변 폰트 조합에서 dev 서버 무한 대기가 발생하여 Noto Sans KR을 정적 weight로 복원했으나,
+원인이 **iCloud 동기화**(`.next` 캐시 파일 충돌)로 밝혀짐.
 
-- **Noto Sans KR**: `weight: ["400", "500", "700"]` 복원 (정적 폰트)
-- **Lexend**: 가변 폰트 유지 (라틴 폰트라 파일 크기 작음)
+- **Turbopack**: 유지 (`next dev --turbopack`)
+- **Noto Sans KR**: 가변 폰트로 재전환 (weight 파라미터 제거)
+- **Lexend**: 가변 폰트 유지
 
-프로덕션 빌드는 정상이었으나, DX를 심각하게 해치므로 한국어 폰트만 정적으로 롤백.
+iCloud 동기화 대상에서 프로젝트 디렉토리를 제외한 뒤 정상 작동 확인.
 
 ---
 
