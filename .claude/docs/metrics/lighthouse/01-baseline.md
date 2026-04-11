@@ -38,6 +38,16 @@ npx lighthouse <URL> \
 Accessibility **96 → 100** 달성. color-contrast 이슈 0건.
 Performance는 네트워크 편차 범위(94~99). **남은 감점 요인은 Performance만 존재.**
 
+### 가변 폰트 최적화 후 (2026-04-11)
+
+| Page | Perf | A11y | Best Practices | SEO |
+|------|------|------|----------------|-----|
+| `/` (홈) | 88 | 100 | 100 | 100 |
+| `/nodes/cesium-adoption` | 99 | 100 | 100 | 100 |
+
+SSG 노드 페이지 99점 유지. 홈 페이지는 JS 번들 병목(three.js 275KB)이 지배적.
+상세 → [03-font-variable-optimization.md](./03-font-variable-optimization.md)
+
 ---
 
 ## Performance: 96~99 → 100
