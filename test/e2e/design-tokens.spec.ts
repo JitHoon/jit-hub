@@ -63,7 +63,7 @@ test.describe("디자인 토큰", () => {
     expect(await resolve("--background")).toBe("#f7f7f7");
     expect(await resolve("--foreground")).toBe("#1a1a1a");
     expect(await resolve("--surface")).toBe("#eeeeee");
-    expect(await resolve("--muted")).toBe("#737373");
+    expect(await resolve("--muted")).toBe("#6e6e6e");
     expect(await resolve("--text")).toBe("#666666");
     expect(await resolve("--border")).toBe("#d0d0d0");
   });

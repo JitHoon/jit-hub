@@ -29,6 +29,7 @@ const mdxComponents: MDXComponents = {
   tr: (props) => <tr {...props} />,
   th: (props) => <th {...props} />,
   td: (props) => <td {...props} />,
+  pre: (props) => <pre {...props} tabIndex={0} />,
   img: (props) => <img {...props} />,
 };
 
