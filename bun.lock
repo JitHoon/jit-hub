@@ -51,6 +51,9 @@
       },
     },
   },
+  "patchedDependencies": {
+    "three-forcegraph@1.43.1": "patches/three-forcegraph@1.43.1.patch",
+  },
   "packages": {
     "3d-force-graph": ["3d-force-graph@1.79.1", "", { "dependencies": { "accessor-fn": "1", "kapsule": "^1.16", "three": ">=0.118 <1", "three-forcegraph": "1", "three-render-objects": "^1.35" } }, "sha512-iscIVt4jWjJ11KEEswgOIOWk8Ew4EFKHRyERJXJ0ouycqzHCtWwb9E5imnxS5rYF1f1IESkFNAfB+h3EkU0Irw=="],
 

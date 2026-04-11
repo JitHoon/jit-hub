@@ -8,7 +8,7 @@ import { SearchSuggestions } from "./SearchSuggestions";
 
 interface NodeSearchProps {
   nodes: GraphNode[];
-  onSelect: (nodeId: string) => void;
+  onSelect?: (nodeId: string) => void;
 }
 
 export function NodeSearch({ nodes, onSelect }: NodeSearchProps) {
