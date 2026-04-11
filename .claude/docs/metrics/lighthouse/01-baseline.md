@@ -95,7 +95,7 @@ Tailwind CSS 번들에서 26KB 미사용. purge 설정 또는 content 경로 점
 | 라이트 (`#f7f7f7` 배경) | `#888888` (3.5:1) | `#737373` (4.52:1) | PASS |
 | 다크 (`#111111` 배경) | `#707070` (3.7:1) | `#878787` (4.55:1) | PASS |
 
-상세 변경 내역 → [lighthouse-improve-1.md](./lighthouse-improve-1.md)
+상세 변경 내역 → [02-improve-color-contrast.md](./02-improve-color-contrast.md)
 
 ---
 
