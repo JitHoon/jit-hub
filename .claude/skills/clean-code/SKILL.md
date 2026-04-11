@@ -107,7 +107,7 @@ shared(constants/, components/, hooks/, lib/, types/, utils/)
 import { NodeFrontmatter } from "@/features/content/types/schema";
 import { GraphData } from "@/features/graph/types/graph";
 import { getClusterColor } from "@/constants/cluster";
-import { useTheme } from "@/features/theme/hooks/useTheme";
+import { useTheme } from "@/hooks/useTheme";
 
 // ✅ 같은 피처 내부 상대 경로
 import { nodeFrontmatterSchema } from "../types/schema";
