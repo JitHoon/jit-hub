@@ -1,0 +1,26 @@
+diff --git a/dist/three-forcegraph.js b/dist/three-forcegraph.js
+index fd8d1da4d1f227e5d072c76ce131b8cfd980edc9..a4c9b972f165cc08f8115756317bb90bb8be25ab 100644
+--- a/dist/three-forcegraph.js
++++ b/dist/three-forcegraph.js
+@@ -5857,7 +5857,7 @@ function InsertStackElement(node, body) {
+           fn(obj, dId);
+           _this3.scene.remove(obj);
+           emptyObject(obj);
+-          delete d[_classPrivateFieldGet2$1(_objBindAttr, _this3)];
++          if (d) delete d[_classPrivateFieldGet2$1(_objBindAttr, _this3)];
+         }]);
+         return this;
+       }
+diff --git a/dist/three-forcegraph.mjs b/dist/three-forcegraph.mjs
+index 2f284992b3ad9047866134446904538ab51a8cab..17e9602a6dc2877ab18df86a7522f91582c53639 100644
+--- a/dist/three-forcegraph.mjs
++++ b/dist/three-forcegraph.mjs
+@@ -294,7 +294,7 @@ var ThreeDigest = /*#__PURE__*/function (_DataBindMapper) {
+         fn(obj, dId);
+         _this3.scene.remove(obj);
+         emptyObject(obj);
+-        delete d[_classPrivateFieldGet2(_objBindAttr, _this3)];
++        if (d) delete d[_classPrivateFieldGet2(_objBindAttr, _this3)];
+       }]);
+       return this;
+     }
