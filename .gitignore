@@ -40,6 +40,9 @@ next-env.d.ts
 # IDE
 .idea
 
+# coverage
+coverage/
+
 # playwright
 test/e2e/.results/
 test/playwright-report/
