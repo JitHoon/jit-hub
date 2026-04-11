@@ -11,14 +11,12 @@ import "./globals.css";
 
 const lexend = Lexend({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   display: "swap",
   variable: "--font-lexend",
 });
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
   display: "swap",
   variable: "--font-noto-kr",
 });
