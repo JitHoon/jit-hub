@@ -33,7 +33,7 @@
 | foreground       | `#1A1A1A` | `#EEEEEE` | `--foreground`       | `text-foreground`      | `LIGHT.heading` / `DARK.heading`           |
 | surface          | `#EEEEEE` | `#1A1A1A` | `--surface`          | `bg-surface`           | `LIGHT.surface` / `DARK.surface`           |
 | surface-alt      | `#E4E4E4` | `#232323` | `--surface-alt`      | `bg-surface-alt`       | `LIGHT.surfaceAlt` / `DARK.surfaceAlt`     |
-| muted            | `#888888` | `#707070` | `--muted`            | `text-muted`           | `LIGHT.muted` / `DARK.muted`               |
+| muted            | `#737373` | `#878787` | `--muted`            | `text-muted`           | `LIGHT.muted` / `DARK.muted`               |
 | text             | `#666666` | `#999999` | `--text`             | `text-text`            | `LIGHT.text` / `DARK.text`                 |
 | border           | `#D0D0D0` | `#2E2E2E` | `--border`           | `border-border`        | `LIGHT.border` / `DARK.border`             |
 | border-strong    | `#B0B0B0` | `#444444` | `--border-strong`    | `border-border-strong` | `LIGHT.borderStrong` / `DARK.borderStrong` |

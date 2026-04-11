@@ -37,7 +37,7 @@ export const LIGHT: Palette = {
   surfaceAlt: "#E4E4E4",
   border: "#D0D0D0",
   borderStrong: "#B0B0B0",
-  muted: "#888888",
+  muted: "#737373",
   text: "#666666",
   heading: "#1A1A1A",
 };
@@ -49,7 +49,7 @@ export const DARK: Palette = {
   surfaceAlt: "#232323",
   border: "#2E2E2E",
   borderStrong: "#444444",
-  muted: "#707070",
+  muted: "#878787",
   text: "#999999",
   heading: "#EEEEEE",
 };
