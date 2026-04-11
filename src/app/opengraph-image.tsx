@@ -46,7 +46,7 @@ export default function OgImage(): ImageResponse {
         <span
           style={{
             fontSize: "28px",
-            color: "#888888",
+            color: "#737373",
             fontWeight: 500,
           }}
         >

@@ -64,7 +64,7 @@ export default async function OgImage({
         <span
           style={{
             fontSize: "20px",
-            color: "#888888",
+            color: "#737373",
             fontWeight: 500,
           }}
         >
@@ -74,7 +74,7 @@ export default async function OgImage({
         <span
           style={{
             fontSize: "18px",
-            color: "#888888",
+            color: "#737373",
             fontWeight: 600,
           }}
         >
