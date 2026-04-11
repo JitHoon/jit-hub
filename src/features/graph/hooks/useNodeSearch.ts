@@ -8,16 +8,22 @@ import {
   useMemo,
   type KeyboardEvent,
 } from "react";
+import { useRouter } from "next/navigation";
 import { CLUSTER_IDS, CLUSTERS } from "@/constants/cluster";
 import type { GraphNode } from "../types/graph";
 import type { SuggestionGroup, SearchMode } from "../types/search";
 
 interface UseNodeSearchParams {
   nodes: GraphNode[];
-  onSelect: (nodeId: string) => void;
+  onSelect?: (nodeId: string) => void;
 }
 
 export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
+  const router = useRouter();
+  const selectHandler = useMemo(
+    () => onSelect ?? ((id: string) => router.push(`/?node=${id}`)),
+    [onSelect, router],
+  );
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -57,12 +63,12 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
 
   const handleSelect = useCallback(
     (node: GraphNode) => {
-      onSelect(node.id);
+      selectHandler(node.id);
       setQuery("");
       setOpen(false);
       inputRef.current?.blur();
     },
-    [onSelect],
+    [selectHandler],
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
