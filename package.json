@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.1",
     "@playwright/test": "^1.58.2",
     "@storybook/addon-essentials": "8.6.18",
     "@storybook/addon-themes": "8.6.18",
