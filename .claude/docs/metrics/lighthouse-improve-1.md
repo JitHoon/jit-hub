@@ -63,21 +63,15 @@ Lighthouse Accessibility 감사에서 **color-contrast** 항목 실패.
 
 ---
 
-## 배포 후 실측 결과
+## 배포 후 실측 결과 (2026-04-11)
 
-> 배포 후 아래 명령어로 재측정:
->
-> ```bash
-> npx lighthouse https://jithub-space.vercel.app \
->   --output=json \
->   --chrome-flags="--headless=new --no-sandbox" \
->   --only-categories=accessibility
-> ```
+| Page | A11y (before) | A11y (after) | Perf | BP | SEO |
+|------|--------------|-------------|------|-----|-----|
+| `/` | 96 | **100** | 94 | 100 | 100 |
+| `/nodes/cesium-adoption` | 96 | **100** | 98 | 100 | 100 |
 
-| Page | A11y (실측) | 비고 |
-|------|------------|------|
-| `/` | — | 배포 후 기입 |
-| `/nodes/cesium-adoption` | — | 배포 후 기입 |
+- color-contrast 이슈: **0건** (이전 2~11건 → 완전 해소)
+- Accessibility **96 → 100** 달성
 
 ---
 
