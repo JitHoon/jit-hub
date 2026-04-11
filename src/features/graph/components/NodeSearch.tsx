@@ -31,7 +31,7 @@ export function NodeSearch({ nodes, onSelect }: NodeSearchProps) {
   } = useNodeSearch({ nodes, onSelect });
 
   return (
-    <div className="pointer-events-auto relative flex w-full max-w-xs items-center">
+    <div className="pointer-events-auto relative flex w-full max-w-40 items-center sm:max-w-xs">
       <SearchIcon size={14} className="shrink-0 text-[var(--muted)]" />
       <input
         ref={inputRef}

@@ -11,10 +11,10 @@ export default function SiteHeader({ children }: SiteHeaderProps) {
       data-testid="site-header"
       className="sticky top-0 z-50 bg-background site-header"
     >
-      <div className="flex h-14 items-center gap-4 px-6">
+      <div className="flex h-14 items-center gap-4 px-3 sm:px-6">
         <Link
           href="/"
-          className="font-display text-lg font-bold tracking-tight text-[var(--foreground)]"
+          className="shrink-0 whitespace-nowrap font-display text-lg font-bold tracking-tight text-[var(--foreground)]"
         >
           JIT-Hub
         </Link>
