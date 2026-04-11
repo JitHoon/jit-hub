@@ -1,71 +1,43 @@
 # Lighthouse Baseline
 
-> 측정일: 2026-04-11  
-> 목표: 전 카테고리 100점
+> 최초 측정: 2026-04-11 | 최종 갱신: 2026-04-11
 
-## 측정 환경
+## 현재 점수
 
-```bash
-# CLI 명령어
-npx lighthouse <URL> \
-  --output=json \
-  --chrome-flags="--headless=new --no-sandbox" \
-  --only-categories=performance,accessibility,best-practices,seo
+| Page | Perf | A11y | BP | SEO |
+|------|------|------|----|-----|
+| `/` (홈) | **95** | 100 | 100 | 100 |
+| `/nodes/cesium-adoption` | **100** | 100 | 100 | 100 |
+| `/nodes/3d-tiles-spec` | **100** | 100 | 100 | 100 |
 
-# 도구 버전
-# Lighthouse CLI 13.1.0, headless Chrome
-```
+노드 페이지 전 카테고리 100점 달성. **홈 페이지 Performance만 잔여 감점.**
 
 ---
 
-## 점수 요약
+## 개선 이력
 
-### 개선 전 (2026-04-11 초기 측정)
-
-| Page | Perf | A11y | Best Practices | SEO |
-|------|------|------|----------------|-----|
-| `/` (홈) | **96** | **96** | 100 | 100 |
-| `/nodes/cesium-adoption` | **99** | **96** | 100 | 100 |
-| `/nodes/3d-tiles-spec` | **99** | **96** | 100 | 100 |
-
-### 개선 후 (2026-04-11 색상 대비 수정 배포)
-
-| Page | Perf | A11y | Best Practices | SEO |
-|------|------|------|----------------|-----|
-| `/` (홈) | 94 | **100** | 100 | 100 |
-| `/nodes/cesium-adoption` | 98 | **100** | 100 | 100 |
-
-Accessibility **96 → 100** 달성. color-contrast 이슈 0건.
-Performance는 네트워크 편차 범위(94~99). **남은 감점 요인은 Performance만 존재.**
-
-### 가변 폰트 최적화 후 (2026-04-11)
-
-| Page | Perf | A11y | Best Practices | SEO |
-|------|------|------|----------------|-----|
-| `/` (홈) | 88 | 100 | 100 | 100 |
-| `/nodes/cesium-adoption` | 99 | 100 | 100 | 100 |
-
-SSG 노드 페이지 99점 유지. 홈 페이지는 JS 번들 병목(three.js 275KB)이 지배적.
-상세 → [03-font-variable-optimization.md](./03-font-variable-optimization.md)
+| 단계 | 홈 Perf | 노드 Perf | A11y | 주요 변경 |
+|------|---------|-----------|------|----------|
+| 초기 측정 | 96 | 99 | 96 | — |
+| 색상 대비 수정 | 94 | 98 | **100** | `--muted` WCAG AA 충족 ([상세](./02-improve-color-contrast.md)) |
+| 가변 폰트 최적화 | 88 | 99 | 100 | 폰트 서브셋 + display swap ([상세](./03-font-variable-optimization.md)) |
+| Static 셸 + HomeLayout 분리 | **95** | **100** | 100 | Static 라우트, 서버 컴포넌트, CSS 정리 ([상세](./04-bundle-analyzer.md)) |
 
 ---
 
-## Performance: 96~99 → 100
+## 홈 페이지 Performance 상세 (95점)
 
 ### Core Web Vitals
 
-| Metric | 홈 | 노드 평균 | 100점 기준 |
-|--------|-----|----------|-----------|
-| FCP | 1.1s | 1.35s | < 0.8s |
-| LCP | 1.7s | 2.1s | < 1.2s |
-| TBT | **220ms** | 25ms | 0ms |
-| CLS | 0 | 0 | 0 |
-| SI | 1.9s | 1.35s | < 1.0s |
-| TTI | **4.5s** | 2.35s | < 2.0s |
+| Metric | 값 | 100점 기준 | 상태 |
+|--------|----|-----------|------|
+| FCP | 1.7s | < 0.8s | 초과 |
+| LCP | 2.0s | < 1.2s | 초과 |
+| TBT | 180ms | 0ms | 초과 |
+| CLS | 0.011 | 0 | 미세 초과 |
+| SI | 3.1s | < 1.0s | 초과 |
 
-홈 페이지의 TBT(220ms)와 TTI(4.5s)가 주요 감점. 노드 SSG 페이지는 거의 만점.
-
-### 문제: 미사용 JavaScript (275KB)
+### 병목: 미사용 JavaScript (275KB)
 
 | 청크 | 전체 | 미사용 | 추정 원인 |
 |------|------|--------|----------|
@@ -73,46 +45,45 @@ SSG 노드 페이지 99점 유지. 홈 페이지는 JS 번들 병목(three.js 27
 | `0w8x9a8n6_wdo.js` | 84KB | 62KB | 그래프 유틸리티 |
 | `0th~6u9gxd-zd.js` | 72KB | 23KB | 기타 |
 
-홈 페이지에서 3D 그래프 라이브러리를 로드하면서 메인 스레드 Script Evaluation에 **987ms** 소요.
+3D 그래프 라이브러리 로드 시 메인 스레드 Script Evaluation **987ms** 소요.
 
-### 문제: 미사용 CSS (26KB)
+### 병목: 미사용 CSS (26KB)
 
-Tailwind CSS 번들에서 26KB 미사용. purge 설정 또는 content 경로 점검 필요.
+Tailwind CSS 번들에서 26KB 미사용. purge content 경로 점검 필요.
 
-### 개선 방안
+### 남은 개선 방안
 
 | # | 작업 | 효과 | 난이도 |
 |---|------|------|--------|
-| 1 | `@next/bundle-analyzer` 도입 → 실사용 모듈 식별 | 최적화 기반 마련 | S |
-| 2 | three.js tree shaking (개별 import) | TBT/TTI 대폭 개선 | M |
-| 3 | 한글 폰트 서브셋팅 (65KB → ~15KB) | FCP/LCP 개선 | S |
-| 4 | Tailwind CSS 미사용 규칙 정리 | 26KB 절감 | XS |
+| 1 | three.js tree shaking (개별 import) | TBT/TTI 대폭 개선 | M |
+| 2 | Tailwind CSS 미사용 규칙 정리 | 26KB 절감 | XS |
 
 ---
 
-## Accessibility: 96 → 100 (해결 완료)
+## 해결 완료
 
-### 문제: `--muted` 색상 대비 WCAG AA 미달
+### Accessibility 96 → 100
 
-전 페이지에서 `text-[var(--muted)]`를 사용하는 요소의 대비비가 4.5:1 미만.
-
-### 해결
-
-`globals.css`에서 `--muted` 값 변경:
+`--muted` 색상 대비가 WCAG AA(4.5:1) 미달 → `globals.css`에서 값 변경하여 해결.
 
 | 테마 | 변경 전 | 변경 후 | 대비비 |
 |------|---------|---------|--------|
-| 라이트 (`#f7f7f7` 배경) | `#888888` (3.5:1) | `#737373` (4.52:1) | PASS |
-| 다크 (`#111111` 배경) | `#707070` (3.7:1) | `#878787` (4.55:1) | PASS |
+| 라이트 (`#f7f7f7`) | `#888888` (3.5:1) | `#737373` (4.52:1) | PASS |
+| 다크 (`#111111`) | `#707070` (3.7:1) | `#878787` (4.55:1) | PASS |
 
-상세 변경 내역 → [02-improve-color-contrast.md](./02-improve-color-contrast.md)
+상세 → [02-improve-color-contrast.md](./02-improve-color-contrast.md)
+
+### 홈 Performance 88 → 95 (+7점)
+
+Static 라우트 전환 + HomeLayout 서버 컴포넌트 분리로 TBT 55% 감소(400ms → 180ms), SI 0.8s 개선.
+
+상세 → [04-bundle-analyzer.md](./04-bundle-analyzer.md)
 
 ---
 
-## 다음 측정 시 비교용 CLI
+## 측정 CLI
 
 ```bash
-# 전체 페이지 일괄 측정
 for url in \
   "https://jithub-space.vercel.app" \
   "https://jithub-space.vercel.app/nodes/cesium-adoption" \
