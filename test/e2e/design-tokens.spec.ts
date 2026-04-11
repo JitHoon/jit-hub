@@ -63,7 +63,7 @@ test.describe("디자인 토큰", () => {
     expect(await resolve("--background")).toBe("#f7f7f7");
     expect(await resolve("--foreground")).toBe("#1a1a1a");
     expect(await resolve("--surface")).toBe("#eeeeee");
-    expect(await resolve("--muted")).toBe("#888888");
+    expect(await resolve("--muted")).toBe("#737373");
     expect(await resolve("--text")).toBe("#666666");
     expect(await resolve("--border")).toBe("#d0d0d0");
   });
@@ -89,7 +89,7 @@ test.describe("디자인 토큰", () => {
     expect(await resolve("--background")).toBe("#111111");
     expect(await resolve("--foreground")).toBe("#eeeeee");
     expect(await resolve("--surface")).toBe("#1a1a1a");
-    expect(await resolve("--muted")).toBe("#707070");
+    expect(await resolve("--muted")).toBe("#878787");
     expect(await resolve("--text")).toBe("#999999");
     expect(await resolve("--border")).toBe("#2e2e2e");
   });
