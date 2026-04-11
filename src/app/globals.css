@@ -173,6 +173,13 @@ body.theme-ready .site-header {
   padding-top: 1rem;
   background-color: var(--background);
   scroll-margin-top: calc(5rem + var(--sticky-content-h, 0px));
+  white-space: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.prose-jithub h2::-webkit-scrollbar {
+  display: none;
 }
 
 .prose-jithub h3 {
