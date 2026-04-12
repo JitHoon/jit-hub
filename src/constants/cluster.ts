@@ -1,11 +1,3 @@
-/**
- * 클러스터 색상 상수
- *
- * globals.css의 @theme 토큰과 1:1 매핑.
- * 그래프 캔버스(react-force-graph-2d)는 CSS 유틸리티가 아닌
- * JS 색상값을 직접 사용하므로 여기서 관리한다.
- */
-
 export const CLUSTER_IDS = [
   "geodesy",
   "graphics",

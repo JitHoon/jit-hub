@@ -94,7 +94,6 @@ export function GraphCanvas3DInstanced({
     [isDark],
   );
 
-  // 선택 변경 시 InstancedMesh 색상 동기화
   useEffect(() => {
     setSelectedId(selectedNodeId ?? undefined);
   }, [selectedNodeId, setSelectedId]);

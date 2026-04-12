@@ -33,7 +33,6 @@ export function useGraphInteraction(
     onNodeHover: rendererOnNodeHover,
   } = useGraph3DRenderer(graphData, selectedNodeId ?? undefined);
 
-  // 선택 해제 시 카메라 자동 회전 복귀
   const prevSelectedNodeIdRef = useRef<string | null>(undefined);
 
   useEffect(() => {

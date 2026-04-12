@@ -27,7 +27,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
 
-  // d3 force 설정 + 초기 카메라
   useEffect(() => {
     if (hasForcesConfigured.current) return;
     const fg = graphRef.current;
@@ -53,7 +52,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     onReady?.();
   }, [onEngineReady, onReady]);
 
-  // 엔진 준비 후 자동 회전 시작
   useEffect(() => {
     if (!engineReady) return;
     const raf = requestAnimationFrame(() => {
@@ -62,7 +60,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     return () => cancelAnimationFrame(raf);
   }, [engineReady, setAutoRotate]);
 
-  // 합성 포인터 이벤트 가드 (모바일 터치 문제 방지)
   useEffect(() => {
     if (!engineReady) return;
     const fg = graphRef.current;

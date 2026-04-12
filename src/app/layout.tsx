@@ -57,7 +57,6 @@ const websiteJsonLd = {
   },
 };
 
-// FOUC 방지용 인라인 CSS — globals.css :root/.dark 블록의 색상값과 동기화 필요
 const criticalThemeCSS = `
 :root {
   --background: #f7f7f7;

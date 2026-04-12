@@ -1,12 +1,3 @@
-/**
- * 디자인 토큰 — Modern Gray + Nintendo Retro Kick
- *
- * 프로토타입(src/app/design/page.tsx)에서 검증된 값을 추출.
- * CSS 변수가 아닌 JS 값이 필요한 곳(그래프 캔버스 등)에서 사용한다.
- */
-
-/* ── Kick Colors ─────────────────────────────────────────── */
-
 export const KICK = {
   red: "#E60012",
   blue: "#0058A6",
@@ -15,8 +6,6 @@ export const KICK = {
 } as const;
 
 export type KickColor = keyof typeof KICK;
-
-/* ── Base Palette ────────────────────────────────────────── */
 
 export interface Palette {
   white: string;
@@ -58,14 +47,10 @@ export function getPalette(dark: boolean): Palette {
   return dark ? DARK : LIGHT;
 }
 
-/* ── Typography ──────────────────────────────────────────── */
-
 export const FONT = {
   display: "var(--font-lexend)",
   body: "var(--font-noto-kr)",
 } as const;
-
-/* ── Graph Canvas Grays ──────────────────────────────────── */
 
 export interface GraphGray {
   bg: string;
