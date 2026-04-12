@@ -2,8 +2,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { CLUSTERS, type ClusterId } from "@/constants/cluster";
 import { useTheme } from "@/hooks/useTheme";
+import {
+  easeInOut,
+  resolveEndpointId,
+  resolveClusterColor,
+  lightenHex,
+  buildDegreeMap,
+  buildAdjacencyMap,
+} from "@/lib/graph-helpers";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DLink, ForceGraph3DNode } from "../types/layout";
 
@@ -24,71 +31,6 @@ const HOVER_COLOR_OUT_MS = 200;
 const DEFAULT_HUB_OPACITY = 1;
 const DEFAULT_LEAF_OPACITY = 0.6;
 const DEFAULT_LINK_OPACITY = 1;
-
-function easeInOut(t: number): number {
-  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-function buildDegreeMap(data: GraphData): Map<string, number> {
-  const map = new Map<string, number>();
-  for (const node of data.nodes) {
-    map.set(node.id, 0);
-  }
-  for (const edge of data.edges) {
-    const src =
-      typeof edge.source === "string"
-        ? edge.source
-        : (edge.source as GraphNode).id;
-    const tgt =
-      typeof edge.target === "string"
-        ? edge.target
-        : (edge.target as GraphNode).id;
-    map.set(src, (map.get(src) ?? 0) + 1);
-    map.set(tgt, (map.get(tgt) ?? 0) + 1);
-  }
-  return map;
-}
-
-function buildAdjacencyMap(data: GraphData): Map<string, Set<string>> {
-  const map = new Map<string, Set<string>>();
-  for (const node of data.nodes) {
-    map.set(node.id, new Set());
-  }
-  for (const edge of data.edges) {
-    const src =
-      typeof edge.source === "string"
-        ? edge.source
-        : (edge.source as GraphNode).id;
-    const tgt =
-      typeof edge.target === "string"
-        ? edge.target
-        : (edge.target as GraphNode).id;
-    map.get(src)?.add(tgt);
-    map.get(tgt)?.add(src);
-  }
-  return map;
-}
-
-function resolveClusterColor(cluster: string): string {
-  if (cluster in CLUSTERS) {
-    return CLUSTERS[cluster as ClusterId].color;
-  }
-  return "#888888";
-}
-
-function resolveNodeId(endpoint: string | GraphNode): string {
-  return typeof endpoint === "string" ? endpoint : endpoint.id;
-}
-
-function lightenHex(hex: string, amount: number): string {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const lr = Math.round(r + (255 - r) * amount);
-  const lg = Math.round(g + (255 - g) * amount);
-  const lb = Math.round(b + (255 - b) * amount);
-  return `#${lr.toString(16).padStart(2, "0")}${lg.toString(16).padStart(2, "0")}${lb.toString(16).padStart(2, "0")}`;
-}
 
 function getMeshFromGroup(group: THREE.Group): THREE.Mesh | null {
   const child = group.children[0];
@@ -221,7 +163,6 @@ export function useGraph3DRenderer(
     selectedNodeIdRef.current = selectedNodeId;
   }, [selectedNodeId]);
 
-  // Sync theme changes to cached node materials
   useEffect(() => {
     const cache = groupCacheRef.current;
     const nodeColor = isDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT;
@@ -242,7 +183,6 @@ export function useGraph3DRenderer(
     });
   }, [isDark, nodeMap]);
 
-  // Selected node: apply cluster color + fade out others
   useEffect(() => {
     const prevId = prevSelectedNodeIdRef.current;
     const nextId = selectedNodeId;
@@ -313,7 +253,6 @@ export function useGraph3DRenderer(
           isDarkRef.current,
           segmentsRef.current,
         );
-        // Apply selected node color after rebuild to stay consistent with cache state
         if (
           selectedNodeIdRef.current !== undefined &&
           id === selectedNodeIdRef.current
@@ -370,8 +309,8 @@ export function useGraph3DRenderer(
         source: string | GraphNode;
         target: string | GraphNode;
       };
-      const srcId = resolveNodeId(edge.source);
-      const tgtId = resolveNodeId(edge.target);
+      const srcId = resolveEndpointId(edge.source)!;
+      const tgtId = resolveEndpointId(edge.target)!;
 
       if (
         selectedClusterColor !== null &&

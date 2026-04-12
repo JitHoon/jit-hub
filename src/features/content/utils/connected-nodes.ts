@@ -1,6 +1,8 @@
 import type { ClusterId } from "@/constants/cluster";
 import type { NodeFrontmatter } from "@/types/node";
-import type { GraphData, EdgeType } from "@/types/graph";
+import type { GraphData } from "@/types/graph";
+import { EDGE_PRIORITY } from "@/constants/edge";
+import { resolveEndpointId } from "@/lib/graph-helpers";
 
 export interface ConnectedNodeInfo {
   slug: string;
@@ -9,12 +11,6 @@ export interface ConnectedNodeInfo {
   edgeType: "prerequisite" | "related" | "child";
   relationship?: string;
 }
-
-const EDGE_PRIORITY: Record<EdgeType, number> = {
-  prerequisite: 0,
-  child: 1,
-  related: 2,
-};
 
 function deduplicateByPriority(
   nodes: ConnectedNodeInfo[],
@@ -80,11 +76,6 @@ export function buildConnectedNodes(
   return deduplicateByPriority(result);
 }
 
-function resolveEdgeId(ref: string | { id?: string }): string | undefined {
-  if (typeof ref === "string") return ref;
-  return ref.id;
-}
-
 export function buildConnectedNodesFromGraph(
   nodeId: string,
   graphData: GraphData,
@@ -97,10 +88,10 @@ export function buildConnectedNodesFromGraph(
   const seen = new Set<string>();
 
   for (const edge of graphData.edges) {
-    const sourceId = resolveEdgeId(edge.source as string | { id?: string });
+    const sourceId = resolveEndpointId(edge.source as string | { id?: string });
     if (sourceId !== nodeId) continue;
 
-    const targetId = resolveEdgeId(edge.target as string | { id?: string });
+    const targetId = resolveEndpointId(edge.target as string | { id?: string });
     if (!targetId) continue;
 
     const targetMeta = nodeMap.get(targetId);

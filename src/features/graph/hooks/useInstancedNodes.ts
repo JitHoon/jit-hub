@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { ForceGraphMethods } from "react-force-graph-3d";
 
-import { CLUSTERS, type ClusterId } from "@/constants/cluster";
 import { useTheme } from "@/hooks/useTheme";
+import { resolveClusterColor, buildDegreeMap } from "@/lib/graph-helpers";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
 
@@ -19,31 +19,6 @@ const NODE_COLOR_DARK = "#111111";
 const NODE_COLOR_LIGHT = "#FFFFFF";
 
 const HITBOX_RADIUS = 4;
-
-function resolveClusterColor(cluster: string): string {
-  if (cluster in CLUSTERS) {
-    return CLUSTERS[cluster as ClusterId].color;
-  }
-  return "#888888";
-}
-
-function buildDegreeMap(data: GraphData): Map<string, number> {
-  const map = new Map<string, number>();
-  for (const node of data.nodes) map.set(node.id, 0);
-  for (const edge of data.edges) {
-    const src =
-      typeof edge.source === "string"
-        ? edge.source
-        : (edge.source as GraphNode).id;
-    const tgt =
-      typeof edge.target === "string"
-        ? edge.target
-        : (edge.target as GraphNode).id;
-    map.set(src, (map.get(src) ?? 0) + 1);
-    map.set(tgt, (map.get(tgt) ?? 0) + 1);
-  }
-  return map;
-}
 
 interface InstancedGroup {
   mesh: THREE.InstancedMesh;
@@ -87,7 +62,6 @@ export function useInstancedNodes(
     isDarkRef.current = isDark;
   }, [isDark]);
 
-  // 허브/리프 분류
   useEffect(() => {
     const hubs: string[] = [];
     const leaves: string[] = [];
@@ -103,7 +77,6 @@ export function useInstancedNodes(
     leafNodesRef.current = leaves;
   }, [data.nodes, degreeMap]);
 
-  // InstancedMesh 생성
   useEffect(() => {
     const hubIds = hubNodesRef.current;
     const leafIds = leafNodesRef.current;
@@ -157,7 +130,6 @@ export function useInstancedNodes(
     };
   }, [data.nodes, degreeMap, segments, isDark]);
 
-  // 씬에 InstancedMesh 추가
   const addToScene = useCallback((): void => {
     if (addedToSceneRef.current) return;
     const fg = graphRef.current;
@@ -169,10 +141,8 @@ export function useInstancedNodes(
     addedToSceneRef.current = true;
   }, [graphRef]);
 
-  // nodeThreeObject에서 캐싱한 노드 참조 (위치가 force simulation에 의해 in-place 변경됨)
   const nodeObjectsRef = useRef<Map<string, ForceGraph3DNode>>(new Map());
 
-  // 매 틱: 노드 위치 → 인스턴스 행렬 동기화
   const onEngineTick = useCallback((): void => {
     addToScene();
 
@@ -197,7 +167,6 @@ export function useInstancedNodes(
     syncGroup(leafGroupRef.current);
   }, [addToScene]);
 
-  // 색상 업데이트
   const updateColors = useCallback((): void => {
     const currentIsDark = isDarkRef.current;
     const defaultColor = new THREE.Color(
@@ -251,12 +220,10 @@ export function useInstancedNodes(
     [updateColors],
   );
 
-  // 테마 변경 시 색상 재적용
   useEffect(() => {
     updateColors();
   }, [isDark, updateColors]);
 
-  // 레이캐스팅용 투명 히트박스
   const hitboxGeometry = useMemo(
     () => new THREE.SphereGeometry(HITBOX_RADIUS, 8, 8),
     [],
@@ -275,7 +242,6 @@ export function useInstancedNodes(
     (node: ForceGraph3DNode): THREE.Object3D => {
       const id = (node as ForceGraph3DNode & { id?: string }).id ?? "";
 
-      // force simulation이 위치를 in-place로 갱신하므로 노드 참조를 캐싱
       nodeObjectsRef.current.set(id, node);
 
       const cached = hitboxCacheRef.current.get(id);
