@@ -169,39 +169,23 @@ export function useInstancedNodes(
     addedToSceneRef.current = true;
   }, [graphRef]);
 
+  // nodeThreeObject에서 캐싱한 노드 참조 (위치가 force simulation에 의해 in-place 변경됨)
+  const nodeObjectsRef = useRef<Map<string, ForceGraph3DNode>>(new Map());
+
   // 매 틱: 노드 위치 → 인스턴스 행렬 동기화
   const onEngineTick = useCallback((): void => {
     addToScene();
 
-    const fg = graphRef.current;
-    if (!fg) return;
-    const graphData = fg.graphData();
-    const nodes = graphData.nodes as ForceGraph3DNode[];
-
-    const nodePositions = new Map<
-      string,
-      { x: number; y: number; z: number }
-    >();
-    for (const n of nodes) {
-      const id = (n as ForceGraph3DNode & { id?: string }).id;
-      if (id) {
-        nodePositions.set(id, {
-          x: n.x ?? 0,
-          y: n.y ?? 0,
-          z: n.z ?? 0,
-        });
-      }
-    }
-
+    const nodeObjects = nodeObjectsRef.current;
     const dummy = new THREE.Object3D();
 
     const syncGroup = (group: InstancedGroup | null): void => {
       if (!group) return;
       const { mesh, nodeIds } = group;
       for (let i = 0; i < nodeIds.length; i++) {
-        const pos = nodePositions.get(nodeIds[i]!);
-        if (pos) {
-          dummy.position.set(pos.x, pos.y, pos.z);
+        const node = nodeObjects.get(nodeIds[i]!);
+        if (node) {
+          dummy.position.set(node.x ?? 0, node.y ?? 0, node.z ?? 0);
           dummy.updateMatrix();
           mesh.setMatrixAt(i, dummy.matrix);
         }
@@ -211,7 +195,7 @@ export function useInstancedNodes(
 
     syncGroup(hubGroupRef.current);
     syncGroup(leafGroupRef.current);
-  }, [graphRef, addToScene]);
+  }, [addToScene]);
 
   // 색상 업데이트
   const updateColors = useCallback((): void => {
@@ -290,6 +274,10 @@ export function useInstancedNodes(
   const nodeThreeObject = useCallback(
     (node: ForceGraph3DNode): THREE.Object3D => {
       const id = (node as ForceGraph3DNode & { id?: string }).id ?? "";
+
+      // force simulation이 위치를 in-place로 갱신하므로 노드 참조를 캐싱
+      nodeObjectsRef.current.set(id, node);
+
       const cached = hitboxCacheRef.current.get(id);
       if (cached) return cached;
 
