@@ -6,17 +6,17 @@ import type { ForceGraphMethods } from "react-force-graph-3d";
 
 import { useTheme } from "@/hooks/useTheme";
 import { resolveClusterColor, buildDegreeMap } from "@/lib/graph-helpers";
+import {
+  HUB_RADIUS,
+  LEAF_RADIUS,
+  SEGMENTS_DESKTOP,
+  SEGMENTS_MOBILE,
+  HUB_DEGREE_THRESHOLD,
+  NODE_COLOR_DARK,
+  NODE_COLOR_LIGHT,
+} from "../utils/three-material";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DNode } from "../types/layout";
-
-const HUB_RADIUS = 3.75;
-const LEAF_RADIUS = 2.25;
-const SEGMENTS_DESKTOP = 32;
-const SEGMENTS_MOBILE = 16;
-const HUB_DEGREE_THRESHOLD = 3;
-
-const NODE_COLOR_DARK = "#111111";
-const NODE_COLOR_LIGHT = "#FFFFFF";
 
 const HITBOX_RADIUS = 4;
 
@@ -48,6 +48,12 @@ export function useInstancedNodes(
 
   const degreeMap = useMemo(() => buildDegreeMap(data), [data]);
 
+  const nodeMap = useMemo(() => {
+    const map = new Map<string, GraphNode>();
+    for (const node of data.nodes) map.set(node.id, node);
+    return map;
+  }, [data.nodes]);
+
   const hubNodesRef = useRef<string[]>([]);
   const leafNodesRef = useRef<string[]>([]);
   const hubGroupRef = useRef<InstancedGroup | null>(null);
@@ -57,6 +63,7 @@ export function useInstancedNodes(
   const selectedIdRef = useRef<string | undefined>(undefined);
   const isDarkRef = useRef(isDark);
   const hitboxCacheRef = useRef<Map<string, THREE.Object3D>>(new Map());
+  const dummyRef = useRef(new THREE.Object3D());
 
   useEffect(() => {
     isDarkRef.current = isDark;
@@ -147,7 +154,7 @@ export function useInstancedNodes(
     addToScene();
 
     const nodeObjects = nodeObjectsRef.current;
-    const dummy = new THREE.Object3D();
+    const dummy = dummyRef.current;
 
     const syncGroup = (group: InstancedGroup | null): void => {
       if (!group) return;
@@ -175,9 +182,6 @@ export function useInstancedNodes(
     const hoveredId = hoveredIdRef.current;
     const selectedId = selectedIdRef.current;
 
-    const nodeMap = new Map<string, GraphNode>();
-    for (const node of data.nodes) nodeMap.set(node.id, node);
-
     const updateGroup = (group: InstancedGroup | null): void => {
       if (!group) return;
       const { mesh, nodeIds } = group;
@@ -202,7 +206,7 @@ export function useInstancedNodes(
 
     updateGroup(hubGroupRef.current);
     updateGroup(leafGroupRef.current);
-  }, [data.nodes]);
+  }, [nodeMap]);
 
   const setHoveredId = useCallback(
     (id: string | null): void => {
