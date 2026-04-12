@@ -85,17 +85,20 @@ const themeScript = `
 (function(){
   var t = localStorage.getItem('theme');
   var d = t === 'dark' || (!t && matchMedia('(prefers-color-scheme:dark)').matches);
+  var scheme = d ? 'dark' : 'light';
   if (d) {
     document.documentElement.classList.add('dark');
-    document.documentElement.style.colorScheme = 'dark';
-  } else {
-    document.documentElement.style.colorScheme = 'light';
   }
-  requestAnimationFrame(function(){
-    requestAnimationFrame(function(){
+  document.documentElement.style.colorScheme = scheme;
+  var meta = document.querySelector('meta[name="color-scheme"]');
+  if (meta) meta.setAttribute('content', scheme);
+  if (document.body) {
+    document.body.classList.add('theme-ready');
+  } else {
+    document.addEventListener('DOMContentLoaded', function() {
       document.body.classList.add('theme-ready');
     });
-  });
+  }
 })();
 `;
 

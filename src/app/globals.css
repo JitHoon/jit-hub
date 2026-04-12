@@ -114,6 +114,8 @@ html {
   overflow-y: scroll;
   scroll-behavior: smooth;
   scroll-padding-top: 5rem;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 html.dark {
