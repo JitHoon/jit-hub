@@ -38,6 +38,12 @@ describe("resolveEndpointId", () => {
 });
 
 describe("resolveClusterColor", () => {
+  it("returns color for known cluster", () => {
+    const color = resolveClusterColor("geodesy");
+    expect(color).toMatch(/^#[0-9a-fA-F]{6}$/);
+    expect(color).not.toBe("#888888");
+  });
+
   it("returns fallback for unknown cluster", () => {
     expect(resolveClusterColor("unknown")).toBe("#888888");
   });
@@ -50,6 +56,10 @@ describe("lightenHex", () => {
 
   it("returns same color when amount=0", () => {
     expect(lightenHex("#ff0000", 0)).toBe("#ff0000");
+  });
+
+  it("lightens by half", () => {
+    expect(lightenHex("#000000", 0.5)).toBe("#808080");
   });
 });
 
@@ -66,12 +76,19 @@ const SAMPLE_DATA: GraphData = {
   clusters: [],
 };
 
+const EMPTY_DATA: GraphData = { nodes: [], edges: [], clusters: [] };
+
 describe("buildDegreeMap", () => {
   it("counts edges per node", () => {
     const map = buildDegreeMap(SAMPLE_DATA);
     expect(map.get("a")).toBe(1);
     expect(map.get("b")).toBe(2);
     expect(map.get("c")).toBe(1);
+  });
+
+  it("returns empty map for empty graph", () => {
+    const map = buildDegreeMap(EMPTY_DATA);
+    expect(map.size).toBe(0);
   });
 });
 
@@ -81,5 +98,10 @@ describe("buildAdjacencyMap", () => {
     expect(map.get("a")).toEqual(new Set(["b"]));
     expect(map.get("b")).toEqual(new Set(["a", "c"]));
     expect(map.get("c")).toEqual(new Set(["b"]));
+  });
+
+  it("returns empty map for empty graph", () => {
+    const map = buildAdjacencyMap(EMPTY_DATA);
+    expect(map.size).toBe(0);
   });
 });
