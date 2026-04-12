@@ -25,14 +25,14 @@ export default function CollapsibleGroup({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)]"
+        className="flex w-full items-center gap-1.5 rounded px-1.5 py-1 text-left transition-colors duration-fast hover:bg-[var(--surface-alt)]"
       >
         {leading}
         <span className="text-xs font-medium text-[var(--text)]">{label}</span>
         {trailing}
         <ChevronIcon
           size={12}
-          className={`ml-auto shrink-0 text-[var(--muted)] transition-transform duration-[var(--duration-fast)] ${isOpen ? "" : "-rotate-90"}`}
+          className={`ml-auto shrink-0 text-[var(--muted)] transition-transform duration-fast ${isOpen ? "" : "-rotate-90"}`}
         />
       </button>
       <div

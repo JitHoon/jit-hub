@@ -97,6 +97,12 @@
   --color-accent: var(--accent);
   --color-graph-bg: var(--graph-bg);
   --color-graph-dot: var(--graph-dot);
+
+  --transition-duration-fast: var(--duration-fast);
+  --transition-duration-normal: var(--duration-normal);
+  --transition-duration-slow: var(--duration-slow);
+  --transition-timing-function-out: var(--ease-out);
+  --transition-timing-function-in-out: var(--ease-in-out);
 }
 
 /* ──────────────────────────────────────────

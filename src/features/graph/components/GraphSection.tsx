@@ -55,7 +55,7 @@ export function GraphSection({
               </Suspense>
               <div
                 className={cn(
-                  "absolute inset-0 transition-opacity duration-[var(--duration-slow)] ease-[var(--ease-out)]",
+                  "absolute inset-0 transition-opacity duration-slow ease-out",
                   graphReady ? "pointer-events-none opacity-0" : "opacity-100",
                 )}
               >
