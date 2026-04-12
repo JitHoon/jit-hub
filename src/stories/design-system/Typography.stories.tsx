@@ -59,11 +59,43 @@ export const FontWeights: StoryObj = {
   },
 };
 
+export const HeadingScale: StoryObj = {
+  render: () => {
+    const headings = [
+      { tag: "h1", size: "2rem", lh: "1.2" },
+      { tag: "h2", size: "1.25rem", lh: "1.4" },
+      { tag: "h3", size: "1.125rem", lh: "1.4" },
+      { tag: "h4", size: "1rem", lh: "1.5" },
+    ];
+
+    return (
+      <div className="space-y-6">
+        <h3 className="font-display text-lg font-medium text-foreground">
+          Heading Scale (prose-jithub)
+        </h3>
+        <div className="prose-jithub max-w-prose space-y-4">
+          {headings.map((h) => (
+            <div key={h.tag} className="flex items-baseline gap-4">
+              <span className="w-24 shrink-0 font-mono text-xs text-muted">
+                {h.tag} · {h.size}
+              </span>
+              {h.tag === "h1" && <h1>Heading 1 — 지식 그래프</h1>}
+              {h.tag === "h2" && <h2>Heading 2 — 지식 그래프</h2>}
+              {h.tag === "h3" && <h3>Heading 3 — 지식 그래프</h3>}
+              {h.tag === "h4" && <h4>Heading 4 — 지식 그래프</h4>}
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  },
+};
+
 export const ProseStyle: StoryObj = {
   render: () => (
     <div className="prose-jithub max-w-prose">
-      <h1>Heading 1 — 1.75rem</h1>
-      <h2>Heading 2 — 1.375rem</h2>
+      <h1>Heading 1 — 2rem</h1>
+      <h2>Heading 2 — 1.25rem</h2>
       <h3>Heading 3 — 1.125rem</h3>
       <p>
         본문 텍스트입니다. <code>inline code</code>가 포함된 문단이며,{" "}

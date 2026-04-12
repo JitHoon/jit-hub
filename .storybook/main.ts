@@ -16,6 +16,9 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../src"),
+      "next/link": path.resolve(__dirname, "mocks/next-link.tsx"),
+      "next/navigation": path.resolve(__dirname, "mocks/next-navigation.ts"),
+      "next/dynamic": path.resolve(__dirname, "mocks/next-dynamic.tsx"),
     };
     return config;
   },

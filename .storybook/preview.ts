@@ -13,6 +13,11 @@ const preview: Preview = {
     },
     layout: "centered",
     backgrounds: { disable: true },
+    options: {
+      storySort: {
+        order: ["Design System", "Components", "Content", "Graph"],
+      },
+    },
   },
   decorators: [
     withThemeByClassName({
