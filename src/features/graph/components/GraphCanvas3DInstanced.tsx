@@ -1,16 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import dynamic from "next/dynamic";
 import type { ForceGraphMethods, ForceGraphProps } from "react-force-graph-3d";
 
 import "@/features/graph/utils/suppress-three-warnings";
 import { getGraphGray } from "@/constants/tokens";
 import { useTheme } from "@/hooks/useTheme";
+import { useNodeSelection } from "@/hooks/useNodeSelection";
 import type { GraphData, GraphEdge, GraphNode } from "../types/graph";
+import type { ForceGraph3DNode } from "../types/layout";
 import { useForceEngine } from "../hooks/useForceEngine";
-import { useGraphInteraction } from "../hooks/useGraphInteraction";
 import { useGraphLayout } from "../hooks/useGraphLayout";
+import { useInstancedNodes } from "../hooks/useInstancedNodes";
 
 type TypedForceGraph3DProps = ForceGraphProps<GraphNode, GraphEdge> & {
   ref?: React.MutableRefObject<ForceGraphMethods | undefined>;
@@ -23,19 +25,23 @@ const ForceGraph3D = dynamic(() => import("react-force-graph-3d"), {
 const WARMUP_TICKS = 100;
 const COOLDOWN_TICKS = 0;
 
-interface GraphCanvas3DProps {
+const EDGE_COLOR_DARK = "#111111";
+const EDGE_COLOR_LIGHT = "#FFFFFF";
+
+interface GraphCanvas3DInstancedProps {
   graphData: GraphData;
   onNodeHoverChange?: (node: GraphNode | null) => void;
   onReady?: () => void;
 }
 
-export function GraphCanvas3D({
+export function GraphCanvas3DInstanced({
   graphData,
   onNodeHoverChange,
   onReady,
-}: GraphCanvas3DProps): React.ReactElement {
+}: GraphCanvas3DInstancedProps): React.ReactElement {
   const { theme } = useTheme();
-  const bgColor = getGraphGray(theme === "dark").bg;
+  const isDark = theme === "dark";
+  const bgColor = getGraphGray(isDark).bg;
 
   const fg3dData = useMemo(
     () => ({
@@ -48,18 +54,50 @@ export function GraphCanvas3D({
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
   const { graphRef, setAutoRotate, onInteractionEnd, handleEngineStop } =
     useForceEngine(onReady);
-  const {
-    nodeThreeObject,
-    linkColor,
-    linkOpacity,
-    handleNodeHover,
-    handleNodeClick,
-  } = useGraphInteraction(
-    graphData,
-    onNodeHoverChange,
-    setAutoRotate,
-    onInteractionEnd,
+
+  const { selectedNodeId, selectNode } = useNodeSelection();
+
+  const { nodeThreeObject, onEngineTick, setHoveredId, setSelectedId } =
+    useInstancedNodes(graphRef, graphData);
+
+  const handleNodeHover = useCallback(
+    (node: ForceGraph3DNode | null): void => {
+      setAutoRotate(node === null);
+      if (node) {
+        const id = (node as ForceGraph3DNode & { id?: string }).id;
+        setHoveredId(id ?? null);
+        const graphNode = id
+          ? (graphData.nodes.find((n) => n.id === id) ?? null)
+          : null;
+        onNodeHoverChange?.(graphNode);
+      } else {
+        setHoveredId(null);
+        onNodeHoverChange?.(null);
+      }
+    },
+    [setAutoRotate, setHoveredId, graphData.nodes, onNodeHoverChange],
   );
+
+  const handleNodeClick = useCallback(
+    (node: ForceGraph3DNode): void => {
+      const id = (node as ForceGraph3DNode & { id?: string }).id;
+      if (!id) return;
+      selectNode(id);
+      setSelectedId(id);
+      onInteractionEnd();
+    },
+    [selectNode, setSelectedId, onInteractionEnd],
+  );
+
+  const linkColor = useCallback(
+    (): string => (isDark ? EDGE_COLOR_DARK : EDGE_COLOR_LIGHT),
+    [isDark],
+  );
+
+  // 선택 변경 시 InstancedMesh 색상 동기화
+  useEffect(() => {
+    setSelectedId(selectedNodeId ?? undefined);
+  }, [selectedNodeId, setSelectedId]);
 
   return (
     <div ref={containerRef} className="h-full w-full">
@@ -75,11 +113,12 @@ export function GraphCanvas3D({
         nodeThreeObject={nodeThreeObject}
         nodeThreeObjectExtend={false}
         linkColor={linkColor}
-        linkOpacity={linkOpacity}
+        linkOpacity={1}
         linkWidth={1}
         onNodeClick={handleNodeClick}
         onNodeHover={handleNodeHover}
         onEngineStop={handleEngineStop}
+        onEngineTick={onEngineTick}
         backgroundColor={bgColor}
         showNavInfo={false}
       />
