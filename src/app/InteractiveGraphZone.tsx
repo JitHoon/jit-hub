@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useEffect } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ExpandIcon from "@/components/icons/ExpandIcon";
@@ -14,7 +14,7 @@ import ContentSkeleton from "@/features/content/components/ContentSkeleton";
 import { buildConnectedNodesFromGraph } from "@/features/content/utils/connected-nodes";
 import { getSerializedContent } from "@/features/content/actions/getSerializedContent";
 import type { ClusterId } from "@/constants/cluster";
-import type { GraphData, GraphNode } from "@/types/graph";
+import type { GraphData } from "@/types/graph";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 interface InteractiveGraphZoneProps {
@@ -35,7 +35,6 @@ export default function InteractiveGraphZone({
   const contentKey = searchParams.get("node") ?? undefined;
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const [hoveredNode, setHoveredNode] = useState<GraphNode | null>(null);
   const [content, setContent] = useState<{
     key: string;
     data: ContentState;
@@ -46,14 +45,16 @@ export default function InteractiveGraphZone({
     return graphData.nodes.find((n) => n.id === contentKey) ?? null;
   }, [contentKey, graphData.nodes]);
 
-  const activeNode = hoveredNode ?? selectedGraphNode;
-
   const treeData = useMemo(() => {
-    if (!activeNode) return null;
-    const nodes = buildConnectedNodesFromGraph(activeNode.id, graphData);
+    if (!selectedGraphNode) return null;
+    const nodes = buildConnectedNodesFromGraph(selectedGraphNode.id, graphData);
     if (nodes.length === 0) return null;
-    return { title: activeNode.title, cluster: activeNode.cluster, nodes };
-  }, [activeNode, graphData]);
+    return {
+      title: selectedGraphNode.title,
+      cluster: selectedGraphNode.cluster,
+      nodes,
+    };
+  }, [selectedGraphNode, graphData]);
 
   useEffect(() => {
     if (!contentKey) return;
@@ -82,10 +83,7 @@ export default function InteractiveGraphZone({
         data-testid="graph-section"
         className="flex h-[calc(60vh-56px)] items-center justify-center px-6 py-6 [container-type:size]"
       >
-        <GraphSection
-          graphData={graphData}
-          onNodeHoverChange={setHoveredNode}
-        />
+        <GraphSection graphData={graphData} />
       </div>
       <div data-testid="connection-tree-grid">
         {treeData ? (
