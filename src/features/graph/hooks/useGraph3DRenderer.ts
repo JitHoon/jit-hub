@@ -4,84 +4,38 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { useTheme } from "@/hooks/useTheme";
 import {
-  easeInOut,
   resolveEndpointId,
   resolveClusterColor,
   lightenHex,
   buildDegreeMap,
   buildAdjacencyMap,
 } from "@/lib/graph-helpers";
+import {
+  HUB_DEGREE_THRESHOLD,
+  SEGMENTS_DESKTOP,
+  SEGMENTS_MOBILE,
+  NODE_COLOR_DARK,
+  NODE_COLOR_LIGHT,
+  EDGE_COLOR_DARK,
+  EDGE_COLOR_LIGHT,
+  CONNECTED_LIGHTEN,
+  DEFAULT_HUB_OPACITY,
+  DEFAULT_LEAF_OPACITY,
+  DEFAULT_LINK_OPACITY,
+  getMeshFromGroup,
+  getBasicMat,
+  createNodeGroup,
+  rebuildGroupChildren,
+  setGroupColor,
+} from "../utils/three-material";
+import { useHoverAnimation } from "./useHoverAnimation";
 import type { GraphData, GraphNode } from "../types/graph";
 import type { ForceGraph3DLink, ForceGraph3DNode } from "../types/layout";
 
-const HUB_RADIUS = 3.75;
-const LEAF_RADIUS = 2.25;
-const SEGMENTS_DESKTOP = 32;
-const SEGMENTS_MOBILE = 16;
-const HUB_DEGREE_THRESHOLD = 3;
-
-const NODE_COLOR_DARK = "#111111";
-const NODE_COLOR_LIGHT = "#FFFFFF";
-const EDGE_COLOR_DARK = "#111111";
-const EDGE_COLOR_LIGHT = "#FFFFFF";
-const CONNECTED_LIGHTEN = 0.45;
-
-const HOVER_COLOR_IN_MS = 150;
-const HOVER_COLOR_OUT_MS = 200;
-const DEFAULT_HUB_OPACITY = 1;
-const DEFAULT_LEAF_OPACITY = 0.6;
-const DEFAULT_LINK_OPACITY = 1;
-
-function getMeshFromGroup(group: THREE.Group): THREE.Mesh | null {
-  const child = group.children[0];
-  return child instanceof THREE.Mesh ? child : null;
-}
-
-function getBasicMat(mesh: THREE.Mesh): THREE.MeshBasicMaterial {
-  return mesh.material as THREE.MeshBasicMaterial;
-}
-
-function rebuildGroupChildren(
-  group: THREE.Group,
-  graphNode: GraphNode,
-  isHub: boolean,
-  isDark: boolean,
-  segments: number,
-): void {
-  group.children.forEach((child) => {
-    if (child instanceof THREE.Mesh) {
-      child.geometry.dispose();
-      (child.material as THREE.Material).dispose();
-    }
-  });
-  group.clear();
-
-  const tempGroup = createNodeGroup(graphNode, isHub, isDark, segments);
-  tempGroup.children.slice().forEach((child) => {
-    group.add(child);
-  });
-}
-
-function createNodeGroup(
-  graphNode: GraphNode,
-  isHub: boolean,
-  isDark: boolean,
-  segments: number,
-): THREE.Group {
-  const radius = isHub ? HUB_RADIUS : LEAF_RADIUS;
-  const nodeColor = isDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT;
-
-  const geometry = new THREE.SphereGeometry(radius, segments, segments);
-  const material = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(nodeColor),
-    transparent: true,
-    opacity: 1,
-  });
-  const mesh = new THREE.Mesh(geometry, material);
-
-  const group = new THREE.Group();
-  group.add(mesh);
-  return group;
+interface ConfigSnapshot {
+  isDark: boolean;
+  segments: number;
+  degreeMap: Map<string, number>;
 }
 
 interface UseGraph3DRendererReturn {
@@ -124,40 +78,33 @@ export function useGraph3DRenderer(
   }, [data]);
 
   const groupCacheRef = useRef<Map<string, THREE.Group>>(new Map());
-  const isDarkRef = useRef(isDark);
-  const segmentsRef = useRef(segments);
-  const degreeMapRef = useRef(degreeMap);
+  const configRef = useRef<ConfigSnapshot>({
+    isDark,
+    segments,
+    degreeMap,
+  });
   const prevSelectedNodeIdRef = useRef<string | undefined>(undefined);
   const selectedNodeIdRef = useRef<string | undefined>(selectedNodeId);
   const animationFrameRef = useRef<number | null>(null);
 
-  const hoverColorAnimFrameRef = useRef<number | null>(null);
-
-  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
-  const hoveredClusterColorRef = useRef<string>("#888888");
-
   useEffect(() => {
-    isDarkRef.current = isDark;
-  }, [isDark]);
+    const prev = configRef.current;
+    const segmentsChanged = prev.segments !== segments;
+    configRef.current = { isDark, segments, degreeMap };
 
-  useEffect(() => {
-    degreeMapRef.current = degreeMap;
-  }, [degreeMap]);
-
-  useEffect(() => {
-    if (segmentsRef.current === segments) return;
-    segmentsRef.current = segments;
-    const cache = groupCacheRef.current;
-    cache.forEach((group) => {
-      group.children.forEach((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.geometry.dispose();
-          (child.material as THREE.Material).dispose();
-        }
+    if (segmentsChanged) {
+      const cache = groupCacheRef.current;
+      cache.forEach((group) => {
+        group.children.forEach((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.geometry.dispose();
+            (child.material as THREE.Material).dispose();
+          }
+        });
       });
-    });
-    cache.clear();
-  }, [segments]);
+      cache.clear();
+    }
+  }, [isDark, segments, degreeMap]);
 
   useEffect(() => {
     selectedNodeIdRef.current = selectedNodeId;
@@ -168,18 +115,14 @@ export function useGraph3DRenderer(
     const nodeColor = isDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT;
     const currentSelectedId = selectedNodeIdRef.current;
     cache.forEach((group, id) => {
-      const mesh = getMeshFromGroup(group);
-      if (!mesh) return;
-      const mat = getBasicMat(mesh);
       if (id === currentSelectedId) {
         const selectedNode = nodeMap.get(id);
         if (selectedNode) {
-          mat.color.set(resolveClusterColor(selectedNode.cluster));
+          setGroupColor(group, resolveClusterColor(selectedNode.cluster));
         }
       } else {
-        mat.color.set(nodeColor);
+        setGroupColor(group, nodeColor);
       }
-      mat.needsUpdate = true;
     });
   }, [isDark, nodeMap]);
 
@@ -196,7 +139,7 @@ export function useGraph3DRenderer(
     }
 
     const cache = groupCacheRef.current;
-    const currentIsDark = isDarkRef.current;
+    const currentIsDark = configRef.current.isDark;
     const defaultNodeColor = new THREE.Color(
       currentIsDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT,
     );
@@ -234,13 +177,22 @@ export function useGraph3DRenderer(
     }
   }, [selectedNodeId, nodeMap, degreeMap]);
 
+  const { onNodeHover, hoveredNodeId, hoveredClusterColorRef } =
+    useHoverAnimation({
+      groupCacheRef,
+      configRef,
+      selectedNodeIdRef,
+      adjacencyMap,
+      nodeMap,
+    });
+
   const nodeThreeObject = useCallback((node: ForceGraph3DNode): THREE.Group => {
     const graphNode = node as ForceGraph3DNode & GraphNode;
     const id = graphNode.id ?? "";
     const cache = groupCacheRef.current;
 
     const existing = cache.get(id);
-    const degree = degreeMapRef.current.get(id) ?? 0;
+    const degree = configRef.current.degreeMap.get(id) ?? 0;
     const isHub = degree >= HUB_DEGREE_THRESHOLD;
 
     if (existing) {
@@ -250,19 +202,14 @@ export function useGraph3DRenderer(
           existing,
           graphNode,
           isHub,
-          isDarkRef.current,
-          segmentsRef.current,
+          configRef.current.isDark,
+          configRef.current.segments,
         );
         if (
           selectedNodeIdRef.current !== undefined &&
           id === selectedNodeIdRef.current
         ) {
-          const rebuiltMesh = getMeshFromGroup(existing);
-          if (rebuiltMesh) {
-            const mat = getBasicMat(rebuiltMesh);
-            mat.color.set(resolveClusterColor(graphNode.cluster));
-            mat.needsUpdate = true;
-          }
+          setGroupColor(existing, resolveClusterColor(graphNode.cluster));
         }
         return existing;
       }
@@ -272,20 +219,15 @@ export function useGraph3DRenderer(
     const group = createNodeGroup(
       graphNode,
       isHub,
-      isDarkRef.current,
-      segmentsRef.current,
+      configRef.current.isDark,
+      configRef.current.segments,
     );
 
     if (
       selectedNodeIdRef.current !== undefined &&
       id === selectedNodeIdRef.current
     ) {
-      const mesh = getMeshFromGroup(group);
-      if (mesh) {
-        const mat = getBasicMat(mesh);
-        mat.color.set(resolveClusterColor(graphNode.cluster));
-        mat.needsUpdate = true;
-      }
+      setGroupColor(group, resolveClusterColor(graphNode.cluster));
     }
 
     cache.set(id, group);
@@ -297,11 +239,6 @@ export function useGraph3DRenderer(
     const node = nodeMap.get(selectedNodeId);
     return node ? resolveClusterColor(node.cluster) : null;
   }, [selectedNodeId, nodeMap]);
-
-  const selectedClusterColorRef = useRef<string | null>(selectedClusterColor);
-  useEffect(() => {
-    selectedClusterColorRef.current = selectedClusterColor;
-  }, [selectedClusterColor]);
 
   const linkColor = useCallback(
     (link: ForceGraph3DLink): string => {
@@ -328,143 +265,13 @@ export function useGraph3DRenderer(
 
       return isDark ? EDGE_COLOR_DARK : EDGE_COLOR_LIGHT;
     },
-    [isDark, hoveredNodeId, selectedNodeId, selectedClusterColor],
-  );
-
-  const onNodeHover = useCallback(
-    (
-      node: ForceGraph3DNode | null,
-      prevNode: ForceGraph3DNode | null,
-    ): void => {
-      const cache = groupCacheRef.current;
-      const currentIsDark = isDarkRef.current;
-      const defaultNodeColor = new THREE.Color(
-        currentIsDark ? NODE_COLOR_DARK : NODE_COLOR_LIGHT,
-      );
-
-      if (hoverColorAnimFrameRef.current !== null) {
-        cancelAnimationFrame(hoverColorAnimFrameRef.current);
-        hoverColorAnimFrameRef.current = null;
-      }
-
-      if (prevNode) {
-        const prevGraphNode = prevNode as ForceGraph3DNode & GraphNode;
-        const prevId = prevGraphNode.id ?? "";
-        const prevGroup = cache.get(prevId);
-        const isActive = selectedNodeIdRef.current === prevId;
-
-        const connected = adjacencyMap.get(prevId) ?? new Set<string>();
-        connected.forEach((connId) => {
-          if (connId === selectedNodeIdRef.current) return;
-          const connGroup = cache.get(connId);
-          if (!connGroup) return;
-          const connMesh = getMeshFromGroup(connGroup);
-          if (!connMesh) return;
-          const connMat = getBasicMat(connMesh);
-          connMat.color.copy(defaultNodeColor);
-          connMat.needsUpdate = true;
-        });
-
-        if (prevGroup) {
-          const prevMesh = getMeshFromGroup(prevGroup);
-          if (prevMesh) {
-            const mat = getBasicMat(prevMesh);
-
-            if (isActive) {
-              const clusterColor = new THREE.Color(
-                resolveClusterColor(prevGraphNode.cluster),
-              );
-              mat.color.copy(clusterColor);
-              mat.needsUpdate = true;
-            } else if (node !== null) {
-              mat.color.copy(defaultNodeColor);
-              mat.needsUpdate = true;
-            } else {
-              const fromColor = mat.color.clone();
-              const startTime = performance.now();
-
-              function tickRestore(): void {
-                const elapsed = performance.now() - startTime;
-                const rawT = Math.min(elapsed / HOVER_COLOR_OUT_MS, 1);
-                const t = easeInOut(rawT);
-                mat.color.copy(fromColor).lerp(defaultNodeColor, t);
-                mat.needsUpdate = true;
-                if (rawT < 1) {
-                  hoverColorAnimFrameRef.current =
-                    requestAnimationFrame(tickRestore);
-                } else {
-                  hoverColorAnimFrameRef.current = null;
-                }
-              }
-
-              hoverColorAnimFrameRef.current =
-                requestAnimationFrame(tickRestore);
-            }
-          }
-        }
-
-        setHoveredNodeId(null);
-      }
-
-      if (node) {
-        const graphNode = node as ForceGraph3DNode & GraphNode;
-        const id = graphNode.id ?? "";
-        const group = cache.get(id);
-        const clusterColor = resolveClusterColor(graphNode.cluster);
-        const clusterColorObj = new THREE.Color(clusterColor);
-
-        hoveredClusterColorRef.current = clusterColor;
-        setHoveredNodeId(id);
-
-        const connected = adjacencyMap.get(id) ?? new Set<string>();
-        connected.forEach((connId) => {
-          if (connId === selectedNodeIdRef.current) return;
-          const connGroup = cache.get(connId);
-          if (!connGroup) return;
-          const connMesh = getMeshFromGroup(connGroup);
-          if (!connMesh) return;
-          const connNode = nodeMap.get(connId);
-          const connClusterColor = connNode
-            ? resolveClusterColor(connNode.cluster)
-            : "#888888";
-          const lightenedColor = new THREE.Color(
-            lightenHex(connClusterColor, CONNECTED_LIGHTEN),
-          );
-          const connMat = getBasicMat(connMesh);
-          connMat.color.copy(lightenedColor);
-          connMat.needsUpdate = true;
-        });
-
-        if (group) {
-          const mesh = getMeshFromGroup(group);
-          if (mesh) {
-            const mat = getBasicMat(mesh);
-            const fromColor = mat.color.clone();
-            const startTime = performance.now();
-
-            function tickHoverColor(): void {
-              const elapsed = performance.now() - startTime;
-              const rawT = Math.min(elapsed / HOVER_COLOR_IN_MS, 1);
-              const t = easeInOut(rawT);
-              mat.color.copy(fromColor).lerp(clusterColorObj, t);
-              mat.needsUpdate = true;
-              if (rawT < 1) {
-                hoverColorAnimFrameRef.current =
-                  requestAnimationFrame(tickHoverColor);
-              } else {
-                hoverColorAnimFrameRef.current = null;
-                mat.color.copy(clusterColorObj);
-                mat.needsUpdate = true;
-              }
-            }
-
-            hoverColorAnimFrameRef.current =
-              requestAnimationFrame(tickHoverColor);
-          }
-        }
-      }
-    },
-    [adjacencyMap, nodeMap],
+    [
+      isDark,
+      hoveredNodeId,
+      selectedNodeId,
+      selectedClusterColor,
+      hoveredClusterColorRef,
+    ],
   );
 
   const linkOpacity = DEFAULT_LINK_OPACITY;
