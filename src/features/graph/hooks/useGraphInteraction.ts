@@ -23,7 +23,6 @@ export function useGraphInteraction(
   graphData: GraphData,
   onNodeHoverChange?: (node: GraphNode | null) => void,
   setAutoRotate?: (enabled: boolean) => void,
-  onInteractionEnd?: () => void,
 ): UseGraphInteractionReturn {
   const { selectedNodeId, selectNode } = useNodeSelection();
   const {
@@ -40,9 +39,9 @@ export function useGraphInteraction(
     prevSelectedNodeIdRef.current = selectedNodeId;
 
     if (prev !== null && prev !== undefined && selectedNodeId === null) {
-      onInteractionEnd?.();
+      setAutoRotate?.(true);
     }
-  }, [selectedNodeId, onInteractionEnd]);
+  }, [selectedNodeId, setAutoRotate]);
 
   const handleNodeHover = useCallback(
     (
@@ -71,9 +70,9 @@ export function useGraphInteraction(
       const id = graphNode.id;
       if (!id) return;
       selectNode(id);
-      onInteractionEnd?.();
+      setAutoRotate?.(true);
     },
-    [selectNode, onInteractionEnd],
+    [selectNode, setAutoRotate],
   );
 
   return {

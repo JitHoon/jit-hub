@@ -104,17 +104,6 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
     [open, flatItems, activeIndex, handleSelect],
   );
 
-  const handleBlur = () => {
-    setTimeout(() => {
-      setOpen(false);
-      setActiveIndex(-1);
-    }, 150);
-  };
-
-  const handleFocus = () => {
-    setOpen(true);
-  };
-
   const activeNode = flatItems[activeIndex];
   const activeItemId =
     activeIndex >= 0 && activeNode
@@ -133,8 +122,12 @@ export function useNodeSearch({ nodes, onSelect }: UseNodeSearchParams) {
     groups,
     results,
     handleChange,
-    handleFocus,
-    handleBlur,
+    handleFocus: () => setOpen(true),
+    handleBlur: () =>
+      setTimeout(() => {
+        setOpen(false);
+        setActiveIndex(-1);
+      }, 150),
     handleKeyDown,
     handleSelect,
   };

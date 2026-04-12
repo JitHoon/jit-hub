@@ -7,6 +7,11 @@ import type { ForceGraphMethods } from "react-force-graph-3d";
 import { getGraphGray } from "@/constants/tokens";
 import { useTheme } from "@/hooks/useTheme";
 
+function applySceneTheme(scene: THREE.Scene, isDark: boolean): void {
+  scene.background = new THREE.Color(getGraphGray(isDark).bg);
+  scene.fog = null;
+}
+
 interface UseScene3DReturn {
   onEngineReady: () => void;
 }
@@ -17,30 +22,17 @@ export function useScene3D(
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  const applySceneTheme = useCallback(
-    (scene: THREE.Scene): void => {
-      const gray = getGraphGray(isDark);
-      const bgColor = new THREE.Color(gray.bg);
-
-      scene.background = bgColor;
-      scene.fog = null;
-    },
-    [isDark],
-  );
-
   const onEngineReady = useCallback((): void => {
     const fg = graphRef.current;
     if (!fg) return;
-    applySceneTheme(fg.scene());
-  }, [graphRef, applySceneTheme]);
+    applySceneTheme(fg.scene(), isDark);
+  }, [graphRef, isDark]);
 
   useLayoutEffect(() => {
     const fg = graphRef.current;
     if (!fg) return;
-
-    const scene = fg.scene();
-    applySceneTheme(scene);
-  }, [graphRef, applySceneTheme]);
+    applySceneTheme(fg.scene(), isDark);
+  }, [graphRef, isDark]);
 
   return { onEngineReady };
 }

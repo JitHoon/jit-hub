@@ -13,7 +13,6 @@ interface UseForceEngineReturn {
   graphRef: React.RefObject<ForceGraphMethods | undefined>;
   engineReady: boolean;
   setAutoRotate: (enabled: boolean) => void;
-  onInteractionEnd: () => void;
   handleEngineStop: () => void;
 }
 
@@ -23,7 +22,7 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
   const hasForcesConfigured = useRef(false);
   const [engineReady, setEngineReady] = useState(false);
 
-  const { setCameraImmediate, setAutoRotate, enableDamping, onInteractionEnd } =
+  const { initCamera, setAutoRotate, enableDamping } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
 
@@ -39,7 +38,7 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     const linkFn = fg.d3Force("link");
     if (linkFn) linkFn.distance(LINK_DISTANCE);
 
-    setCameraImmediate();
+    initCamera();
     enableDamping();
   });
 
@@ -86,7 +85,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     graphRef,
     engineReady,
     setAutoRotate,
-    onInteractionEnd,
     handleEngineStop,
   };
 }

@@ -52,8 +52,7 @@ export function GraphCanvas3DInstanced({
   );
 
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
-  const { graphRef, setAutoRotate, onInteractionEnd, handleEngineStop } =
-    useForceEngine(onReady);
+  const { graphRef, setAutoRotate, handleEngineStop } = useForceEngine(onReady);
 
   const { selectedNodeId, selectNode } = useNodeSelection();
 
@@ -84,9 +83,9 @@ export function GraphCanvas3DInstanced({
       if (!id) return;
       selectNode(id);
       setSelectedId(id);
-      onInteractionEnd();
+      setAutoRotate(true);
     },
-    [selectNode, setSelectedId, onInteractionEnd],
+    [selectNode, setSelectedId, setAutoRotate],
   );
 
   const linkColor = useCallback(
