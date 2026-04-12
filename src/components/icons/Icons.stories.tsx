@@ -2,8 +2,23 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { ComponentType } from "react";
 import SunIcon from "@/components/icons/SunIcon";
 import MoonIcon from "@/components/icons/MoonIcon";
+import SearchIcon from "@/components/icons/SearchIcon";
+import AlertIcon from "@/components/icons/AlertIcon";
+import ChevronIcon from "@/components/icons/ChevronIcon";
+import ExpandIcon from "@/components/icons/ExpandIcon";
+import XIcon from "@/components/icons/XIcon";
+import GitHubIcon from "@/components/icons/GitHubIcon";
 
-const Icons = { SunIcon, MoonIcon };
+const Icons = {
+  SunIcon,
+  MoonIcon,
+  SearchIcon,
+  AlertIcon,
+  ChevronIcon,
+  ExpandIcon,
+  XIcon,
+  GitHubIcon,
+};
 
 const meta = {
   title: "Components/Icons",

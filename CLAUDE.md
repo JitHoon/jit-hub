@@ -3,7 +3,7 @@
 ## Quick Facts
 
 - **Stack**: Next.js 16 (App Router, Turbopack), TypeScript strict, Tailwind CSS
-- **시각화**: react-force-graph-2d (dynamic import, ssr: false)
+- **시각화**: react-force-graph-3d (dynamic import, ssr: false)
 - **콘텐츠**: gray-matter + Zod + next-mdx-remote (커스텀 파이프라인)
 - **배포**: Vercel Hobby (무료)
 - **언어**: 한국어 우선 (MVP), 영어 이후 확장
@@ -12,7 +12,7 @@
 
 - `bun run dev` — 개발 서버
 - `bun run build` — 프로덕션 빌드 (graph-data.json 자동 생성 포함)
-- `bun run lint` — ESLint + TypeScript 검사
+- `bun run lint` — ESLint + Prettier 검사
 - `bun run test` — Vitest 유닛 테스트 실행
 - `bun run test:e2e` — Playwright E2E 테스트 실행
 
@@ -28,7 +28,7 @@
 - TypeScript `any` 사용 금지 → `unknown` 사용
 - 새 노드 추가 = `.md` 파일 하나만 생성 (다른 파일 수정 불필요)
 - 존재하지 않는 slug 참조 → 빌드 에러
-- react-force-graph-2d는 반드시 `dynamic(() => import(...), { ssr: false })`
+- react-force-graph-3d는 반드시 `dynamic(() => import(...), { ssr: false })`
 - 커밋 메시지는 conventional commits (feat:, fix:, refactor: 등)
 - **유닛 테스트** = 소스 파일 옆 `*.test.ts` co-location (예: `cluster.ts` → `cluster.test.ts`)
 - **E2E 테스트** = `test/e2e/*.spec.ts` (`.spec.ts` 확장자로 구분)
@@ -70,7 +70,7 @@
 </important>
 
 <important if="기술 스택 변경, 아키텍처 재설계, 또는 과거 의사결정 맥락이 필요할 때">
-@.claude/docs/project-blueprint-v2.md 를 읽어라 (v1→v2 변경 이력, 결정 근거 포함)
+@.claude/docs/planning/project-blueprint-v2.md 를 읽어라 (v1→v2 변경 이력, 결정 근거 포함)
 </important>
 
 <important if="새 기능 아이디어를 기획하거나 PRD/요구사항 문서가 필요할 때">
@@ -86,11 +86,14 @@
 - `contents/nodes/` — 지식 노드 마크다운 파일 (.md)
 - `src/app/` — Next.js App Router 페이지
 - `src/components/` — 공유 UI 컴포넌트 (ThemeToggle, icons)
-- `src/constants/` — 도메인 상수/설정값 (cluster, tokens)
+- `src/hooks/` — 공유 커스텀 훅 (useTheme, useNodeSelection)
+- `src/app/_components/` — 앱 레이아웃 컴포넌트 (HomeLayout, InteractiveGraphZone)
+- `src/stories/` — Storybook 디자인 시스템 스토리
+- `src/constants/` — 도메인 상수/설정값 (cluster, tokens, site, edge)
 - `src/features/` — 피처별 코로케이션
   - `src/features/content/` — 콘텐츠 파이프라인 (types, utils, components)
-  - `src/features/graph/` — 그래프 시각화 (types, utils)
-  - `src/features/theme/` — 테마 시스템 (hooks, utils)
+  - `src/features/graph/` — 그래프 시각화 (types, utils, components, hooks)
+  - `src/features/theme/` — 테마 시스템 (utils)
 - `src/lib/` — 빌드 스크립트, 외부 라이브러리 래퍼
 - `src/types/` — 공유 타입 (여러 피처에서 참조)
 - `public/` — 정적 파일
