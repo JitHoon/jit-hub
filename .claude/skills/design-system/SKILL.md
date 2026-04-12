@@ -63,6 +63,30 @@ allowed-tools: Read, Grep, Glob
 - `transition`/`animation`이 JS 변수에 의존하는 경우(duration 등)만 예외적으로 `style` 허용 — 단, 위치·색상·크기는 여전히 Tailwind
 - `pointerEvents: "none"` → `pointer-events-none`, `whiteSpace: "nowrap"` → `whitespace-nowrap` 등 유틸리티 클래스로 변환
 
+## 애니메이션
+
+### Duration 토큰
+
+| 토큰 | 값 | Tailwind 클래스 | 용도 |
+|------|-----|-----------------|------|
+| `--duration-fast` | 150ms | `duration-fast` | 호버 색상 전환, 아이콘 회전 |
+| `--duration-normal` | 200ms | `duration-normal` | 일반 트랜지션 |
+| `--duration-slow` | 350ms | `duration-slow` | 페이드 인/아웃, 패널 전환 |
+
+### Easing 토큰
+
+| 토큰 | 값 | Tailwind 클래스 | 용도 |
+|------|-----|-----------------|------|
+| `--ease-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | `ease-out` | 등장 애니메이션 (빠르게 시작, 부드럽게 정지) |
+| `--ease-in-out` | `cubic-bezier(0.65, 0, 0.35, 1)` | `ease-in-out` | 토글, 양방향 전환 |
+
+### 사용 규칙
+
+- **호버 전환**: `transition-colors duration-fast` (대부분의 인터랙티브 요소)
+- **패널/섹션 전환**: `transition-opacity duration-slow ease-out`
+- **킥 컬러 리빌**: `transition duration-normal` (0→색상 전환)
+- **기존 arbitrary 값 마이그레이션**: `duration-[var(--duration-fast)]` → `duration-fast`
+
 ## 타이포그래피
 
 - **Display**: Lexend (`var(--font-lexend)`) — 영문 헤딩, 로고

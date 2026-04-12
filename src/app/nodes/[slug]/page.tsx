@@ -113,7 +113,7 @@ export default async function NodePage({ params }: PageProps) {
                 <HistoryBackButton />
                 <Link
                   href="/"
-                  className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
+                  className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-fast hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
                 >
                   <ExpandIcon size={12} />
                   <span>전체 노드</span>

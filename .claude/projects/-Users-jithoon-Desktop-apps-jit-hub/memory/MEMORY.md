@@ -1,2 +1,0 @@
-- [빌드/dev 실행 금지](feedback_no_build_dev.md) — 빌드/dev 서버는 사용자에게 요청, 직접 실행 금지
-- [global-error 무시](feedback_global_error_ignore.md) — _global-error 프리렌더 에러는 절대 건드리지 말 것

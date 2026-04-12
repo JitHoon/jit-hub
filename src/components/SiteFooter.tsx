@@ -24,7 +24,7 @@ export default function SiteFooter() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub 레포지토리"
-          className="text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+          className="text-[var(--muted)] transition-colors duration-fast hover:text-[var(--foreground)]"
         >
           <GitHubIcon size={18} />
         </Link>

@@ -102,7 +102,7 @@ export default function InteractiveGraphZone({
         <div className="mb-4 flex justify-end px-6">
           <Link
             href={`/nodes/${contentKey}`}
-            className="text-[var(--muted)] transition-colors duration-[var(--duration-fast)] hover:text-[var(--foreground)]"
+            className="text-[var(--muted)] transition-colors duration-fast hover:text-[var(--foreground)]"
             aria-label="상세 페이지로 이동"
           >
             <ExpandIcon size={18} />
