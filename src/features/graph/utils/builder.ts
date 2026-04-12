@@ -6,6 +6,7 @@ import type {
   GraphCluster,
   GraphNode,
 } from "../types/graph";
+import { EDGE_PRIORITY } from "@/constants/edge";
 
 interface ParsedNodeInput {
   frontmatter: NodeFrontmatter;
@@ -13,14 +14,6 @@ interface ParsedNodeInput {
 
 const CLUSTER_LAYOUT_RADIUS = 80;
 const NODE_JITTER = 15;
-
-import type { EdgeType } from "../types/graph";
-
-const EDGE_PRIORITY: Record<EdgeType, number> = {
-  prerequisite: 0,
-  child: 1,
-  related: 2,
-};
 
 export function buildEdges(nodes: ParsedNodeInput[]): GraphEdge[] {
   const edges: GraphEdge[] = [];

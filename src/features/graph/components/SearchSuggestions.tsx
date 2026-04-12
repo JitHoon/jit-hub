@@ -42,18 +42,8 @@ function NodeItem({
   const ref = useRef<HTMLLIElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
-    const container = el?.closest("[role='listbox']");
-    if (!isActive || !el || !(container instanceof HTMLElement)) return;
-
-    const elTop = el.offsetTop;
-    const elBottom = elTop + el.offsetHeight;
-    const ctTop = container.scrollTop;
-    const ctBottom = ctTop + container.clientHeight;
-
-    if (elTop < ctTop) container.scrollTop = elTop;
-    else if (elBottom > ctBottom)
-      container.scrollTop = elBottom - container.clientHeight;
+    if (!isActive) return;
+    ref.current?.scrollIntoView({ block: "nearest" });
   }, [isActive]);
 
   return (

@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import type { GraphData } from "@/types/graph";
-import HomeLayout from "./HomeLayout";
+import HomeLayout from "./_components/HomeLayout";
 
 function loadGraphData(): GraphData {
   const filePath = path.join(process.cwd(), "graph-data.json");

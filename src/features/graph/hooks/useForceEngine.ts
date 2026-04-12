@@ -13,7 +13,6 @@ interface UseForceEngineReturn {
   graphRef: React.RefObject<ForceGraphMethods | undefined>;
   engineReady: boolean;
   setAutoRotate: (enabled: boolean) => void;
-  onInteractionEnd: () => void;
   handleEngineStop: () => void;
 }
 
@@ -23,11 +22,10 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
   const hasForcesConfigured = useRef(false);
   const [engineReady, setEngineReady] = useState(false);
 
-  const { setCameraImmediate, setAutoRotate, enableDamping, onInteractionEnd } =
+  const { initCamera, setAutoRotate, enableDamping } =
     useCameraControl(graphRef);
   const { onEngineReady } = useScene3D(graphRef);
 
-  // d3 force 설정 + 초기 카메라
   useEffect(() => {
     if (hasForcesConfigured.current) return;
     const fg = graphRef.current;
@@ -40,7 +38,7 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     const linkFn = fg.d3Force("link");
     if (linkFn) linkFn.distance(LINK_DISTANCE);
 
-    setCameraImmediate();
+    initCamera();
     enableDamping();
   });
 
@@ -53,7 +51,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     onReady?.();
   }, [onEngineReady, onReady]);
 
-  // 엔진 준비 후 자동 회전 시작
   useEffect(() => {
     if (!engineReady) return;
     const raf = requestAnimationFrame(() => {
@@ -62,7 +59,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     return () => cancelAnimationFrame(raf);
   }, [engineReady, setAutoRotate]);
 
-  // 합성 포인터 이벤트 가드 (모바일 터치 문제 방지)
   useEffect(() => {
     if (!engineReady) return;
     const fg = graphRef.current;
@@ -89,7 +85,6 @@ export function useForceEngine(onReady?: () => void): UseForceEngineReturn {
     graphRef,
     engineReady,
     setAutoRotate,
-    onInteractionEnd,
     handleEngineStop,
   };
 }

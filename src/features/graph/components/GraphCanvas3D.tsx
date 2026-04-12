@@ -46,20 +46,14 @@ export function GraphCanvas3D({
   );
 
   const { graphWidth, graphHeight, containerRef } = useGraphLayout();
-  const { graphRef, setAutoRotate, onInteractionEnd, handleEngineStop } =
-    useForceEngine(onReady);
+  const { graphRef, setAutoRotate, handleEngineStop } = useForceEngine(onReady);
   const {
     nodeThreeObject,
     linkColor,
     linkOpacity,
     handleNodeHover,
     handleNodeClick,
-  } = useGraphInteraction(
-    graphData,
-    onNodeHoverChange,
-    setAutoRotate,
-    onInteractionEnd,
-  );
+  } = useGraphInteraction(graphData, onNodeHoverChange, setAutoRotate);
 
   return (
     <div ref={containerRef} className="h-full w-full">

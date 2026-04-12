@@ -1,10 +1,3 @@
-/**
- * 다크 모드 토글 유틸리티
- *
- * <html> 요소의 `dark` 클래스와 localStorage를 동기화한다.
- * globals.css의 .dark 선택자와 연동된다.
- */
-
 const STORAGE_KEY = "theme";
 
 export type Theme = "light" | "dark";
@@ -35,7 +28,6 @@ export function applyThemeToDOM(theme: Theme): void {
 export function applyTheme(theme: Theme): void {
   applyThemeToDOM(theme);
   localStorage.setItem(STORAGE_KEY, theme);
-  // useSyncExternalStore의 subscribe 콜백을 트리거
   window.dispatchEvent(new StorageEvent("storage", { key: STORAGE_KEY }));
 }
 

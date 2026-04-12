@@ -1,4 +1,5 @@
 import type { EdgeType, GraphData } from "@/types/graph";
+import { resolveEndpointId } from "@/lib/graph-helpers";
 
 export interface NodeConnection {
   slug: string;
@@ -6,11 +7,6 @@ export interface NodeConnection {
   cluster: string;
   edgeType: EdgeType;
   relationship?: string;
-}
-
-function resolveEdgeId(ref: string | { id?: string }): string | undefined {
-  if (typeof ref === "string") return ref;
-  return ref.id;
 }
 
 export function buildNodeConnectionMap(
@@ -23,8 +19,8 @@ export function buildNodeConnectionMap(
   const seen = new Set<string>();
 
   for (const edge of graphData.edges) {
-    const sourceId = resolveEdgeId(edge.source as string | { id?: string });
-    const targetId = resolveEdgeId(edge.target as string | { id?: string });
+    const sourceId = resolveEndpointId(edge.source as string | { id?: string });
+    const targetId = resolveEndpointId(edge.target as string | { id?: string });
     if (!sourceId || !targetId) continue;
 
     const dedupeKey = `${sourceId}->${targetId}`;
