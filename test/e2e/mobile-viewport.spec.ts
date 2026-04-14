@@ -55,7 +55,7 @@ test.describe("모바일 뷰포트 (768px 이하)", () => {
     const contentGrid = page.locator('[data-testid="content-grid"]');
     await contentGrid.waitFor();
 
-    await expect(contentGrid).toContainText("LOD 레벨 오브 디테일");
+    await expect(contentGrid).toContainText("LOD 전략");
   });
 
   test("노드 선택 시 콘텐츠 영역이 뷰포트 너비를 초과하지 않는다", async ({

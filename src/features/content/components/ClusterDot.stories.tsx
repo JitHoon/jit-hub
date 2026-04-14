@@ -11,11 +11,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { cluster: "geodesy" },
+  args: { cluster: "coordinate" },
 };
 
 export const AllClusters: Story = {
-  args: { cluster: "geodesy" },
+  args: { cluster: "coordinate" },
   render: () => (
     <div className="flex flex-wrap gap-4">
       {CLUSTER_IDS.map((id) => (

@@ -9,7 +9,7 @@ function makeParsedNode(overrides: Partial<NodeFrontmatter> = {}): {
     frontmatter: {
       slug: "test-node",
       title: "테스트",
-      cluster: "geodesy",
+      cluster: "coordinate",
       difficulty: "beginner",
       tags: ["test"],
       prerequisites: [],
@@ -142,13 +142,13 @@ describe("buildEdges", () => {
 describe("buildClusters", () => {
   it("각 클러스터의 노드 수를 정확히 계산한다", () => {
     const nodes = [
-      makeParsedNode({ slug: "a", cluster: "geodesy" }),
-      makeParsedNode({ slug: "b", cluster: "geodesy" }),
-      makeParsedNode({ slug: "c", cluster: "graphics" }),
+      makeParsedNode({ slug: "a", cluster: "coordinate" }),
+      makeParsedNode({ slug: "b", cluster: "coordinate" }),
+      makeParsedNode({ slug: "c", cluster: "data" }),
     ];
     const clusters = buildClusters(nodes);
-    const geodesy = clusters.find((c) => c.id === "geodesy");
-    const graphics = clusters.find((c) => c.id === "graphics");
+    const geodesy = clusters.find((c) => c.id === "coordinate");
+    const graphics = clusters.find((c) => c.id === "data");
     expect(geodesy?.nodeCount).toBe(2);
     expect(graphics?.nodeCount).toBe(1);
   });
@@ -182,9 +182,9 @@ describe("generateGraphData", () => {
 
   it("동일 클러스터의 여러 노드가 서로 다른 좌표를 받는다", () => {
     const nodes = [
-      makeParsedNode({ slug: "a", cluster: "geodesy" }),
-      makeParsedNode({ slug: "b", cluster: "geodesy" }),
-      makeParsedNode({ slug: "c", cluster: "geodesy" }),
+      makeParsedNode({ slug: "a", cluster: "coordinate" }),
+      makeParsedNode({ slug: "b", cluster: "coordinate" }),
+      makeParsedNode({ slug: "c", cluster: "coordinate" }),
     ];
     const data = generateGraphData(nodes);
     const coords = data.nodes.map((n) => `${n.x},${n.y},${n.z}`);

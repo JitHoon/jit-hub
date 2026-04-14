@@ -4,7 +4,7 @@ import { nodeFrontmatterSchema } from "./schema";
 const validFrontmatter = {
   slug: "test-node",
   title: "테스트 노드",
-  cluster: "geodesy",
+  cluster: "coordinate",
   difficulty: "intermediate",
   tags: ["test"],
 };

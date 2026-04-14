@@ -8,6 +8,11 @@ import ContentHeader from "./ContentHeader";
 
 const mdxComponents: MDXComponents = {
   h1: () => null,
+  table: (props) => (
+    <div className="overflow-x-auto">
+      <table {...props} />
+    </div>
+  ),
 };
 
 interface ClientContentSectionProps {

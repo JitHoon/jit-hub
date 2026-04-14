@@ -10,7 +10,7 @@ function makeFrontmatterYaml(overrides: Record<string, unknown> = {}): string {
   const defaults: Record<string, unknown> = {
     slug: "test-node",
     title: "테스트 노드",
-    cluster: "geodesy",
+    cluster: "coordinate",
     difficulty: "beginner",
     tags: ["test"],
   };
@@ -109,14 +109,14 @@ describe("콘텐츠 파이프라인 통합 테스트", () => {
       const yamlA = makeFrontmatterYaml({
         slug: "node-a",
         title: "노드 A",
-        cluster: "geodesy",
+        cluster: "coordinate",
         prerequisites: ["node-b"],
         tags: ["gis"],
       });
       const yamlB = makeFrontmatterYaml({
         slug: "node-b",
         title: "노드 B",
-        cluster: "graphics",
+        cluster: "data",
         tags: ["3d"],
       });
 
@@ -133,8 +133,10 @@ describe("콘텐츠 파이프라인 통합 테스트", () => {
         target: "node-b",
         type: "prerequisite",
       });
-      expect(data.clusters.find((c) => c.id === "geodesy")?.nodeCount).toBe(1);
-      expect(data.clusters.find((c) => c.id === "graphics")?.nodeCount).toBe(1);
+      expect(data.clusters.find((c) => c.id === "coordinate")?.nodeCount).toBe(
+        1,
+      );
+      expect(data.clusters.find((c) => c.id === "data")?.nodeCount).toBe(1);
     });
 
     it("relatedConcepts 관계가 엣지로 변환된다", () => {

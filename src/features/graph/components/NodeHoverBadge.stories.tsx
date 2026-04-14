@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 const mockNode: GraphNode = {
   id: "coordinate-reference-system",
   title: "좌표 참조 시스템 (CRS)",
-  cluster: "geodesy",
+  cluster: "coordinate",
   difficulty: "intermediate",
   tags: ["gis", "coordinate"],
 };
@@ -32,11 +32,11 @@ export const AllClusters: Story = {
     <div className="space-y-3">
       {(
         [
-          { cluster: "geodesy", title: "좌표 참조 시스템" },
-          { cluster: "graphics", title: "WebGL 렌더링 파이프라인" },
-          { cluster: "implementation", title: "Cesium 타일링 구현" },
-          { cluster: "optimization", title: "LOD 최적화 전략" },
-          { cluster: "frontend", title: "React Three Fiber" },
+          { cluster: "coordinate", title: "좌표 참조 시스템" },
+          { cluster: "data", title: "WebGL 렌더링 파이프라인" },
+          { cluster: "feature", title: "Cesium 타일링 구현" },
+          { cluster: "performance", title: "LOD 최적화 전략" },
+          { cluster: "feature", title: "React Three Fiber" },
         ] as const
       ).map((item) => (
         <NodeHoverBadge

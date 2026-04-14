@@ -18,7 +18,7 @@ export default function HomeLayout({
       <SiteHeader>
         <NodeSearch nodes={graphData.nodes} />
       </SiteHeader>
-      <main className="flex flex-1 flex-col pb-16">
+      <main className="flex min-w-0 flex-1 flex-col pb-16">
         <div className="px-6 pt-6 text-center">
           <h1 className="font-display text-xl font-semibold text-[var(--foreground)]">
             GIS × Frontend
