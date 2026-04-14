@@ -109,17 +109,14 @@ test.describe("디자인 토큰", () => {
     expect(await resolve("--color-kick-yellow")).not.toBe("");
   });
 
-  test("클러스터 색상 CSS 변수가 9개 모두 존재한다", async ({ page }) => {
+  test("클러스터 색상 CSS 변수가 6개 모두 존재한다", async ({ page }) => {
     const clusters = [
-      "coordinate",
-      "data",
-      "feature",
       "discovery",
+      "data",
+      "coordinate",
       "performance",
       "pipeline",
       "feature",
-      "data",
-      "discovery",
     ];
 
     const vars = await page.evaluate((names: string[]) => {

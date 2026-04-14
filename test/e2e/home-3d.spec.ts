@@ -51,7 +51,7 @@ test.describe("홈 페이지 3D 그래프 렌더링", () => {
     const contentGrid = page.locator('[data-testid="content-grid"]');
     await contentGrid.waitFor();
 
-    await expect(contentGrid).toContainText("LOD 레벨 오브 디테일");
+    await expect(contentGrid).toContainText("LOD 전략");
   });
 
   test("WebGL 지원 시 canvas 요소가 존재하고 크기가 0보다 크다", async ({
