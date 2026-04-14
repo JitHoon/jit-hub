@@ -42,7 +42,7 @@ export const WithLeading: Story = {
   args: {
     label: "측지·좌표계",
     defaultOpen: true,
-    leading: <ClusterDot cluster="geodesy" />,
+    leading: <ClusterDot cluster="coordinate" />,
     children: (
       <div className="space-y-2 p-3">
         <p className="text-sm text-foreground">좌표 참조 시스템</p>

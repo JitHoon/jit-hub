@@ -13,12 +13,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: "좌표 참조 시스템 (CRS)",
-    cluster: "geodesy",
+    cluster: "coordinate",
   },
 };
 
 export const AllClusters: Story = {
-  args: { title: "좌표 참조 시스템 (CRS)", cluster: "geodesy" },
+  args: { title: "좌표 참조 시스템 (CRS)", cluster: "coordinate" },
   render: () => (
     <div className="space-y-6">
       {CLUSTER_IDS.map((id) => (

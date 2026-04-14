@@ -148,6 +148,7 @@ body.theme-ready .site-header {
    ────────────────────────────────────────── */
 .prose-jithub {
   color: var(--foreground);
+  overflow-x: hidden;
 }
 
 .prose-jithub h1 {

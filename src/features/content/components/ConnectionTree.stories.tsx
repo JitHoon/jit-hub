@@ -14,25 +14,25 @@ const mockNodes: ConnectedNodeInfo[] = [
   {
     slug: "epsg-code",
     title: "EPSG 코드 체계",
-    cluster: "geodesy",
+    cluster: "coordinate",
     edgeType: "prerequisite",
   },
   {
     slug: "webgl-pipeline",
     title: "WebGL 렌더링 파이프라인",
-    cluster: "graphics",
+    cluster: "data",
     edgeType: "related",
   },
   {
     slug: "cesium-tiling",
     title: "Cesium 3D Tiles 구현",
-    cluster: "implementation",
+    cluster: "feature",
     edgeType: "child",
   },
   {
     slug: "lod-optimization",
     title: "LOD 최적화 전략",
-    cluster: "optimization",
+    cluster: "performance",
     edgeType: "related",
   },
 ];
@@ -40,7 +40,7 @@ const mockNodes: ConnectedNodeInfo[] = [
 export const Default: Story = {
   args: {
     currentTitle: "좌표 참조 시스템 (CRS)",
-    currentCluster: "geodesy",
+    currentCluster: "coordinate",
     nodes: mockNodes,
     defaultOpen: true,
   },
@@ -49,7 +49,7 @@ export const Default: Story = {
 export const Collapsed: Story = {
   args: {
     currentTitle: "좌표 참조 시스템 (CRS)",
-    currentCluster: "geodesy",
+    currentCluster: "coordinate",
     nodes: mockNodes,
     defaultOpen: false,
   },
@@ -58,7 +58,7 @@ export const Collapsed: Story = {
 export const SeoMode: Story = {
   args: {
     currentTitle: "좌표 참조 시스템 (CRS)",
-    currentCluster: "geodesy",
+    currentCluster: "coordinate",
     nodes: mockNodes,
     defaultOpen: true,
     linkMode: "seo",

@@ -1,13 +1,10 @@
 export const CLUSTER_IDS = [
-  "geodesy",
-  "graphics",
-  "implementation",
-  "problem",
-  "optimization",
-  "infrastructure",
-  "frontend",
-  "format",
-  "decision",
+  "discovery",
+  "data",
+  "coordinate",
+  "performance",
+  "pipeline",
+  "feature",
 ] as const;
 
 export type ClusterId = (typeof CLUSTER_IDS)[number];
@@ -21,15 +18,12 @@ interface ClusterMeta {
 }
 
 export const CLUSTERS: Record<ClusterId, ClusterMeta> = {
-  geodesy: { label: "측지·좌표계", color: "#00A651", base: "green" },
-  graphics: { label: "3D 그래픽스", color: "#0058A6", base: "blue" },
-  implementation: { label: "구현 사례", color: "#E60012", base: "red" },
-  problem: { label: "문제 해결", color: "#B80030", base: "red" },
-  optimization: { label: "최적화", color: "#FFC800", base: "yellow" },
-  infrastructure: { label: "인프라·배포", color: "#2B7CB6", base: "blue" },
-  frontend: { label: "프론트엔드", color: "#D45800", base: "red" },
-  format: { label: "데이터 포맷", color: "#007A4D", base: "green" },
-  decision: { label: "의사결정", color: "#E0A500", base: "yellow" },
+  discovery: { label: "문제 발견과 결정", color: "#B80030", base: "red" },
+  data: { label: "3D 데이터 기초", color: "#0058A6", base: "blue" },
+  coordinate: { label: "좌표와 배치", color: "#00A651", base: "green" },
+  performance: { label: "성능 최적화", color: "#FFC800", base: "yellow" },
+  pipeline: { label: "데이터 파이프라인", color: "#2B7CB6", base: "blue" },
+  feature: { label: "기능 구현", color: "#D45800", base: "red" },
 } as const satisfies Record<ClusterId, ClusterMeta>;
 
 export function getClusterColor(cluster: ClusterId): string {

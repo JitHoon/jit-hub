@@ -39,7 +39,7 @@ describe("resolveEndpointId", () => {
 
 describe("resolveClusterColor", () => {
   it("returns color for known cluster", () => {
-    const color = resolveClusterColor("geodesy");
+    const color = resolveClusterColor("coordinate");
     expect(color).toMatch(/^#[0-9a-fA-F]{6}$/);
     expect(color).not.toBe("#888888");
   });

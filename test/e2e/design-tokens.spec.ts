@@ -111,15 +111,15 @@ test.describe("디자인 토큰", () => {
 
   test("클러스터 색상 CSS 변수가 9개 모두 존재한다", async ({ page }) => {
     const clusters = [
-      "geodesy",
-      "graphics",
-      "implementation",
-      "problem",
-      "optimization",
-      "infrastructure",
-      "frontend",
-      "format",
-      "decision",
+      "coordinate",
+      "data",
+      "feature",
+      "discovery",
+      "performance",
+      "pipeline",
+      "feature",
+      "data",
+      "discovery",
     ];
 
     const vars = await page.evaluate((names: string[]) => {
