@@ -11,6 +11,7 @@ import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
 import HeaderNodeSearch from "@/components/HeaderNodeSearch";
 import SiteFooter from "@/components/SiteFooter";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 import ExpandIcon from "@/components/icons/ExpandIcon";
 import ContentHeader from "@/features/content/components/ContentHeader";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
@@ -124,6 +125,13 @@ export default async function NodePage({ params }: PageProps) {
         )}
       </main>
       <SiteFooter />
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="flex justify-end pb-8">
+            <ScrollToTopButton />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
