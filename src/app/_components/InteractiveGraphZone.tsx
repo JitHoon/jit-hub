@@ -36,6 +36,8 @@ export default function InteractiveGraphZone({
   const contentKey = searchParams.get("node") ?? undefined;
 
   const contentRef = useRef<HTMLDivElement>(null);
+  const prevContentKeyRef = useRef<string | undefined>(undefined);
+  const scrollToTopRef = useRef(false);
   const [content, setContent] = useState<{
     key: string;
     data: ContentState;
@@ -58,6 +60,21 @@ export default function InteractiveGraphZone({
   }, [selectedGraphNode, graphData]);
 
   useEffect(() => {
+    history.scrollRestoration = "manual";
+  }, []);
+
+  useEffect(() => {
+    const isNodeChange =
+      prevContentKeyRef.current !== undefined &&
+      prevContentKeyRef.current !== contentKey &&
+      contentKey !== undefined;
+    prevContentKeyRef.current = contentKey;
+
+    if (isNodeChange) {
+      scrollToTopRef.current = true;
+      window.scrollTo(0, 0);
+    }
+
     if (!contentKey) return;
 
     let cancelled = false;
@@ -74,6 +91,13 @@ export default function InteractiveGraphZone({
     };
   }, [contentKey]);
 
+  useEffect(() => {
+    if (scrollToTopRef.current) {
+      scrollToTopRef.current = false;
+      window.scrollTo(0, 0);
+    }
+  });
+
   const currentContent =
     contentKey && content?.key === contentKey ? content.data : null;
   const showContentArea = contentKey != null;
@@ -88,25 +112,11 @@ export default function InteractiveGraphZone({
       </div>
       <div data-testid="connection-tree-grid">
         {treeData ? (
-          <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex gap-1">
-              <Suspense>
-                <HistoryBackButton />
-                <BackToFullTreeButton />
-              </Suspense>
-            </div>
-            {contentKey && (
-              <Link
-                href={`/nodes/${contentKey}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-fast hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
-                aria-label="상세 페이지로 이동"
-              >
-                <span>자세히 보기</span>
-                <ExpandIcon size={20} />
-              </Link>
-            )}
+          <div className="mt-2 flex justify-between px-6 pb-4">
+            <Suspense>
+              <HistoryBackButton />
+              <BackToFullTreeButton />
+            </Suspense>
           </div>
         ) : (
           <FullNodeTree graphData={graphData} />
@@ -117,7 +127,7 @@ export default function InteractiveGraphZone({
           ref={contentRef}
           data-testid="content-grid"
           key={contentKey}
-          className="animate-[content-fade-in_var(--duration-slow)_var(--ease-out)]"
+          className="animate-[content-fade-in_var(--duration-slow)_var(--ease-out)] [overflow-anchor:none]"
         >
           {selectedGraphNode && (
             <ReadingProgressBar
@@ -130,6 +140,17 @@ export default function InteractiveGraphZone({
               title={currentContent.title}
               cluster={currentContent.cluster}
               mdxResult={currentContent.mdxResult}
+              headerAction={
+                <Link
+                  href={`/nodes/${contentKey}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[var(--muted)] transition-colors duration-fast hover:text-[var(--foreground)]"
+                  aria-label="상세 페이지로 이동"
+                >
+                  <ExpandIcon size={20} />
+                </Link>
+              }
             />
           ) : (
             <ContentSkeleton />
