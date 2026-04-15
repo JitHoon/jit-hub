@@ -1,16 +1,17 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import ExpandIcon from "@/components/icons/ExpandIcon";
-import ScrollDownIndicator from "@/components/ScrollDownIndicator";
 import { GraphSection } from "@/features/graph/components/GraphSection";
 import ReadingProgressBar from "@/features/content/components/ReadingProgressBar";
 import ConnectionTree from "@/features/content/components/ConnectionTree";
 import FullNodeTree from "@/features/content/components/FullNodeTree";
 import ClientContentSection from "@/features/content/components/ClientContentSection";
 import ContentSkeleton from "@/features/content/components/ContentSkeleton";
+import HistoryBackButton from "@/features/content/components/HistoryBackButton";
+import BackToFullTreeButton from "@/features/content/components/BackToFullTreeButton";
 import { buildConnectedNodesFromGraph } from "@/features/content/utils/connected-nodes";
 import { getSerializedContent } from "@/features/content/actions/getSerializedContent";
 import type { ClusterId } from "@/constants/cluster";
@@ -87,28 +88,30 @@ export default function InteractiveGraphZone({
       </div>
       <div data-testid="connection-tree-grid">
         {treeData ? (
-          <ConnectionTree
-            currentTitle={treeData.title}
-            currentCluster={treeData.cluster as ClusterId}
-            nodes={treeData.nodes}
-            defaultOpen={true}
-            backButtonPosition="top"
-          />
+          <div className="flex items-center justify-between px-6 py-4">
+            <div className="flex gap-1">
+              <Suspense>
+                <HistoryBackButton />
+                <BackToFullTreeButton />
+              </Suspense>
+            </div>
+            {contentKey && (
+              <Link
+                href={`/nodes/${contentKey}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 rounded px-1.5 py-1 text-xs text-[var(--muted)] transition-colors duration-fast hover:bg-[var(--surface-alt)] hover:text-[var(--foreground)]"
+                aria-label="상세 페이지로 이동"
+              >
+                <span>자세히 보기</span>
+                <ExpandIcon size={20} />
+              </Link>
+            )}
+          </div>
         ) : (
           <FullNodeTree graphData={graphData} />
         )}
       </div>
-      {contentKey && (
-        <div className="mb-4 flex justify-end px-6">
-          <Link
-            href={`/nodes/${contentKey}`}
-            className="text-[var(--muted)] transition-colors duration-fast hover:text-[var(--foreground)]"
-            aria-label="상세 페이지로 이동"
-          >
-            <ExpandIcon size={18} />
-          </Link>
-        </div>
-      )}
       {showContentArea && (
         <div
           ref={contentRef}
@@ -133,15 +136,16 @@ export default function InteractiveGraphZone({
           )}
         </div>
       )}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50">
-        <div className="mx-auto max-w-3xl px-6">
-          {currentContent != null && (
-            <div className="flex justify-center pb-8">
-              <ScrollDownIndicator targetRef={contentRef} />
-            </div>
-          )}
-        </div>
-      </div>
+      {treeData && (
+        <ConnectionTree
+          currentTitle={treeData.title}
+          currentCluster={treeData.cluster as ClusterId}
+          nodes={treeData.nodes}
+          className="mt-10 border-t border-[var(--border)] px-6 pt-8"
+          defaultOpen={true}
+          backButtonPosition="bottom"
+        />
+      )}
     </>
   );
 }
