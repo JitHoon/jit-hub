@@ -143,8 +143,6 @@ export default function InteractiveGraphZone({
               headerAction={
                 <Link
                   href={`/nodes/${contentKey}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="text-[var(--muted)] transition-colors duration-fast hover:text-[var(--foreground)]"
                   aria-label="상세 페이지로 이동"
                 >
